@@ -21,3 +21,8 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Ajuste para o scroll das âncoras considerar a altura da navbar fixa */
+section[id] {
+  scroll-margin-top: 7rem;
+}

@@ -4,7 +4,7 @@ import { Services, CheckInInfo, Gallery, AboutUs, ScrollToTop } from "@/componen
 
 export default function Home() {
   return (
-    <main className="bg-white [&>section]:scroll-mt-24">
+    <main className="bg-white">
       <Hero />
       <Services />
       <Gallery />
