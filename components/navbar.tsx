@@ -8,43 +8,68 @@ import {
   useMotionValueEvent,
 } from "motion/react";
 import Link from "next/link";
-import React, { useRef, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import React, { useRef, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "./logo";
 
+interface NavItem {
+  name: string;
+  link: string;
+  isSection?: boolean;
+}
+
 interface NavbarProps {
-  navItems: {
-    name: string;
-    link: string;
-  }[];
+  navItems: NavItem[];
   visible: boolean;
 }
 
+// Smooth scroll function
+const scrollToSection = (sectionId: string) => {
+  const section = document.getElementById(sectionId);
+  if (section) {
+    section.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
+};
+
 export const Navbar = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
   const navItems = [
     {
       name: "Home",
       link: "/",
+      isSection: false,
     },
     {
       name: "Services",
-      link: "/services",
-    },
-    {
-      name: "About Us",
-      link: "/about",
+      link: "services",
+      isSection: true,
     },
     {
       name: "Gallery",
-      link: "/gallery",
+      link: "gallery",
+      isSection: true,
+    },
+    {
+      name: "Info",
+      link: "checkin-info",
+      isSection: true,
+    },
+    {
+      name: "About",
+      link: "about-us",
+      isSection: true,
     },
     {
       name: "Blog",
       link: "/blog",
-    },
-    {
-      name: "Contact",
-      link: "/contact",
+      isSection: false,
     },
   ];
 
@@ -63,6 +88,21 @@ export const Navbar = () => {
     }
   });
 
+  const handleNavClick = useCallback((e: React.MouseEvent, item: NavItem) => {
+    if (item.isSection && isHomePage) {
+      e.preventDefault();
+      scrollToSection(item.link);
+    } else if (!isHomePage && item.isSection) {
+      // If not on home page but clicking a section link, first navigate to home
+      router.push('/');
+      // Need a slight delay before scrolling to ensure the page loads
+      setTimeout(() => {
+        scrollToSection(item.link);
+      }, 100);
+    }
+    // For non-section links like blog, let the normal navigation happen
+  }, [isHomePage, router]);
+
   return (
     <motion.div
       ref={ref}
@@ -71,13 +111,13 @@ export const Navbar = () => {
       transition={{ duration: 0.3 }}
       className="w-full fixed top-2 inset-x-0 z-50"
     >
-      <DesktopNav visible={visible} navItems={navItems} />
-      <MobileNav visible={visible} navItems={navItems} />
+      <DesktopNav visible={visible} navItems={navItems} onNavClick={handleNavClick} />
+      <MobileNav visible={visible} navItems={navItems} onNavClick={handleNavClick} />
     </motion.div>
   );
 };
 
-const DesktopNav = ({ navItems, visible }: NavbarProps) => {
+const DesktopNav = ({ navItems, visible, onNavClick }: NavbarProps & { onNavClick: (e: React.MouseEvent, item: NavItem) => void }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
@@ -125,9 +165,10 @@ const DesktopNav = ({ navItems, visible }: NavbarProps) => {
             onHoverStart={() => setHoveredIndex(idx)}
             className="relative"
           >
-            <Link
-              className="text-black/90 relative px-3 py-1.5 transition-colors"
-              href={navItem.link}
+            <a
+              className="text-black/90 relative px-3 py-1.5 transition-colors cursor-pointer"
+              href={navItem.isSection ? `#${navItem.link}` : navItem.link}
+              onClick={(e) => onNavClick(e, navItem)}
             >
               <span className="relative z-10">{navItem.name}</span>
               {hoveredIndex === idx && (
@@ -149,7 +190,7 @@ const DesktopNav = ({ navItems, visible }: NavbarProps) => {
                   }}
                 />
               )}
-            </Link>
+            </a>
           </motion.div>
         ))}
       </motion.div>
@@ -188,8 +229,14 @@ const DesktopNav = ({ navItems, visible }: NavbarProps) => {
   );
 };
 
-const MobileNav = ({ navItems, visible }: NavbarProps) => {
+const MobileNav = ({ navItems, visible, onNavClick }: NavbarProps & { onNavClick: (e: React.MouseEvent, item: NavItem) => void }) => {
   const [open, setOpen] = useState(false);
+  
+  const handleMobileNavClick = (e: React.MouseEvent, navItem: NavItem) => {
+    onNavClick(e, navItem);
+    setOpen(false);
+  };
+
   return (
     <>
       <motion.div
@@ -261,32 +308,30 @@ const MobileNav = ({ navItems, visible }: NavbarProps) => {
               }}
               className="flex rounded-2xl absolute top-16 backdrop-blur-xl bg-white/95 inset-x-0 z-50 flex-col items-start justify-start gap-4 w-full px-6 py-6 shadow-lg"
             >
-              {navItems.map(
-                (navItem: { link: string; name: string }, idx: number) => (
-                  <motion.div
-                    key={`link=${idx}`}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{
-                      opacity: 1,
-                      x: 0,
-                      transition: {
-                        delay: idx * 0.05,
-                      },
-                    }}
-                    whileHover={{ x: 5 }}
+              {navItems.map((navItem, idx) => (
+                <motion.div
+                  key={`link=${idx}`}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{
+                    opacity: 1,
+                    x: 0,
+                    transition: {
+                      delay: idx * 0.05,
+                    },
+                  }}
+                  whileHover={{ x: 5 }}
+                >
+                  <a
+                    href={navItem.isSection ? `#${navItem.link}` : navItem.link}
+                    onClick={(e) => handleMobileNavClick(e, navItem)}
+                    className="relative text-black/90 hover:text-black transition-colors"
                   >
-                    <Link
-                      href={navItem.link}
-                      onClick={() => setOpen(false)}
-                      className="relative text-black/90  hover:text-black  transition-colors"
-                    >
-                      <motion.span className="block">
-                        {navItem.name}
-                      </motion.span>
-                    </Link>
-                  </motion.div>
-                )
-              )}
+                    <motion.span className="block">
+                      {navItem.name}
+                    </motion.span>
+                  </a>
+                </motion.div>
+              ))}
 
               <div className="flex flex-col w-full gap-3 mt-4">
                 <Button

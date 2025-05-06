@@ -10,7 +10,7 @@ const services = [
   {
     id: "pet-hotel",
     title: "Pet Hotel",
-    description: "Luxurious accommodations for your pets while you're away. 24/7 care with comfortable beds and personalized attention.",
+    description: "Luxurious accommodations for your pets while you&apos;re away. 24/7 care with comfortable beds and personalized attention.",
     icon: "/images/paw-print.svg",
     image: "/images/pink-dog-resort.png",
     color: "bg-[#FCD1E6]",
