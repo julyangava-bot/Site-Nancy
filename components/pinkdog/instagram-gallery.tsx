@@ -12,7 +12,7 @@ const instagramImages = [
     alt: "Happy pets at Pink Dog Resort",
     likes: 142,
     comments: 24,
-    url: "https://instagram.com/pinkdogresort"
+    url: "https://instagram.com/pinkdogspa"
   },
   {
     id: 2,
@@ -20,7 +20,7 @@ const instagramImages = [
     alt: "Pet playing at our facility",
     likes: 98,
     comments: 13,
-    url: "https://instagram.com/pinkdogresort"
+    url: "https://instagram.com/pinkdogspa"
   },
   {
     id: 3,
@@ -28,7 +28,7 @@ const instagramImages = [
     alt: "Grooming session at Pink Dog",
     likes: 205,
     comments: 31,
-    url: "https://instagram.com/pinkdogresort"
+    url: "https://instagram.com/pinkdogspa"
   },
   {
     id: 4,
@@ -36,7 +36,7 @@ const instagramImages = [
     alt: "Cute puppies at daycare",
     likes: 187,
     comments: 42,
-    url: "https://instagram.com/pinkdogresort"
+    url: "https://instagram.com/pinkdogspa"
   },
   {
     id: 5,
@@ -44,7 +44,7 @@ const instagramImages = [
     alt: "Our facility",
     likes: 76,
     comments: 8,
-    url: "https://instagram.com/pinkdogresort"
+    url: "https://instagram.com/pinkdogspa"
   },
   {
     id: 6,
@@ -52,7 +52,7 @@ const instagramImages = [
     alt: "Pet playtime",
     likes: 164,
     comments: 27,
-    url: "https://instagram.com/pinkdogresort"
+    url: "https://instagram.com/pinkdogspa"
   }
 ];
 
@@ -102,7 +102,7 @@ export function InstagramGallery() {
         
         {/* Instagram grid - otimizado com menos animações */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 md:gap-4">
-          {instagramImages.map((image, idx) => (
+          {instagramImages.map((image) => (
             <div
               key={image.id}
               className="relative group overflow-hidden rounded-xl aspect-square"
@@ -144,7 +144,7 @@ export function InstagramGallery() {
         {/* View more button */}
         <div className="text-center mt-8">
           <Link 
-            href="https://instagram.com/pinkdogresort" 
+            href="https://instagram.com/pinkdogspa" 
             target="_blank" 
             rel="noopener noreferrer"
             className="inline-block bg-white text-[#E73992] border border-[#E73992] hover:bg-[#FCD1E6] px-6 py-2.5 rounded-full font-medium transition-colors"
