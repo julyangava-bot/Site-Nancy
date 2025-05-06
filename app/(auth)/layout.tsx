@@ -18,7 +18,7 @@ export default function AuthLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn("antialiased", inter.className)}>
+      <body className={cn("antialiased", inter.className)} suppressHydrationWarning>
         {children}
       </body>
     </html>

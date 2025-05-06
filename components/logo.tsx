@@ -1,6 +1,7 @@
 "use client";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import Image from "next/image";
 
 export const LogoIcon = ({ className }: { className?: string }) => (
   <svg
@@ -84,9 +85,14 @@ export const Logo = ({ className }: { className?: string }) => {
         className
       )}
     >
-      <LogoIcon />
-
-      <span className="font-medium text-black  text-lg">shape.ai</span>
+      <Image 
+        src="/images/navbar-logo.png"
+        alt="Pink Dog Pet Resort Logo"
+        width={180}
+        height={48}
+        className="h-auto w-auto"
+        priority
+      />
     </Link>
   );
 };

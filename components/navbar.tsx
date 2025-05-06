@@ -9,7 +9,7 @@ import {
 } from "motion/react";
 import Link from "next/link";
 import React, { useRef, useState } from "react";
-import { Button } from "./button";
+import { Button } from "@/components/ui/button";
 import { Logo } from "./logo";
 
 interface NavbarProps {
@@ -24,19 +24,27 @@ export const Navbar = () => {
   const navItems = [
     {
       name: "Home",
-      link: "/#home",
+      link: "/",
     },
     {
-      name: "Product",
-      link: "/#product",
+      name: "Services",
+      link: "/services",
     },
     {
-      name: "Pricing",
-      link: "/#pricing",
+      name: "About Us",
+      link: "/about",
+    },
+    {
+      name: "Gallery",
+      link: "/gallery",
     },
     {
       name: "Blog",
       link: "/blog",
+    },
+    {
+      name: "Contact",
+      link: "/contact",
     },
   ];
 
@@ -130,8 +138,8 @@ const DesktopNav = ({ navItems, visible }: NavbarProps) => {
                   animate={{
                     opacity: 1,
                     background:
-                      "linear-gradient(145deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.2) 100%)",
-                    boxShadow: "0 4px 15px rgba(0,0,0,0.05)",
+                      "linear-gradient(145deg, rgba(252,209,230,0.6) 0%, rgba(231,57,146,0.2) 100%)",
+                    boxShadow: "0 4px 15px rgba(231,57,146,0.1)",
                   }}
                   exit={{
                     opacity: 0,
@@ -166,11 +174,11 @@ const DesktopNav = ({ navItems, visible }: NavbarProps) => {
             }}
           >
             <div className="flex items-center gap-2">
-              <Button as={Link} href="/login" variant="secondary">
-                Login
-              </Button>
-              <Button as={Link} href="/signup" variant="primary">
-                Signup
+              <Button
+                className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full"
+                asChild
+              >
+                <Link href="/login">Login</Link>
               </Button>
             </div>
           </motion.div>
@@ -279,6 +287,15 @@ const MobileNav = ({ navItems, visible }: NavbarProps) => {
                   </motion.div>
                 )
               )}
+
+              <div className="flex flex-col w-full gap-3 mt-4">
+                <Button
+                  className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full w-full"
+                  asChild
+                >
+                  <Link href="/login" onClick={() => setOpen(false)}>Login</Link>
+                </Button>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
