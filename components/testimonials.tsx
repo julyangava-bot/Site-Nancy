@@ -1,7 +1,7 @@
 "use client";
 import { IconCheck } from "@tabler/icons-react";
 import Image from "next/image";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "./button";

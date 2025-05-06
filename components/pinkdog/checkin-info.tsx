@@ -6,16 +6,16 @@ import Link from "next/link";
 
 // Hours data
 const hours = [
-  { day: "Monday - Friday", hours: "7:00 AM - 7:00 PM" },
-  { day: "Saturday", hours: "8:00 AM - 5:00 PM" },
-  { day: "Sunday", hours: "9:00 AM - 4:00 PM" }
+  { day: "Monday - Saturday", hours: "08:30 AM - 05:00 PM" },
+  { day: "Sunday", hours: "03:00 PM - 05:00 PM" }
 ];
 
 // Contact info
 const contactInfo = {
-  phone: "(555) 123-4567",
-  email: "info@pinkdogresort.com",
-  address: "123 Pet Paradise Lane, Happy Town, CA 90210"
+  phone: "+1 978-772-4242",
+  email: "email@email.com",
+  address: "259 Ayer Rd, Harvard, MA 01451, US",
+  instagram: "pinkdogspa"
 };
 
 export function CheckInInfo() {
@@ -38,10 +38,10 @@ export function CheckInInfo() {
               className="text-center mb-12"
             >
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Check-in <span className="text-[#E73992]">Information</span>
+                Contact <span className="text-[#E73992]">Information</span>
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Everything you need to know to make your pet&apos;s visit easy and stress-free
+                Everything you need to know to reach us and make your pet&apos;s visit easy and stress-free
               </p>
             </motion.div>
             
@@ -60,7 +60,7 @@ export function CheckInInfo() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </span>
-                  Operating Hours
+                  Business Hours
                 </h3>
                 
                 <div className="space-y-4">
@@ -103,7 +103,7 @@ export function CheckInInfo() {
                     </svg>
                     <div>
                       <h4 className="font-medium text-gray-700">Phone</h4>
-                      <p className="text-[#E73992] font-semibold">{contactInfo.phone}</p>
+                      <a href="tel:+19787724242" className="text-[#E73992] font-semibold hover:underline">{contactInfo.phone}</a>
                     </div>
                   </div>
                   
@@ -113,7 +113,7 @@ export function CheckInInfo() {
                     </svg>
                     <div>
                       <h4 className="font-medium text-gray-700">Email</h4>
-                      <p className="text-[#E73992] font-semibold">{contactInfo.email}</p>
+                      <a href="mailto:info@pinkdogresort.com" className="text-[#E73992] font-semibold hover:underline">{contactInfo.email}</a>
                     </div>
                   </div>
                   
@@ -124,14 +124,40 @@ export function CheckInInfo() {
                     </svg>
                     <div>
                       <h4 className="font-medium text-gray-700">Address</h4>
-                      <p className="text-gray-800">{contactInfo.address}</p>
+                      <a 
+                        href="https://maps.google.com/?q=259+Ayer+Rd,+Harvard,+MA+01451,+US" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-gray-800 hover:text-[#E73992] hover:underline"
+                      >
+                        {contactInfo.address}
+                      </a>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#E73992] mt-0.5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                    <div>
+                      <h4 className="font-medium text-gray-700">Instagram</h4>
+                      <a 
+                        href={`https://instagram.com/${contactInfo.instagram}`} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-[#E73992] font-semibold hover:underline"
+                      >
+                        @{contactInfo.instagram}
+                      </a>
                     </div>
                   </div>
                 </div>
                 
                 <div className="mt-8 flex justify-center">
                   <Button 
-                    className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-8"
+                    className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-8 py-2.5"
                     asChild
                   >
                     <Link href="/contact">
@@ -150,7 +176,7 @@ export function CheckInInfo() {
               className="mt-12 text-center"
             >
               <p className="text-gray-600 italic">
-                For emergency situations outside regular hours, please call our emergency hotline at <span className="text-[#E73992] font-semibold">(555) 987-6543</span>
+                For emergency situations outside regular hours, please call our main number at <a href="tel:+19787724242" className="text-[#E73992] font-semibold hover:underline">{contactInfo.phone}</a>
               </p>
             </motion.div>
           </div>

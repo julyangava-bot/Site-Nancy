@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
@@ -28,28 +28,31 @@ export function PawPrint({
 
   const imgSize = sizes[size];
   
-  // Floating animation variants
+  // Simpler, less resource-intensive animation
   const floatingVariants = {
-    initial: { y: 0 },
+    initial: { opacity: 0.1 },
     animate: { 
-      y: floating ? [0, -10, 0] : 0,
+      opacity: floating ? [0.1, 0.2, 0.1] : 0.1,
       transition: {
         delay: delay,
-        duration: 3,
+        duration: 4,
         repeat: Infinity,
         repeatType: "reverse" as const,
-        ease: "easeInOut"
+        ease: "linear"
       }
     }
   };
 
   return (
     <motion.div
-      className={`absolute ${position} opacity-10 z-0 ${className}`}
+      className={`absolute ${position} z-0 will-change-opacity ${className}`}
       initial="initial"
       animate="animate"
       variants={floatingVariants}
-      style={{ transform: `rotate(${rotation}deg)` }}
+      style={{ 
+        transform: `rotate(${rotation}deg)`,
+        contain: 'layout paint style',
+      }}
     >
       <Image 
         src="/images/paw-print.svg"
@@ -68,6 +71,28 @@ interface PawPrintsDecorationProps {
 }
 
 export function PawPrintsDecoration({ count = 5, className = "" }: PawPrintsDecorationProps) {
+  // Client-side only state to prevent hydration mismatch
+  const [isMounted, setIsMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+    setIsMobile(window.innerWidth < 768);
+    
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
+  if (!isMounted) {
+    return null; // Return nothing during SSR to prevent hydration mismatch
+  }
+  
+  const actualCount = isMobile ? Math.min(4, count) : count;
+  
   // Use predefined positions instead of random ones to avoid hydration errors
   const predefinedPaws = [
     { size: "sm", position: "top-5% left-10%", rotation: 15, delay: 0, floating: true },
@@ -81,10 +106,10 @@ export function PawPrintsDecoration({ count = 5, className = "" }: PawPrintsDeco
   ];
   
   // Use only the requested number of paw prints
-  const pawPrints = predefinedPaws.slice(0, count);
+  const pawPrints = predefinedPaws.slice(0, actualCount);
 
   return (
-    <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}>
+    <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`} style={{ contain: 'content' }}>
       {pawPrints.map((paw, index) => (
         <PawPrint
           key={index}
@@ -99,12 +124,28 @@ export function PawPrintsDecoration({ count = 5, className = "" }: PawPrintsDeco
   );
 }
 
-// Walking paw prints trail component
-export function WalkingPawPrints({ direction = 'right', className = "" }) {
-  const pawCount = 8;
+interface WalkingPawPrintsProps {
+  direction?: 'right' | 'left';
+  className?: string;
+}
+
+// Create a client-only component that renders only after mounting
+function ClientWalkingPawPrints({ direction = 'right', className = "" }: WalkingPawPrintsProps) {
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  if (!mounted) {
+    return <div className={`relative ${className}`}></div>; // Empty placeholder during SSR
+  }
+  
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const pawCount = isMobile ? 4 : 8;
   
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative ${className} overflow-hidden`} style={{ contain: 'layout' }}>
       {Array.from({ length: pawCount }).map((_, idx) => {
         // Alternating left and right paws
         const isRightPaw = idx % 2 === 0;
@@ -116,25 +157,26 @@ export function WalkingPawPrints({ direction = 'right', className = "" }) {
         return (
           <motion.div
             key={idx}
-            className={`absolute ${direction === 'right' ? 'left-0' : 'right-0'}`}
+            className={`absolute ${direction === 'right' ? 'left-0' : 'right-0'} pointer-events-none`}
             style={{
               top: `calc(50% - 12px + ${verticalOffset}px)`,
+              contain: 'paint layout',
             }}
             initial={{ 
               opacity: 0, 
               x: direction === 'right' ? -50 : 50,
             }}
             animate={{ 
-              opacity: [0, 0.6, 0],
+              opacity: [0, 0.3, 0],
               x: direction === 'right' 
-                ? [idx * -60, (idx + 3) * 60, (idx + 6) * 80] 
-                : [idx * 60, -((idx + 3) * 60), -((idx + 6) * 80)]
+                ? [idx * -60, (idx + 3) * 60, (idx + 5) * 60] 
+                : [idx * 60, -((idx + 3) * 60), -((idx + 5) * 60)]
             }}
             transition={{
-              duration: 5,
-              delay: idx * 0.6,
+              duration: isMobile ? 6 : 5,
+              delay: idx * 0.8,
               repeat: Infinity,
-              repeatDelay: (pawCount - 1) * 0.6
+              repeatDelay: (pawCount - 1) * 0.8
             }}
           >
             <div style={{ transform: `rotate(${rotation}deg)` }} className="opacity-30">
@@ -150,4 +192,20 @@ export function WalkingPawPrints({ direction = 'right', className = "" }) {
       })}
     </div>
   );
+}
+
+// Export a wrapper that only renders the component client-side
+export function WalkingPawPrints(props: WalkingPawPrintsProps) {
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  
+  // Return an empty div during SSR to prevent hydration issues
+  if (!isMounted) {
+    return <div className={`relative ${props.className}`}></div>;
+  }
+  
+  return <ClientWalkingPawPrints {...props} />;
 } 

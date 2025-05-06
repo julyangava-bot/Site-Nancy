@@ -14,12 +14,27 @@
 
 html {
   scroll-behavior: smooth;
+  height: 100%;
+  overflow-x: hidden;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  min-height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Improve scrolling behavior on mobile */
+@media (max-width: 768px) {
+  html, body {
+    overscroll-behavior-y: none;
+    position: relative;
+    touch-action: pan-y;
+  }
 }
 
 /* Ajuste para o scroll das âncoras considerar a altura da navbar fixa */

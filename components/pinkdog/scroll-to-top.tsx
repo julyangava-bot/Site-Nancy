@@ -1,17 +1,32 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    // Usando throttle para melhorar o desempenho do evento de scroll
+    let isThrottled = false;
+    
     const toggleVisibility = () => {
-      if (window.scrollY > 500) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+      if (isThrottled) return;
+      
+      isThrottled = true;
+      
+      // Use requestAnimationFrame para otimizar a performance
+      window.requestAnimationFrame(() => {
+        if (window.scrollY > 500) {
+          setIsVisible(true);
+        } else {
+          setIsVisible(false);
+        }
+        
+        // Resetar throttle após 100ms
+        setTimeout(() => {
+          isThrottled = false;
+        }, 100);
+      });
     };
 
     window.addEventListener("scroll", toggleVisibility);
@@ -35,8 +50,10 @@ export function ScrollToTop() {
           exit={{ opacity: 0, scale: 0.8 }}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
+          transition={{ duration: 0.2 }}
           className="fixed bottom-6 right-6 p-3 rounded-full bg-[#E73992] text-white shadow-lg z-40"
           aria-label="Scroll to top"
+          style={{ willChange: "transform, opacity" }}
         >
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
