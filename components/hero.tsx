@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -55,6 +55,24 @@ const imageConfig = {
 export function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  // Control body scroll during initial load
+  useEffect(() => {
+    // Prevent scroll jumping by locking scroll position during initialization
+    if (typeof window !== 'undefined') {
+      document.body.style.overflow = 'hidden';
+      
+      // Set a small timeout to allow component to fully render before enabling scroll
+      const timer = setTimeout(() => {
+        document.body.style.overflow = '';
+      }, 100);
+      
+      return () => {
+        clearTimeout(timer);
+        document.body.style.overflow = '';
+      };
+    }
+  }, []);
+
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>(
     {
       loop: true,
@@ -65,9 +83,14 @@ export function Hero() {
       slideChanged(slider) {
         setCurrentSlide(slider.track.details.rel);
       },
+      // Disable drag on mobile to prevent scroll interference
+      rubberband: false,
+      drag: true,
+      // Add initial slide to prevent layout shift
+      initial: 0,
     },
     [
-      // Autoplay plugin
+      // Autoplay plugin - only start after component is fully loaded
       (slider) => {
         let timeout: ReturnType<typeof setTimeout>;
         let mouseOver = false;
@@ -85,15 +108,18 @@ export function Hero() {
         }
         
         slider.on("created", () => {
-          slider.container.addEventListener("mouseover", () => {
-            mouseOver = true;
-            clearNextTimeout();
-          });
-          slider.container.addEventListener("mouseout", () => {
-            mouseOver = false;
+          // Only start autoplay after component is properly rendered
+          setTimeout(() => {
+            slider.container.addEventListener("mouseover", () => {
+              mouseOver = true;
+              clearNextTimeout();
+            });
+            slider.container.addEventListener("mouseout", () => {
+              mouseOver = false;
+              nextTimeout();
+            });
             nextTimeout();
-          });
-          nextTimeout();
+          }, 500);
         });
         
         slider.on("dragStarted", clearNextTimeout);
@@ -103,18 +129,31 @@ export function Hero() {
     ]
   );
 
+  // Custom variant for smoother animation without affecting layout
+  const fadeInVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 }
+  };
+  
+  // Scale variant that doesn't affect layout as much
+  const scaleInVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: { opacity: 1, scale: 1 }
+  };
+
   return (
     <div className="relative overflow-hidden bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Hero content */}
-        <div className="relative pt-32 sm:pt-28 md:pt-24 pb-6 min-h-0 lg:min-h-[calc(100vh-6rem)] max-h-[800px] xl:max-h-[900px] flex flex-col lg:flex-row items-center justify-center">
+        {/* Hero content - fixed height on mobile to prevent content shift */}
+        <div className="relative pt-40 sm:pt-40 md:pt-40 pb-6 min-h-[650px] sm:min-h-[600px] md:min-h-[650px] lg:min-h-[calc(100vh-6rem)] max-h-[800px] xl:max-h-[900px] flex flex-col lg:flex-row items-center justify-center">
           <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-4 md:gap-6 lg:gap-8 xl:gap-12">
             {/* Text content */}
             <div className="max-w-xl w-full text-center lg:text-left z-10">
               <motion.h1 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                initial="hidden"
+                animate="visible"
+                variants={fadeInVariants}
+                transition={{ duration: 0.4 }}
                 className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 font-display"
               >
                 Welcome to <span className="text-[#E73992]">Pink Dog</span>
@@ -122,18 +161,20 @@ export function Hero() {
               </motion.h1>
               
               <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
+                initial="hidden"
+                animate="visible"
+                variants={fadeInVariants}
+                transition={{ duration: 0.4, delay: 0.1 }}
                 className="mt-3 sm:mt-4 text-base sm:text-lg text-gray-600 max-w-2xl"
               >
                 Pet Hotel • Daycare • Grooming – All with ❤️
               </motion.p>
               
               <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
+                initial="hidden"
+                animate="visible"
+                variants={fadeInVariants}
+                transition={{ duration: 0.4, delay: 0.2 }}
                 className="mt-4 sm:mt-6 flex flex-row justify-center lg:justify-start gap-2 sm:gap-3"
               >
                 <Button
@@ -153,23 +194,30 @@ export function Hero() {
             
             {/* Image Carousel with Keen Slider */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="relative z-10 w-full max-w-[250px] sm:max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl mt-8 sm:mt-0"
+              initial="hidden"
+              animate="visible"
+              variants={scaleInVariants}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="relative z-10 w-full max-w-[380px] sm:max-w-[420px] md:max-w-[480px] lg:max-w-lg xl:max-w-xl mt-6 sm:mt-4 md:mt-0"
             >
               <div className="relative">
-                {/* Keen Slider carousel */}
-                <div ref={sliderRef} className="keen-slider h-[250px] sm:h-[280px] md:h-[400px] lg:h-[500px] xl:h-[550px]">
+                {/* Keen Slider carousel - preset height to prevent layout shift */}
+                <div 
+                  ref={sliderRef} 
+                  className="keen-slider h-[420px] sm:h-[380px] md:h-[460px] lg:h-[500px] xl:h-[550px]"
+                >
                   {imageConfig.carousel.map((image, idx) => (
-                    <div key={idx} className={`keen-slider__slide ${image.className} flex items-center justify-center`}>
+                    <div 
+                      key={idx} 
+                      className={`keen-slider__slide ${image.className} flex items-center justify-center`}
+                    >
                       <div className="w-full h-full relative">
                         <Image
                           src={image.src}
                           alt={image.alt}
                           fill
                           priority={idx === 0}
-                          sizes="(max-width: 640px) 250px, (max-width: 768px) 350px, (max-width: 1024px) 500px, 600px"
+                          sizes="(max-width: 640px) 380px, (max-width: 768px) 420px, (max-width: 1024px) 480px, 600px"
                           className="object-contain"
                         />
                       </div>
