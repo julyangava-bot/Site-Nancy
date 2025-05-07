@@ -3,62 +3,34 @@ import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useInstagramFeed } from "@/hooks/useInstagramFeed";
 
-// Placeholder images - these will later be replaced by API calls
-const instagramImages = [
+// Fallback images in case API fails
+const fallbackImages = [
   {
-    id: 1,
+    id: "1",
     src: "/images/pinkdog-mascots.png",
     alt: "Happy pets at Pink Dog Resort",
-    likes: 142,
-    comments: 24,
     url: "https://instagram.com/pinkdogspa"
   },
-  {
-    id: 2,
-    src: "/images/pinkdog-flow.png",
-    alt: "Pet playing at our facility",
-    likes: 98,
-    comments: 13,
-    url: "https://instagram.com/pinkdogspa"
-  },
-  {
-    id: 3,
-    src: "/images/carrosel-1.png",
-    alt: "Grooming session at Pink Dog",
-    likes: 205,
-    comments: 31,
-    url: "https://instagram.com/pinkdogspa"
-  },
-  {
-    id: 4,
-    src: "/images/carrosel-3.png",
-    alt: "Cute puppies at daycare",
-    likes: 187,
-    comments: 42,
-    url: "https://instagram.com/pinkdogspa"
-  },
-  {
-    id: 5,
-    src: "/images/pink-dog-resort.png",
-    alt: "Our facility",
-    likes: 76,
-    comments: 8,
-    url: "https://instagram.com/pinkdogspa"
-  },
-  {
-    id: 6,
-    src: "/images/pingdog-animate.png",
-    alt: "Pet playtime",
-    likes: 164,
-    comments: 27,
-    url: "https://instagram.com/pinkdogspa"
-  }
+  // ... other fallback images can remain from the original component
 ];
 
-// Versão simplificada com menos animações
 export function InstagramGallery() {
-  // Animação simplificada
+  const instagramToken = process.env.NEXT_PUBLIC_IG_TOKEN || '';
+  const { posts, loading, error } = useInstagramFeed(instagramToken);
+  
+  // Decide which images to show - use Instagram posts or fallbacks
+  const displayImages = posts.length > 0 
+    ? posts.slice(0, 6).map(post => ({
+        id: post.id,
+        src: post.media_url,
+        alt: post.caption || "Pink Dog Resort Instagram post",
+        url: post.permalink
+      }))
+    : fallbackImages;
+
+  // Animation variants
   const fadeInVariants = {
     hidden: { opacity: 0, y: 10 },
     visible: { opacity: 1, y: 0 }
@@ -77,7 +49,7 @@ export function InstagramGallery() {
             style={{ willChange: "opacity, transform" }}
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Follow Us on <span className="text-[#E73992]">Instagram</span>
+              Followers on <span className="text-[#E73992]">Instagram</span>
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Check out our latest photos and videos of happy pets enjoying their time at Pink Dog Resort.
@@ -100,48 +72,53 @@ export function InstagramGallery() {
           </div>
         </div>
         
-        {/* Instagram grid - otimizado com menos animações */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 md:gap-4">
-          {instagramImages.map((image) => (
-            <div
-              key={image.id}
-              className="relative group overflow-hidden rounded-xl aspect-square"
-            >
-              <Link 
-                href={image.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block w-full h-full"
-              >
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 flex flex-col justify-end p-3 sm:p-4">
-                  <div className="text-white flex items-center space-x-3">
-                    <div className="flex items-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 mr-1">
-                        <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
-                      </svg>
-                      <span className="text-xs">{image.likes}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 mr-1">
-                        <path fillRule="evenodd" d="M4.848 2.771A49.144 49.144 0 0112 2.25c2.43 0 4.817.178 7.152.52 1.978.292 3.348 2.024 3.348 3.97v6.02c0 1.946-1.37 3.678-3.348 3.97-1.94.29-3.8.501-5.652.613.76.84 1.41 1.9 1.87 3.03a.75.75 0 01-.697 1.05H12c-.71 0-1.158-.392-1.274-.936-.42-1.976-1.883-2.393-2.977-2.543.708.065 1.433.13 2.142.13a.75.75 0 100-1.5A47.75 47.75 0 017.5 15.764a.75.75 0 00-.75.75v3.986a.75.75 0 001.5 0v-3.003a48.675 48.675 0 013.588-.317 48.507 48.507 0 013.543.318v3.002a.75.75 0 001.5 0v-3.986a.75.75 0 00-.75-.75 47.729 47.729 0 01-4.588-.001c-.78 1.335-1.808 2.293-3.12 2.859a.75.75 0 00-.376.99c.2.341.448.645.743.903a.75.75 0 101.015-1.105 3.131 3.131 0 01-.554-.67 48.894 48.894 0 01-3.06-.286.75.75 0 00-.865.734v4.136a.75.75 0 101.5 0v-3.067l.005-.01c.09-.192.195-.381.317-.561.86-1.26 2.093-1.947 3.489-1.979 1.576-.036 2.99.37 3.373 1.74.08.291.14.545.191.763l.013.058a.75.75 0 101.469-.3 3.73 3.73 0 00-.178-.761c-.27-.91-.9-1.937-2.18-2.397 1.656-.138 3.292-.318 4.892-.582A4.868 4.868 0 0022 12.759V6.741c0-2.658-2.046-4.791-4.587-5.165A50.551 50.551 0 0012 1.25c-2.378 0-4.717.17-6.994.51C2.435 2.144.418 4.304.47 6.929a49.139 49.139 0 00.6 5.904 2.99 2.99 0 00-.296-.72 3.013 3.013 0 00-.475-.704.75.75 0 00-1.149.967c.193.23.374.483.535.757l.015.026c.17.29.32.595.444.913a.75.75 0 001.423-.488 3.826 3.826 0 00-.159-.339A49.392 49.392 0 014.848 2.771z" clipRule="evenodd" />
-                      </svg>
-                      <span className="text-xs">{image.comments}</span>
-                    </div>
-                  </div>
-                </div>
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  fill
-                  sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-              </Link>
-            </div>
-          ))}
-        </div>
+        {/* Loading state */}
+        {loading && (
+          <div className="flex justify-center items-center py-16">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#E73992]"></div>
+          </div>
+        )}
         
-        {/* View more button */}
+        {/* Error state */}
+        {error && !loading && (
+          <div className="text-center text-gray-500 py-8">
+            <p>Could not load Instagram posts. Please check back later.</p>
+          </div>
+        )}
+        
+        {/* Instagram grid */}
+        {!loading && !error && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 md:gap-4">
+            {displayImages.map((image) => (
+              <div
+                key={image.id}
+                className="relative group overflow-hidden rounded-xl aspect-square"
+              >
+                <Link 
+                  href={image.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full h-full"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 flex flex-col justify-end p-3 sm:p-4">
+                    <span className="text-white text-xs line-clamp-2">
+                      {image.alt}
+                    </span>
+                  </div>
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                </Link>
+              </div>
+            ))}
+          </div>
+        )}
+        
+        {/* Follow us button */}
         <div className="text-center mt-8">
           <Link 
             href="https://instagram.com/pinkdogspa" 
@@ -149,7 +126,7 @@ export function InstagramGallery() {
             rel="noopener noreferrer"
             className="inline-block bg-white text-[#E73992] border border-[#E73992] hover:bg-[#FCD1E6] px-6 py-2.5 rounded-full font-medium transition-colors"
           >
-            View More on Instagram
+            Follow us on Instagram
           </Link>
         </div>
       </div>
