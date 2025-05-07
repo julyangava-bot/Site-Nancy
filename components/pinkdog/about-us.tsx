@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { IconBrandInstagram, IconBrandFacebook } from "@tabler/icons-react";
 
 // Team member data
 const teamMembers = [
@@ -173,6 +174,35 @@ export function AboutUs() {
           <p className="text-gray-600 max-w-2xl mx-auto mb-8 relative z-10">
             Book a tour of our facility or schedule your pet&apos;s first stay with us. We can&apos;t wait to meet your furry family member!
           </p>
+          
+          {/* Social Media Links */}
+          <div className="flex flex-col sm:flex-row justify-center gap-6 mb-8 relative z-10">
+            <div className="flex flex-col items-center bg-[#FDF2F8] p-4 rounded-lg">
+              <IconBrandInstagram size={36} className="text-[#E73992] mb-2" />
+              <h4 className="font-semibold text-gray-900 mb-1">Instagram</h4>
+              <Link 
+                href="https://instagram.com/pinkdogspa" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-[#E73992] hover:underline"
+              >
+                @pinkdogspa
+              </Link>
+            </div>
+            
+            <div className="flex flex-col items-center bg-[#F0F6FF] p-4 rounded-lg">
+              <IconBrandFacebook size={36} className="text-[#3b5998] mb-2" />
+              <h4 className="font-semibold text-gray-900 mb-1">Facebook</h4>
+              <Link 
+                href="https://facebook.com/pinkdogresort" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-[#3b5998] hover:underline"
+              >
+                @pinkdogspa
+              </Link>
+            </div>
+          </div>
           
           <div className="flex flex-col sm:flex-row justify-center gap-4 relative z-10">
             <Button

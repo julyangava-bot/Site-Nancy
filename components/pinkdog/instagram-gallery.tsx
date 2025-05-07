@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useInstagramFeed } from "@/hooks/useInstagramFeed";
+import { IconBrandInstagram, IconBrandFacebook } from "@tabler/icons-react";
 
 // Fallback images in case API fails
 const fallbackImages = [
@@ -119,14 +120,24 @@ export function InstagramGallery() {
         )}
         
         {/* Follow us button */}
-        <div className="text-center mt-8">
+        <div className="text-center mt-8 flex flex-col sm:flex-row justify-center gap-4">
           <Link 
             href="https://instagram.com/pinkdogspa" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="inline-block bg-white text-[#E73992] border border-[#E73992] hover:bg-[#FCD1E6] px-6 py-2.5 rounded-full font-medium transition-colors"
+            className="inline-flex items-center justify-center bg-white text-[#E73992] border border-[#E73992] hover:bg-[#FCD1E6] px-6 py-2.5 rounded-full font-medium transition-colors"
           >
-            Follow us on Instagram
+            <IconBrandInstagram size={20} className="mr-2" />
+            Follow on Instagram
+          </Link>
+          <Link 
+            href="https://facebook.com/pinkdogresort" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center bg-white text-[#3b5998] border border-[#3b5998] hover:bg-[#edf0f7] px-6 py-2.5 rounded-full font-medium transition-colors"
+          >
+            <IconBrandFacebook size={20} className="mr-2" />
+            Follow on Facebook
           </Link>
         </div>
       </div>

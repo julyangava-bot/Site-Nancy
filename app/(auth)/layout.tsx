@@ -1,14 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "../globals.css";
-import { cn } from "@/lib/utils";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Startup Landing | Aceternity Template",
-  description:
-    "Startup landing is a simple one page landing page for startups and agencies. Built with Next.js, Tailwind CSS, TypeScript and framer motion.",
+  title: "Pink Dog Resort | Authentication",
+  description: "Login or sign up to access Pink Dog Resort's premium pet care services.",
 };
 
 export default function AuthLayout({
@@ -16,11 +11,5 @@ export default function AuthLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={cn("antialiased", inter.className)} suppressHydrationWarning>
-        {children}
-      </body>
-    </html>
-  );
+  return <>{children}</>;
 }

@@ -1,57 +1,65 @@
 import Link from "next/link";
 import { Logo } from "./logo";
-import {
-  IconBrandGithub,
-  IconBrandInstagram,
-  IconBrandLinkedin,
-  IconBrandTwitter,
-  IconBrandFacebook,
-} from "@tabler/icons-react";
+import { IconBrandInstagram, IconBrandFacebook } from "@tabler/icons-react";
 
 export function Footer() {
-  const pages = [
-    { title: "All Products", href: "#" },
-    { title: "Studio", href: "#" },
-    { title: "Clients", href: "#" },
-    { title: "Pricing", href: "#" },
-    { title: "Blog", href: "/blog" },
-  ];
-
-  const socials = [
-    { title: "Facebook", href: "#" },
-    { title: "Instagram", href: "#" },
-    { title: "Twitter", href: "#" },
-    { title: "LinkedIn", href: "#" },
+  const navigation = [
+    { name: "Home", href: "/" },
+    { name: "Services", href: "#services" },
+    { name: "Gallery", href: "#gallery" },
+    { name: "Info", href: "#checkin-info" },
+    { name: "About", href: "#about-us" },
+    { name: "Blog", href: "/blog" },
   ];
 
   const legal = [
-    { title: "Privacy Policy", href: "#" },
-    { title: "Terms of Service", href: "#" },
-    { title: "Cookie Policy", href: "#" },
+    { title: "Privacy Policy", href: "/privacy-policy" },
+    { title: "Terms of Service", href: "/terms-of-service" },
+    { title: "Data Deletion", href: "/data-deletion" },
   ];
 
   return (
-    <footer className="w-full max-w-7xl mx-auto rounded-xl m-10 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-8 py-20">
+    <footer className="w-full bg-white border-t border-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div className="flex flex-col md:flex-row justify-between gap-12">
           <div className="flex items-start flex-col">
             <Logo />
-            <h2 className="text-2xl font-medium mt-8 max-w-md">
-              Record interviews. Centralise feedback automatically.
-            </h2>
+            <p className="text-gray-600 mt-4 max-w-md">
+              Premier pet care services for your furry friends.
+            </p>
+            <div className="mt-6 space-y-3">
+              <Link
+                href="https://instagram.com/pinkdogspa"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center text-gray-600 hover:text-[#E73992] transition-colors"
+              >
+                <IconBrandInstagram size={24} className="mr-2" />
+                @pinkdogspa
+              </Link>
+              <Link
+                href="https://facebook.com/pinkdogresort"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center text-gray-600 hover:text-[#3b5998] transition-colors"
+              >
+                <IconBrandFacebook size={24} className="mr-2" />
+                @pinkdogspa
+              </Link>
+            </div>
           </div>
 
-          <div className="grid justify-self-end grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 gap-8 md:gap-16">
             <div className="space-y-6">
-              <h3 className="font-semibold">Pages</h3>
+              <h3 className="font-semibold text-gray-800">Navigation</h3>
               <ul className="space-y-3">
-                {pages.map((item, idx) => (
+                {navigation.map((item, idx) => (
                   <li key={idx}>
                     <Link
                       href={item.href}
-                      className="text-muted-foreground hover:text-foreground"
+                      className="text-gray-600 hover:text-[#E73992] transition-colors"
                     >
-                      {item.title}
+                      {item.name}
                     </Link>
                   </li>
                 ))}
@@ -59,29 +67,13 @@ export function Footer() {
             </div>
 
             <div className="space-y-6">
-              <h3 className="font-semibold">Socials</h3>
-              <ul className="space-y-3">
-                {socials.map((item, idx) => (
-                  <li key={idx}>
-                    <Link
-                      href={item.href}
-                      className="text-muted-foreground hover:text-foreground"
-                    >
-                      {item.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="space-y-6">
-              <h3 className="font-semibold">Legal</h3>
+              <h3 className="font-semibold text-gray-800">Legal</h3>
               <ul className="space-y-3">
                 {legal.map((item, idx) => (
                   <li key={idx}>
                     <Link
                       href={item.href}
-                      className="text-muted-foreground hover:text-foreground"
+                      className="text-gray-600 hover:text-[#E73992] transition-colors"
                     >
                       {item.title}
                     </Link>
@@ -92,38 +84,18 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-center pt-16 max-w-xs mx-auto">
-          <p className="text-sm text-muted-foreground">© shape.ai</p>
-          <div className="flex gap-4 mt-4 md:mt-0">
+        <div className="border-t border-gray-100 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-sm text-gray-500">
+            © {new Date().getFullYear()} Pink Dog Resort. All rights reserved.
+          </p>
+          <div className="mt-4 md:mt-0">
             <Link
-              href="#"
-              className="text-muted-foreground hover:text-foreground"
+              href="https://petquantic.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-500 hover:text-[#E73992] text-sm transition-colors"
             >
-              <IconBrandTwitter size={20} />
-            </Link>
-            <Link
-              href="#"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              <IconBrandLinkedin size={20} />
-            </Link>
-            <Link
-              href="#"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              <IconBrandGithub size={20} />
-            </Link>
-            <Link
-              href="#"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              <IconBrandFacebook size={20} />
-            </Link>
-            <Link
-              href="#"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              <IconBrandInstagram size={20} />
+              Powered by PetQuantic
             </Link>
           </div>
         </div>
