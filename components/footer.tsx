@@ -27,7 +27,7 @@ export function Footer() {
             <p className="text-gray-600 mt-4 max-w-md">
               Premier pet care services for your furry friends.
             </p>
-            <div className="mt-6 space-y-3">
+            <div className="mt-6 grid grid-cols-2 gap-4">
               <Link
                 href="https://instagram.com/pinkdogspa"
                 target="_blank"

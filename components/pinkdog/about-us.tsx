@@ -100,7 +100,7 @@ export function AboutUs() {
             </div>
           </motion.div>
           
-          {/* Facility Image */}
+          {/* Facility Video */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -108,11 +108,13 @@ export function AboutUs() {
             viewport={{ once: true }}
             className="relative rounded-2xl overflow-hidden shadow-xl h-[400px] lg:h-auto"
           >
-            <Image
-              src="/images/pink-dog-resort.png"
-              alt="Pink Dog Resort Facility"
-              fill
-              className="object-cover"
+            <video
+              src="/images/pingdog-animate.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="object-cover w-full h-full absolute inset-0"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-6">
               <p className="text-white text-lg font-medium">Our state-of-the-art facility in the heart of the city</p>
