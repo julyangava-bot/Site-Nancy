@@ -1,0 +1,32 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Pink Dog Website Development Guidelines
+
+## Instagram Integration Implementation
+
+### Current Status
+- Instagram feed hook (`useInstagramFeed.ts`) has been implemented to fetch posts from Instagram API
+- `InstagramGallery` component has been built to display Instagram images
+- Fallback images have been added for cases when the Instagram API fails or when no token is provided
+- Social media links have been added to the Footer and About Us sections
+
+### Pending Tasks
+- Instagram Access Token needs to be configured in the environment variables:
+  - Create or update `.env.local` file with valid Instagram Graph API token
+  - Format: `NEXT_PUBLIC_IG_TOKEN=your_instagram_access_token_here`
+- Real Instagram images will appear once the token is properly configured
+- Testing across different screen sizes to ensure responsive behavior
+
+### Technical Requirements
+- The Instagram feed uses the Instagram Graph API
+- Access token must have permissions for `instagram_basic` and `pages_show_list`
+- Fallback to static images if API fails to ensure UI consistency
+
+### Implementation Notes
+- Ensure your Instagram account is a Business or Creator account
+- Link your Instagram account to a Facebook page
+- Generate a long-lived token to minimize token refresh requirements
+- For testing, you can use the fallback images already configured

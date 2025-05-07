@@ -14,7 +14,36 @@ const fallbackImages = [
     alt: "Happy pets at Pink Dog Resort",
     url: "https://instagram.com/pinkdogspa"
   },
-  // ... other fallback images can remain from the original component
+  {
+    id: "2",
+    src: "/images/carrosel-1.png",
+    alt: "Professional grooming at Pink Dog Resort",
+    url: "https://instagram.com/pinkdogspa"
+  },
+  {
+    id: "3",
+    src: "/images/pink-dog-resort.png",
+    alt: "Our spacious and clean facilities",
+    url: "https://instagram.com/pinkdogspa"
+  },
+  {
+    id: "4",
+    src: "/images/pinkdog-flow.png",
+    alt: "Doggy playtime at Pink Dog Resort",
+    url: "https://instagram.com/pinkdogspa"
+  },
+  {
+    id: "5",
+    src: "/images/PinkDogSpaLogo.png",
+    alt: "Pink Dog Spa - Your pet's favorite place",
+    url: "https://instagram.com/pinkdogspa"
+  },
+  {
+    id: "6",
+    src: "/images/pinkdog-mascots.png",
+    alt: "Happy customers with their pets",
+    url: "https://instagram.com/pinkdogspa"
+  }
 ];
 
 export function InstagramGallery() {

@@ -36,14 +36,14 @@ const imageConfig = {
   // Decorative elements
   decorative: [
     {
-      src: "/images/pinkdog-flow.png",
+      src: "/images/paw-print.png",
       alt: "Decorative element bottom left",
       width: 40,
       height: 40,
       position: "absolute -bottom-3 -left-3 w-8 h-8 opacity-50 hidden md:block"
     },
     {
-      src: "/images/pinkdog-flow.png",
+      src: "/images/paw-print.png",
       alt: "Decorative element top right",
       width: 30,
       height: 30,
