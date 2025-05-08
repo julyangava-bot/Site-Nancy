@@ -142,8 +142,8 @@ export function Hero() {
   return (
     <div className="relative overflow-hidden bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Hero content with optimized layout */}
-        <div className="relative pt-40 sm:pt-40 md:pt-40 pb-6 min-h-[650px] sm:min-h-[600px] md:min-h-[650px] lg:min-h-[calc(100vh-6rem)] max-h-[800px] xl:max-h-[900px] flex flex-col lg:flex-row items-center justify-center">
+        {/* Hero content with optimized layout - reduced min-height to bring elements closer */}
+        <div className="relative pt-40 sm:pt-40 md:pt-40 pb-6 min-h-[600px] sm:min-h-[600px] md:min-h-[650px] lg:min-h-[calc(100vh-6rem)] max-h-[800px] xl:max-h-[900px] flex flex-col lg:flex-row items-center justify-center">
           <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-4 md:gap-6 lg:gap-8 xl:gap-12">
             {/* Text content */}
             <div className="max-w-xl w-full text-center lg:text-left z-10">
@@ -175,17 +175,17 @@ export function Hero() {
                 animate="visible"
                 variants={fadeInVariants}
                 transition={{ duration: 0.4, delay: 0.2 }}
-                className="mt-6 sm:mt-8 md:mt-8 flex flex-row justify-center lg:justify-start gap-3 sm:gap-4 md:gap-5"
+                className="mt-5 sm:mt-8 md:mt-8 flex flex-row justify-center lg:justify-start gap-3 sm:gap-4 md:gap-5"
                 style={{ willChange: "opacity" }}
               >
                 <Button
-                  className="bg-[#E73992] text-white hover:bg-[#d3337f] text-sm sm:text-base md:text-lg font-medium px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-3.5 h-auto rounded-full shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
+                  className="bg-[#E73992] text-white hover:bg-[#d3337f] text-base sm:text-base md:text-lg font-medium px-6 sm:px-6 md:px-8 py-3 sm:py-3 md:py-3.5 h-auto rounded-full shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
                   asChild
                 >
                   <Link href="/booking">Book Now</Link>
                 </Button>
                 <Button
-                  className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] text-sm sm:text-base md:text-lg font-medium px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-3.5 h-auto rounded-full shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
+                  className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] text-base sm:text-base md:text-lg font-medium px-6 sm:px-6 md:px-8 py-3 sm:py-3 md:py-3.5 h-auto rounded-full shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
                   asChild
                 >
                   <Link href="#services">View Services</Link>
@@ -193,12 +193,12 @@ export function Hero() {
               </motion.div>
             </div>
             
-            {/* Image Carousel with Keen Slider - optimized */}
+            {/* Image Carousel with Keen Slider - optimized and reduced margin-top */}
             <motion.div
               initial="hidden"
               animate="visible"
               variants={scaleInVariants}
-              className="relative z-10 w-full max-w-[380px] sm:max-w-[420px] md:max-w-[480px] lg:max-w-lg xl:max-w-xl mt-6 sm:mt-4 md:mt-0"
+              className="relative z-10 w-full max-w-[380px] sm:max-w-[420px] md:max-w-[480px] lg:max-w-lg xl:max-w-xl mt-4 sm:mt-4 md:mt-0"
               style={{ willChange: "transform, opacity" }}
             >
               <div className="relative">
