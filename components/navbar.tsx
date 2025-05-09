@@ -59,25 +59,25 @@ export const Navbar = () => {
       dropdownItems: [
         {
           name: "Pet Hotel",
-          link: "#services-hotel",
+          link: "/pet-hotel",
           imageSrc: "/images/icons/pethotel-icon.png",
           description: "Comfortable boarding for your pet"
         },
         {
           name: "Daycare",
-          link: "#services-daycare",
+          link: "/daycare",
           imageSrc: "/images/icons/daycare-icon.png",
           description: "Supervised playtime and socialization"
         },
         {
           name: "Grooming",
-          link: "#services-grooming",
+          link: "/grooming",
           imageSrc: "/images/icons/grooming-icon.png",
           description: "Professional pet styling and care"
         },
         {
           name: "Van Service",
-          link: "#services-van",
+          link: "/van-service",
           imageSrc: "/images/icons/van-icon.png",
           description: "Convenient pet transportation"
         }

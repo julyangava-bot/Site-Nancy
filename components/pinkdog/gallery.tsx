@@ -9,30 +9,44 @@ const galleryImages = [
   // General images (will appear in All Photos)
   {
     id: 201,
-    src: "/images/gallery/all/team-with-dogs.jpg",
-    alt: "Pink Dog staff with pets",
-    caption: "Our team with our furry friends",
+    src: "/images/gallery/all/image-1.JPG",
+    alt: "Dog image",
+    caption: "Happy dog enjoying our facility",
+    category: "general"
+  },
+  {
+    id: 202,
+    src: "/images/gallery/all/image-2.jpg",
+    alt: "Dogs playing together",
+    caption: "Dogs enjoying playtime together",
+    category: "general"
+  },
+  {
+    id: 203,
+    src: "/images/gallery/all/image-3.JPG",
+    alt: "Cute dog portrait",
+    caption: "One of our adorable guests",
     category: "general"
   },
   
   // Service images
   {
     id: 12,
-    src: "/images/gallery/services/image-17.JPG",
+    src: "/images/gallery/all/image-17.JPG",
     alt: "Dog grooming service",
     caption: "Loving care during grooming sessions",
     category: "services"
   },
   {
     id: 13,
-    src: "/images/gallery/services/image-20.JPG",
+    src: "/images/gallery/all/image-20.JPG",
     alt: "Professional grooming",
     caption: "Our expert groomers provide personalized attention",
     category: "services"
   },
   {
     id: 1,
-    src: "/images/gallery/services/image-21.JPG",
+    src: "/images/gallery/all/image-21.JPG",
     alt: "Professional grooming",
     caption: "Our expert groomers provide personalized attention",
     category: "services"
@@ -40,42 +54,42 @@ const galleryImages = [
   // Happy Pets images
   {
     id: 14,
-    src: "/images/gallery/happy-pets/image-1.JPG",
+    src: "/images/gallery/all/image-1.JPG",
     alt: "White Samoyed smiling",
     caption: "Happy white Samoyed enjoying our play area",
     category: "pets"
   },
   {
     id: 15,
-    src: "/images/gallery/happy-pets/image-2.jpg",
+    src: "/images/gallery/all/image-2.jpg",
     alt: "Group of dogs playing together",
     caption: "Friendly pack enjoying outdoor playtime",
     category: "pets"
   },
   {
     id: 16,
-    src: "/images/gallery/happy-pets/image-4.JPG",
+    src: "/images/gallery/all/image-4.JPG",
     alt: "Collie closeup",
     caption: "Beautiful collie enjoying personal attention",
     category: "pets"
   },
   {
     id: 17,
-    src: "/images/gallery/happy-pets/image-5.JPG",
+    src: "/images/gallery/all/image-5.JPG",
     alt: "Alaskan Malamute with bandana",
     caption: "Stylish Malamute sporting a pink bandana",
     category: "pets"
   },
   {
     id: 18,
-    src: "/images/gallery/happy-pets/image-6.JPG",
+    src: "/images/gallery/all/image-6.JPG",
     alt: "Goldendoodle relaxing",
     caption: "Relaxed Goldendoodle after grooming session",
     category: "pets"
   },
   {
     id: 19,
-    src: "/images/gallery/happy-pets/image-9.jpg",
+    src: "/images/gallery/all/image-9.jpg",
     alt: "Boston Terrier puppy",
     caption: "Adorable Boston Terrier puppy with toy",
     category: "pets"
@@ -83,28 +97,28 @@ const galleryImages = [
   // Facility images
   {
     id: 7,
-    src: "/images/gallery/facility/image-27.png",
+    src: "/images/gallery/all/image-27.jpg",
     alt: "Pink Dog Resort Facility",
     caption: "Our spacious facility",
     category: "facility"
   },
   {
     id: 8,
-    src: "/images/gallery/facility/image-40.jpg",
+    src: "/images/gallery/all/image-40.jpg",
     alt: "Pink Dog Resort Interior",
     caption: "Modern and clean interior",
     category: "facility"
   },
   {
     id: 9,
-    src: "/images/gallery/facility/image-41.jpg",
+    src: "/images/gallery/all/image-41.jpg",
     alt: "Pink Dog Resort Entrance",
     caption: "Welcome to Pink Dog Resort",
     category: "facility"
   },
   {
     id: 10,
-    src: "/images/gallery/facility/image-43.jpg",
+    src: "/images/gallery/all/image-43.PNG",
     alt: "Pink Dog Resort Play Area",
     caption: "Dedicated play area for pets",
     category: "facility"

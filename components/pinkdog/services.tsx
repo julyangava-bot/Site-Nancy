@@ -14,7 +14,7 @@ const services = [
     icon: "/images/icons/pethotel-icon.png",
     image: "/images/services/pet-hotel-card.png",
     color: "bg-[#FCD1E6]",
-    link: "/services/pet-hotel"
+    link: "/pet-hotel"
   },
   {
     id: "daycare",
@@ -23,7 +23,7 @@ const services = [
     icon: "/images/icons/daycare-icon.png",
     image: "/images/services/daycare-card.jpg",
     color: "bg-[#FFEBF5]",
-    link: "/services/daycare"
+    link: "/daycare"
   },
   {
     id: "grooming",
@@ -32,7 +32,7 @@ const services = [
     icon: "/images/icons/grooming-icon.png",
     image: "/images/services/grooming-card.jpg",
     color: "bg-[#FCD1E6]",
-    link: "/services/grooming"
+    link: "/grooming"
   },
   {
     id: "van-service",
@@ -41,7 +41,7 @@ const services = [
     icon: "/images/icons/van-icon.png",
     image: "/images/services/van-card.jpg",
     color: "bg-[#FFEBF5]",
-    link: "/services/van-service"
+    link: "/van-service"
   }
 ];
 
