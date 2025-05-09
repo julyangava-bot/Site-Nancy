@@ -6,41 +6,108 @@ import { useStoriesVideos } from '@/hooks/useStoriesVideos';
 
 // Gallery images - in a real project, you would replace these with actual pet images
 const galleryImages = [
+  // General images (will appear in All Photos)
+  {
+    id: 201,
+    src: "/images/gallery/team-with-dogs.jpg",
+    alt: "Pink Dog staff with pets",
+    caption: "Our team with our furry friends",
+    category: "general"
+  },
+  
+  // Service images
+  {
+    id: 12,
+    src: "/images/gallery/services/image-17.JPG",
+    alt: "Dog grooming service",
+    caption: "Loving care during grooming sessions",
+    category: "services"
+  },
+  {
+    id: 13,
+    src: "/images/gallery/services/image-20.JPG",
+    alt: "Professional grooming",
+    caption: "Our expert groomers provide personalized attention",
+    category: "services"
+  },
   {
     id: 1,
-    src: "/images/pinkdog-mascots.png",
-    alt: "Happy dog at Pink Dog Resort",
-    caption: "Our furry friends enjoy playtime"
+    src: "/images/gallery/services/image-21.JPG",
+    alt: "Professional grooming",
+    caption: "Our expert groomers provide personalized attention",
+    category: "services"
+  },
+  // Happy Pets images
+  {
+    id: 14,
+    src: "/images/gallery/happy-pets/image-1.JPG",
+    alt: "White Samoyed smiling",
+    caption: "Happy white Samoyed enjoying our play area",
+    category: "pets"
   },
   {
-    id: 2,
-    src: "/images/pink-dog-resort.png",
-    alt: "Pink Dog Resort facility",
-    caption: "Our modern facility"
+    id: 15,
+    src: "/images/gallery/happy-pets/image-2.jpg",
+    alt: "Group of dogs playing together",
+    caption: "Friendly pack enjoying outdoor playtime",
+    category: "pets"
   },
   {
-    id: 3,
-    src: "/images/carrosel-1.png",
-    alt: "Grooming session",
-    caption: "Professional grooming services"
+    id: 16,
+    src: "/images/gallery/happy-pets/image-4.JPG",
+    alt: "Collie closeup",
+    caption: "Beautiful collie enjoying personal attention",
+    category: "pets"
   },
   {
-    id: 4,
-    src: "/images/pinkdog-flow.png",
-    alt: "Dogs playing in daycare",
-    caption: "Socialization and fun activities"
+    id: 17,
+    src: "/images/gallery/happy-pets/image-5.JPG",
+    alt: "Alaskan Malamute with bandana",
+    caption: "Stylish Malamute sporting a pink bandana",
+    category: "pets"
   },
   {
-    id: 5,
-    src: "/images/PinkDogSpaLogo.png",
-    alt: "Pink Dog Spa Logo",
-    caption: "Our brand represents quality care"
+    id: 18,
+    src: "/images/gallery/happy-pets/image-6.JPG",
+    alt: "Goldendoodle relaxing",
+    caption: "Relaxed Goldendoodle after grooming session",
+    category: "pets"
   },
   {
-    id: 6,
-    src: "/images/pingdog-animate.png",
-    alt: "Pet boarding area",
-    caption: "Comfortable boarding accommodations"
+    id: 19,
+    src: "/images/gallery/happy-pets/image-9.jpg",
+    alt: "Boston Terrier puppy",
+    caption: "Adorable Boston Terrier puppy with toy",
+    category: "pets"
+  },
+  // Facility images
+  {
+    id: 7,
+    src: "/images/gallery/facility/image-27.png",
+    alt: "Pink Dog Resort Facility",
+    caption: "Our spacious facility",
+    category: "facility"
+  },
+  {
+    id: 8,
+    src: "/images/gallery/facility/image-40.jpg",
+    alt: "Pink Dog Resort Interior",
+    caption: "Modern and clean interior",
+    category: "facility"
+  },
+  {
+    id: 9,
+    src: "/images/gallery/facility/image-41.jpg",
+    alt: "Pink Dog Resort Entrance",
+    caption: "Welcome to Pink Dog Resort",
+    category: "facility"
+  },
+  {
+    id: 10,
+    src: "/images/gallery/facility/image-43.jpg",
+    alt: "Pink Dog Resort Play Area",
+    caption: "Dedicated play area for pets",
+    category: "facility"
   }
 ];
 
@@ -57,10 +124,39 @@ export function Gallery() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+  const [randomAllPhotos, setRandomAllPhotos] = useState<typeof galleryImages>([]);
   const { videos, isLoading: videosLoading, error: videosError } = useStoriesVideos();
 
-  // Filter would be implemented based on actual image categorization
-  const filteredImages = galleryImages;
+  // Function to get random items from array
+  const getRandomItems = (array: typeof galleryImages, count: number) => {
+    const shuffled = [...array].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+  };
+
+  // Update random photos every 30 seconds
+  useEffect(() => {
+    // Initial random selection
+    const generalImages = galleryImages.filter(img => img.category === "general");
+    const otherImages = galleryImages.filter(img => img.category !== "videos" && img.category !== "general");
+    
+    // Combine general images with some random other images to reach 6 total
+    const randomOthers = getRandomItems(otherImages, 6 - generalImages.length);
+    setRandomAllPhotos([...generalImages, ...randomOthers]);
+    
+    // Set interval to update random photos
+    const interval = setInterval(() => {
+      const newRandomOthers = getRandomItems(otherImages, 6 - generalImages.length);
+      setRandomAllPhotos([...generalImages, ...newRandomOthers]);
+    }, 30000); // 30 seconds
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  // Filter based on selected category
+  const filteredImages = selectedCategory === "all" 
+    ? randomAllPhotos 
+    : galleryImages.filter(image => image.category === selectedCategory);
+  
   const isVideoTab = selectedCategory === "videos";
 
   // Use a simpler approach for popup
@@ -161,7 +257,7 @@ export function Gallery() {
                     src={image.src}
                     alt={image.alt}
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="object-contain transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                     <p className="text-white font-medium">{image.caption}</p>
