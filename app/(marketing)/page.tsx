@@ -7,7 +7,8 @@ import {
   AboutUs, 
   ScrollToTop, 
   InstagramGallery,
-  InstitutionalVideo
+  InstitutionalVideo,
+  Testimonials
 } from "@/components/pinkdog";
 
 export default function Home() {
@@ -19,6 +20,7 @@ export default function Home() {
         <Hero />
         <InstitutionalVideo />
         <Services />
+        <Testimonials />
         <Gallery />
         
         {/* Simple spacing div */}
