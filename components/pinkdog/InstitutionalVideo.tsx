@@ -30,32 +30,39 @@ export function InstitutionalVideo() {
   
   return (
     <section id="philosophy" className="relative py-24 bg-[#E73992]">
-      {/* Top wave decoration */}
+      {/* Top modern gradient transition - adjusted to keep consistent color at title level */}
       <div className="absolute top-0 left-0 right-0 h-32 overflow-hidden">
+        <div 
+          className="absolute top-0 left-0 w-full h-32"
+          style={{ 
+            background: "linear-gradient(to bottom, #FFDCEF 0%, #F9B6D9 15%, #F389C1 30%, #EB6DB0 45%, #E73992 55%)"
+          }}
+        />
+        
+        {/* Subtle waves overlay for texture */}
         <svg 
-          className="absolute top-0 left-0 w-full" 
+          className="absolute top-0 left-0 w-full opacity-40" 
           viewBox="0 0 1440 320" 
           preserveAspectRatio="none"
           style={{ height: '100%', width: '100%', transform: 'rotate(180deg)' }}
         >
           <path 
             fill="#ffffff" 
-            fillOpacity="1" 
+            fillOpacity="0.15" 
             d="M0,192L60,181.3C120,171,240,149,360,154.7C480,160,600,192,720,186.7C840,181,960,139,1080,133.3C1200,128,1320,160,1380,176L1440,192L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
           ></path>
         </svg>
         
-        {/* Multiple wave layers for depth */}
         <svg 
-          className="absolute top-0 left-0 w-full" 
+          className="absolute top-0 left-0 w-full opacity-20" 
           viewBox="0 0 1440 320" 
           preserveAspectRatio="none"
           style={{ height: '70%', width: '100%', transform: 'rotate(180deg)' }}
         >
           <path 
-            fill="#FCD1E6" 
-            fillOpacity="0.5" 
-            d="M0,224L48,229.3C96,235,192,245,288,224C384,203,480,149,576,138.7C672,128,768,160,864,165.3C960,171,1056,149,1152,154.7C1248,160,1344,192,1392,208L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+            fill="#ffffff" 
+            fillOpacity="0.15" 
+            d="M0,128L48,144C96,160,192,192,288,197.3C384,203,480,181,576,186.7C672,192,768,224,864,218.7C960,213,1056,171,1152,154.7C1248,139,1344,149,1392,154.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
           ></path>
         </svg>
       </div>
@@ -155,32 +162,39 @@ export function InstitutionalVideo() {
         </motion.div>
       </div>
       
-      {/* Bottom wave decoration */}
+      {/* Bottom modern gradient transition */}
       <div className="absolute -bottom-1 left-0 right-0 overflow-hidden" style={{ height: '120px' }}>
+        <div 
+          className="absolute bottom-0 left-0 w-full h-full"
+          style={{ 
+            background: "linear-gradient(to top, #ffffff 0%, #FEF0F7 40%, #FADBE9 70%, #F6B8D9 85%, rgba(231, 57, 146, 0.2) 100%)"
+          }}
+        />
+        
+        {/* Subtle waves overlay for texture */}
         <svg 
-          className="absolute bottom-0 left-0 w-full" 
+          className="absolute bottom-0 left-0 w-full opacity-40" 
           viewBox="0 0 1440 320" 
           preserveAspectRatio="none"
           style={{ height: '100%', width: '100%' }}
         >
           <path 
             fill="#ffffff" 
-            fillOpacity="1" 
+            fillOpacity="0.2" 
             d="M0,192L60,181.3C120,171,240,149,360,154.7C480,160,600,192,720,186.7C840,181,960,139,1080,133.3C1200,128,1320,160,1380,176L1440,192L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
           ></path>
         </svg>
         
-        {/* Multiple wave layers for depth */}
         <svg 
-          className="absolute bottom-0 left-0 w-full" 
+          className="absolute bottom-0 left-0 w-full opacity-30" 
           viewBox="0 0 1440 320" 
           preserveAspectRatio="none"
-          style={{ height: '65%', width: '100%' }}
+          style={{ height: '80%', width: '100%' }}
         >
           <path 
             fill="#ffffff" 
-            fillOpacity="0.8" 
-            d="M0,224L48,229.3C96,235,192,245,288,224C384,203,480,149,576,138.7C672,128,768,160,864,165.3C960,171,1056,149,1152,154.7C1248,160,1344,192,1392,208L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+            fillOpacity="0.15" 
+            d="M0,64L48,80C96,96,192,128,288,128C384,128,480,96,576,96C672,96,768,128,864,133.3C960,139,1056,117,1152,112C1248,107,1344,117,1392,122.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
           ></path>
         </svg>
       </div>

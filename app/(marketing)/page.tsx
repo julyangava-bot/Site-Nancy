@@ -6,7 +6,6 @@ import {
   Gallery, 
   AboutUs, 
   ScrollToTop, 
-  InstagramGallery,
   InstitutionalVideo,
   Testimonials
 } from "@/components/pinkdog";
@@ -27,11 +26,6 @@ export default function Home() {
         <div className="py-10"></div>
         
         <CheckInInfo />
-        
-        {/* Simple spacing div */}
-        <div className="py-10"></div>
-        
-        <InstagramGallery />
         <AboutUs />
         <ScrollToTop />
       </div>

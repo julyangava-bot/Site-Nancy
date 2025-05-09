@@ -175,7 +175,7 @@ export function Hero() {
                 animate="visible"
                 variants={fadeInVariants}
                 transition={{ duration: 0.4, delay: 0.2 }}
-                className="mt-5 sm:mt-8 md:mt-8 flex flex-row justify-center lg:justify-start gap-3 sm:gap-4 md:gap-5"
+                className="mt-5 sm:mt-8 md:mt-8 flex flex-wrap justify-center lg:justify-start gap-3 sm:gap-4 md:gap-5"
                 style={{ willChange: "opacity" }}
               >
                 <Button

@@ -67,6 +67,11 @@ export const Navbar = () => {
       isSection: true,
     },
     {
+      name: "FAQ",
+      link: "faq",
+      isSection: true,
+    },
+    {
       name: "Blog",
       link: "/blog",
       isSection: false,

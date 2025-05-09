@@ -49,7 +49,7 @@ export function Services() {
   return (
     <section id="services" className="relative py-20 overflow-hidden bg-white">
       {/* Pink wave background at top */}
-      <div className="absolute top-0 left-0 right-0 h-32 bg-[#FCD1E6] rounded-b-[50%] transform -translate-y-16"></div>
+      {/* <div className="absolute top-0 left-0 right-0 h-32 bg-[#FCD1E6] rounded-b-[50%] transform -translate-y-16"></div> */}
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">

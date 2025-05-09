@@ -7,3 +7,4 @@ export { ScrollToTop } from "./scroll-to-top";
 export { Services } from "./services";
 export { StoriesGrid } from "./StoriesGrid";
 export { Testimonials } from "./testimonials"; 
+export { FAQPinkDog } from "./faq-pd"; 
