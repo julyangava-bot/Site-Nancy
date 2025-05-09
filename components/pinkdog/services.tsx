@@ -105,7 +105,7 @@ export function Services() {
                   </Button>
                 </div>
                 
-                <div className="w-full md:w-1/2 relative h-60 md:h-72 rounded-xl overflow-hidden">
+                <div className="hidden md:block w-full md:w-1/2 relative h-60 md:h-72 rounded-xl overflow-hidden">
                   <Image
                     src={service.image}
                     alt={service.title}

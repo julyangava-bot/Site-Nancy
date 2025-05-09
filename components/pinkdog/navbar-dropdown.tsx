@@ -6,6 +6,18 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 
+// Define proper types for navigation items
+interface NavItemChild {
+  name: string;
+  link: string;
+}
+
+interface NavItem {
+  name: string;
+  link: string;
+  children?: NavItemChild[];
+}
+
 export function NavbarWithChildren() {
   return (
     <div className="w-full bg-neutral-100 px-2 py-20 dark:bg-neutral-900">
@@ -20,7 +32,7 @@ export function NavbarWithChildren() {
 }
 
 const Navbar = () => {
-  const navItems = [
+  const navItems: NavItem[] = [
     {
       name: "Services",
       link: "#",
@@ -58,7 +70,8 @@ const Navbar = () => {
   );
 };
 
-const DesktopNav = ({ navItems }: any) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const DesktopNav = ({ navItems }: { navItems: NavItem[] }) => {
   const [active, setActive] = useState<string | null>(null);
   return (
     <motion.div
@@ -111,7 +124,7 @@ const DesktopNav = ({ navItems }: any) => {
   );
 };
 
-const MobileNav = ({ navItems }: any) => {
+const MobileNav = ({ navItems }: { navItems: NavItem[] }) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -144,7 +157,7 @@ const MobileNav = ({ navItems }: any) => {
               exit={{ opacity: 0 }}
               className="absolute inset-x-0 top-16 z-20 flex w-full flex-col items-start justify-start gap-4 rounded-lg bg-white px-4 py-8 dark:bg-neutral-950"
             >
-              {navItems.map((navItem: any, idx: number) => (
+              {navItems.map((navItem, idx) => (
                 <div key={`navItem-${idx}`} className="w-full">
                   {navItem.children ? (
                     <MobileChildNavItems navItem={navItem} />
@@ -171,7 +184,7 @@ const MobileNav = ({ navItems }: any) => {
   );
 };
 
-const MobileChildNavItems = ({ navItem }: { navItem: any }) => {
+const MobileChildNavItems = ({ navItem }: { navItem: NavItem }) => {
   const [open, setOpen] = useState(false);
   return (
     <motion.div className="overflow-hidden">
@@ -183,14 +196,14 @@ const MobileChildNavItems = ({ navItem }: { navItem: any }) => {
         <IconChevronDown className="text-neutral-700 dark:text-neutral-300" />
       </button>
       <AnimatePresence>
-        {open && (
+        {open && navItem.children && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0 }}
             className="pl-4"
           >
-            {navItem.children.map((child: any, childIdx: number) => (
+            {navItem.children.map((child, childIdx) => (
               <Link
                 key={`child-${childIdx}`}
                 href={child.link}
@@ -330,7 +343,14 @@ export const ProductItem = ({
   );
 };
 
-export const HoveredLink = ({ children, ...rest }: any) => {
+interface HoveredLinkProps {
+  children: React.ReactNode;
+  href: string;
+  className?: string;
+  onClick?: () => void;
+}
+
+export const HoveredLink = ({ children, ...rest }: HoveredLinkProps) => {
   return (
     <Link
       {...rest}
