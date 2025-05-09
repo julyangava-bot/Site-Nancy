@@ -76,9 +76,24 @@ export function InstitutionalVideo() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-8">
-            Our Philosophy
-          </h2>
+          <div className="flex items-center justify-center gap-4 mb-6">
+            {/* Best Grooming medal moved to left of title */}
+            <div className="flex-shrink-0 w-20 h-20">
+              <div className="relative w-full h-full">
+                <Image
+                  src="/images/best-grooming.png"
+                  alt="Best Grooming Medal"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
+            </div>
+            
+            <h2 className="text-4xl md:text-5xl font-bold text-white">
+              Our Philosophy
+            </h2>
+          </div>
           
           <div className="flex flex-col md:flex-row items-center md:items-center justify-center gap-8 max-w-4xl mx-auto">
             <div className="flex-1 text-center md:text-right">
@@ -96,19 +111,6 @@ export function InstitutionalVideo() {
                   <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
                 </svg>
               </Link>
-            </div>
-            
-            {/* Best Grooming medal */}
-            <div className="flex-shrink-0 w-28 h-28 md:w-32 md:h-32">
-              <div className="relative w-full h-full">
-                <Image
-                  src="/images/best-grooming.png"
-                  alt="Best Grooming Medal"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
             </div>
           </div>
         </motion.div>

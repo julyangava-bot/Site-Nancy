@@ -85,8 +85,8 @@ export function Services() {
             >
               <div className={`absolute top-0 left-0 w-1/2 h-full ${service.color} opacity-40 rounded-r-full transform -translate-x-1/4 transition-transform group-hover:translate-x-0`}></div>
               
-              <div className="flex flex-col md:flex-row items-center p-6 h-full relative">
-                <div className="w-full md:w-1/2 mb-6 md:mb-0 md:pr-6">
+              <div className="p-6 h-full relative">
+                <div className="w-full">
                   <div className="relative w-20 h-20 mb-4 bg-[#FCD1E6] rounded-xl p-4">
                     <Image
                       src={service.icon}
@@ -103,15 +103,6 @@ export function Services() {
                   >
                     <Link href={service.link}>Learn More</Link>
                   </Button>
-                </div>
-                
-                <div className="hidden md:block w-full md:w-1/2 relative h-60 md:h-72 rounded-xl overflow-hidden">
-                  <Image
-                    src={service.image}
-                    alt={service.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
                 </div>
               </div>
             </motion.div>
