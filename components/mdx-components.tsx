@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const components = {
   h1: ({ children }: { children: React.ReactNode }) => (
@@ -48,7 +49,15 @@ const components = {
     );
   },
   img: ({ src, alt }: { src: string, alt: string }) => (
-    <img src={src} alt={alt} className="w-full h-auto mb-4 rounded-md" />
+    <Image 
+      src={src} 
+      alt={alt} 
+      width={1200}
+      height={630}
+      className="w-full h-auto mb-4 rounded-md"
+      priority={false}
+      sizes="(max-width: 768px) 100vw, 768px"
+    />
   ),
   h2: ({ children }: { children: React.ReactNode }) => (
     <h2 className="text-2xl font-bold mb-2">{children}</h2>

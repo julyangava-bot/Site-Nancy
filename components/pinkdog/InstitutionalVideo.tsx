@@ -81,9 +81,7 @@ export function InstitutionalVideo() {
               
               {/* Learn more link */}
               <Link
-                href={`https://youtu.be/${videoId}`}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#about-us"
                 className="inline-flex items-center text-white hover:text-pink-100 transition-colors mt-6 text-lg font-light"
               >
                 <span>Learn more</span>

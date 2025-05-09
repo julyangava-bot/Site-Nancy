@@ -94,5 +94,5 @@ export async function GET() {
   }
 }
 
-// Set the revalidation period to match our cache duration
-export const revalidate = CACHE_DURATION / 1000; 
+// Set the revalidation period to match our cache duration (10 minutes = 600 seconds)
+export const revalidate = 600; 
