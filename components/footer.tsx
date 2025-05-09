@@ -5,10 +5,11 @@ import { IconBrandInstagram, IconBrandFacebook } from "@tabler/icons-react";
 export function Footer() {
   const navigation = [
     { name: "Home", href: "/" },
+    { name: "About", href: "#about-us" },
     { name: "Services", href: "#services" },
     { name: "Gallery", href: "#gallery" },
     { name: "Info", href: "#checkin-info" },
-    { name: "About", href: "#about-us" },
+    { name: "FAQ", href: "#faq" },
     { name: "Blog", href: "/blog" },
   ];
 

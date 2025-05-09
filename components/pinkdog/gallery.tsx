@@ -143,22 +143,37 @@ export function Gallery() {
     console.log("General images:", generalImages.length);
     console.log("Other images available:", otherImages.length);
     
-    // Combine general images with some random other images to reach 6 total
-    const randomOthers = getRandomItems(otherImages, 6 - generalImages.length);
-    setRandomAllPhotos([...generalImages, ...randomOthers]);
+    // Function to combine images to ensure we always have photos to display
+    const updateRandomPhotos = () => {
+      // Always make sure we have at least 6 images
+      const targetCount = Math.max(6, generalImages.length);
+      const randomOthers = getRandomItems(otherImages, targetCount - generalImages.length);
+      const newRandomPhotos = [...generalImages, ...randomOthers];
+      
+      // Only update if we actually have images to show
+      if (newRandomPhotos.length > 0) {
+        setRandomAllPhotos(newRandomPhotos);
+      }
+    };
+    
+    // Initialize with all images if no random ones are available
+    if (generalImages.length === 0 && otherImages.length === 0) {
+      // Fallback: use all non-video images
+      setRandomAllPhotos(galleryImages.filter(img => img.category !== "videos"));
+    } else {
+      // Normal case: use random selection
+      updateRandomPhotos();
+    }
     
     // Set interval to update random photos every 10 seconds
-    const interval = setInterval(() => {
-      const newRandomOthers = getRandomItems(otherImages, 6 - generalImages.length);
-      setRandomAllPhotos([...generalImages, ...newRandomOthers]);
-    }, 10000); // 10 seconds instead of 30 seconds
+    const interval = setInterval(updateRandomPhotos, 10000);
     
     return () => clearInterval(interval);
   }, []);
 
   // Filter based on selected category
   const filteredImages = selectedCategory === "all" 
-    ? randomAllPhotos 
+    ? (randomAllPhotos.length > 0 ? randomAllPhotos : galleryImages.filter(img => img.category !== "videos"))
     : galleryImages.filter(image => image.category === selectedCategory);
   
   const isVideoTab = selectedCategory === "videos";

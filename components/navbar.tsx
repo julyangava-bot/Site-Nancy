@@ -1,12 +1,13 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { IconMenu2, IconX } from "@tabler/icons-react";
+import { IconMenu2, IconX, IconChevronDown } from "@tabler/icons-react";
 import {
   motion,
   AnimatePresence,
   useScroll,
   useMotionValueEvent,
 } from "motion/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import React, { useRef, useState, useCallback } from "react";
@@ -17,11 +18,15 @@ interface NavItem {
   name: string;
   link: string;
   isSection?: boolean;
+  hasDropdown?: boolean;
+  dropdownItems?: DropdownItem[];
 }
 
-interface NavbarProps {
-  navItems: NavItem[];
-  visible: boolean;
+interface DropdownItem {
+  name: string;
+  link: string;
+  imageSrc: string;
+  description?: string;
 }
 
 // Smooth scroll function
@@ -40,7 +45,7 @@ export const Navbar = () => {
   const pathname = usePathname();
   const isHomePage = pathname === "/";
 
-  const navItems = [
+  const navItems: NavItem[] = [
     {
       name: "Home",
       link: "/",
@@ -50,6 +55,33 @@ export const Navbar = () => {
       name: "Services",
       link: "services",
       isSection: true,
+      hasDropdown: true,
+      dropdownItems: [
+        {
+          name: "Pet Hotel",
+          link: "#services-hotel",
+          imageSrc: "/images/icons/pethotel-icon.png",
+          description: "Comfortable boarding for your pet"
+        },
+        {
+          name: "Daycare",
+          link: "#services-daycare",
+          imageSrc: "/images/icons/daycare-icon.png",
+          description: "Supervised playtime and socialization"
+        },
+        {
+          name: "Grooming",
+          link: "#services-grooming",
+          imageSrc: "/images/icons/grooming-icon.png",
+          description: "Professional pet styling and care"
+        },
+        {
+          name: "Van Service",
+          link: "#services-van",
+          imageSrc: "/images/icons/van-icon.png",
+          description: "Convenient pet transportation"
+        }
+      ]
     },
     {
       name: "Gallery",
@@ -122,12 +154,24 @@ export const Navbar = () => {
   );
 };
 
-const DesktopNav = ({ navItems, visible, onNavClick }: NavbarProps & { onNavClick: (e: React.MouseEvent, item: NavItem) => void }) => {
+const DesktopNav = ({ 
+  navItems, 
+  visible, 
+  onNavClick 
+}: {
+  navItems: NavItem[]; 
+  visible: boolean; 
+  onNavClick: (e: React.MouseEvent, item: NavItem) => void;
+}) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   return (
     <motion.div
-      onMouseLeave={() => setHoveredIndex(null)}
+      onMouseLeave={() => {
+        setHoveredIndex(null);
+        setActiveDropdown(null);
+      }}
       animate={{
         width: visible ? "50%" : "80%",
         backgroundColor: visible
@@ -167,15 +211,32 @@ const DesktopNav = ({ navItems, visible, onNavClick }: NavbarProps & { onNavClic
         {navItems.map((navItem, idx) => (
           <motion.div
             key={`nav-item-${idx}`}
-            onHoverStart={() => setHoveredIndex(idx)}
+            onHoverStart={() => {
+              setHoveredIndex(idx);
+              if (navItem.hasDropdown) {
+                setActiveDropdown(navItem.name);
+              } else {
+                setActiveDropdown(null);
+              }
+            }}
             className="relative"
           >
             <a
-              className="text-black/90 relative px-3 py-1.5 transition-colors cursor-pointer"
+              className="text-black/90 relative px-3 py-1.5 transition-colors cursor-pointer flex items-center"
               href={navItem.isSection ? `#${navItem.link}` : navItem.link}
-              onClick={(e) => onNavClick(e, navItem)}
+              onClick={(e) => {
+                if (!navItem.hasDropdown) {
+                  onNavClick(e, navItem);
+                } else if (navItem.isSection) {
+                  e.preventDefault();
+                  scrollToSection(navItem.link);
+                }
+              }}
             >
               <span className="relative z-10">{navItem.name}</span>
+              {navItem.hasDropdown && (
+                <IconChevronDown className="h-4 w-4 ml-1 text-black/70" />
+              )}
               {hoveredIndex === idx && (
                 <motion.div
                   layoutId="menu-hover"
@@ -196,6 +257,44 @@ const DesktopNav = ({ navItems, visible, onNavClick }: NavbarProps & { onNavClic
                 />
               )}
             </a>
+
+            {/* Dropdown Menu */}
+            {navItem.hasDropdown && activeDropdown === navItem.name && (
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                className="absolute top-[calc(100%_+_0.5rem)] left-1/2 -translate-x-1/2 bg-white rounded-xl shadow-lg p-4 z-50 w-[500px]"
+              >
+                <div className="grid grid-cols-2 gap-4">
+                  {navItem.dropdownItems?.map((item, i) => (
+                    <Link 
+                      key={`dropdown-${i}`}
+                      href={item.link}
+                      className="flex items-start gap-3 p-3 rounded-lg hover:bg-pink-50 transition-colors duration-200"
+                      onClick={() => setActiveDropdown(null)}
+                    >
+                      <div className="flex-shrink-0 h-14 w-14 relative">
+                        <Image 
+                          src={item.imageSrc} 
+                          alt={item.name}
+                          width={56}
+                          height={56}
+                          className="rounded-md object-contain"
+                        />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-gray-900">{item.name}</h3>
+                        {item.description && (
+                          <p className="text-xs text-gray-500 mt-0.5">{item.description}</p>
+                        )}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </motion.div>
+            )}
           </motion.div>
         ))}
       </motion.div>
@@ -234,12 +333,27 @@ const DesktopNav = ({ navItems, visible, onNavClick }: NavbarProps & { onNavClic
   );
 };
 
-const MobileNav = ({ navItems, visible, onNavClick }: NavbarProps & { onNavClick: (e: React.MouseEvent, item: NavItem) => void }) => {
+const MobileNav = ({ 
+  navItems, 
+  visible, 
+  onNavClick 
+}: {
+  navItems: NavItem[]; 
+  visible: boolean; 
+  onNavClick: (e: React.MouseEvent, item: NavItem) => void;
+}) => {
   const [open, setOpen] = useState(false);
+  const [expandedItem, setExpandedItem] = useState<string | null>(null);
   
   const handleMobileNavClick = (e: React.MouseEvent, navItem: NavItem) => {
-    onNavClick(e, navItem);
-    setOpen(false);
+    if (!navItem.hasDropdown) {
+      onNavClick(e, navItem);
+      setOpen(false);
+    }
+  };
+
+  const toggleDropdown = (itemName: string) => {
+    setExpandedItem(expandedItem === itemName ? null : itemName);
   };
 
   return (
@@ -311,7 +425,7 @@ const MobileNav = ({ navItems, visible, onNavClick }: NavbarProps & { onNavClick
                 duration: 0.2,
                 ease: "easeInOut",
               }}
-              className="flex rounded-2xl absolute top-16 backdrop-blur-xl bg-white/95 inset-x-0 z-50 flex-col items-start justify-start gap-4 w-full px-6 py-6 shadow-lg"
+              className="flex rounded-2xl absolute top-16 backdrop-blur-xl bg-white/95 inset-x-0 z-50 flex-col items-start justify-start w-full px-6 py-6 shadow-lg"
             >
               {navItems.map((navItem, idx) => (
                 <motion.div
@@ -324,17 +438,59 @@ const MobileNav = ({ navItems, visible, onNavClick }: NavbarProps & { onNavClick
                       delay: idx * 0.05,
                     },
                   }}
-                  whileHover={{ x: 5 }}
+                  className="w-full border-b border-gray-100 last:border-0 py-3"
                 >
-                  <a
-                    href={navItem.isSection ? `#${navItem.link}` : navItem.link}
-                    onClick={(e) => handleMobileNavClick(e, navItem)}
-                    className="relative text-black/90 hover:text-black transition-colors"
-                  >
-                    <motion.span className="block">
-                      {navItem.name}
-                    </motion.span>
-                  </a>
+                  {navItem.hasDropdown ? (
+                    <div className="w-full">
+                      <button
+                        onClick={() => toggleDropdown(navItem.name)}
+                        className="flex w-full justify-between items-center text-black/90 hover:text-black"
+                      >
+                        <span>{navItem.name}</span>
+                        <IconChevronDown 
+                          className={`h-4 w-4 transition-transform ${
+                            expandedItem === navItem.name ? "rotate-180" : ""
+                          }`} 
+                        />
+                      </button>
+                      
+                      <AnimatePresence>
+                        {expandedItem === navItem.name && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="pl-4 mt-2 flex flex-col space-y-2"
+                          >
+                            {navItem.dropdownItems?.map((item, i) => (
+                              <Link
+                                key={`mobile-dropdown-${i}`}
+                                href={item.link}
+                                className="text-gray-700 hover:text-[#E73992] py-1"
+                                onClick={() => {
+                                  setExpandedItem(null);
+                                  setOpen(false);
+                                }}
+                              >
+                                {item.name}
+                              </Link>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    <a
+                      href={navItem.isSection ? `#${navItem.link}` : navItem.link}
+                      onClick={(e) => handleMobileNavClick(e, navItem)}
+                      className="relative text-black/90 hover:text-black transition-colors"
+                    >
+                      <motion.span className="block">
+                        {navItem.name}
+                      </motion.span>
+                    </a>
+                  )}
                 </motion.div>
               ))}
 
