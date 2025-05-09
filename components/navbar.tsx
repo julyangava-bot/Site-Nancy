@@ -219,7 +219,7 @@ const DesktopNav = ({ navItems, visible, onNavClick }: NavbarProps & { onNavClic
                 className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full"
                 asChild
               >
-                <Link href="/login">Login</Link>
+                <Link href="/login">Book Now</Link>
               </Button>
             </div>
           </motion.div>
@@ -338,7 +338,7 @@ const MobileNav = ({ navItems, visible, onNavClick }: NavbarProps & { onNavClick
                   className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full w-full"
                   asChild
                 >
-                  <Link href="/login" onClick={() => setOpen(false)}>Login</Link>
+                  <Link href="/login" onClick={() => setOpen(false)}>Book Now</Link>
                 </Button>
               </div>
             </motion.div>
