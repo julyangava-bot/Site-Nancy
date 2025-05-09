@@ -6,7 +6,8 @@ import {
   Gallery, 
   AboutUs, 
   ScrollToTop, 
-  InstagramGallery
+  InstagramGallery,
+  InstitutionalVideo
 } from "@/components/pinkdog";
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
       <div className="relative overflow-x-hidden">
         {/* Main sections */}
         <Hero />
+        <InstitutionalVideo />
         <Services />
         <Gallery />
         

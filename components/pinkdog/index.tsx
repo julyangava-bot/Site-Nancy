@@ -1,6 +1,8 @@
-export { Services } from "./services";
+export { AboutUs } from "./about-us";
 export { CheckInInfo } from "./checkin-info";
 export { Gallery } from "./gallery";
-export { AboutUs } from "./about-us";
+export { InstitutionalVideo } from "./InstitutionalVideo";
+export { InstagramGallery } from "./instagram-gallery";
 export { ScrollToTop } from "./scroll-to-top";
-export { InstagramGallery } from "./instagram-gallery"; 
+export { Services } from "./services";
+export { StoriesGrid } from "./StoriesGrid"; 

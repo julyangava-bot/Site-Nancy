@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useStoriesVideos } from '@/hooks/useStoriesVideos';
 
 // Gallery images - in a real project, you would replace these with actual pet images
 const galleryImages = [
@@ -48,15 +49,57 @@ const categories = [
   { id: "all", name: "All Photos" },
   { id: "facility", name: "Our Facility" },
   { id: "pets", name: "Happy Pets" },
-  { id: "services", name: "Services" }
+  { id: "services", name: "Services" },
+  { id: "videos", name: "Videos" }
 ];
 
 export function Gallery() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+  const { videos, isLoading: videosLoading, error: videosError } = useStoriesVideos();
 
   // Filter would be implemented based on actual image categorization
   const filteredImages = galleryImages;
+  const isVideoTab = selectedCategory === "videos";
+
+  // Use a simpler approach for popup
+  const [isClient, setIsClient] = useState(false);
+
+  // Handle ESC key press to close modals
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      setSelectedVideo(null);
+      setSelectedImage(null);
+    }
+  }, []);
+
+  // Control body scroll when modal is open and set client-side indicator
+  useEffect(() => {
+    // Mark as client-side rendered
+    setIsClient(true);
+    
+    if (selectedVideo || selectedImage) {
+      // Disable scrolling on body
+      document.body.style.overflow = 'hidden';
+      // Add escape key listener
+      window.addEventListener('keydown', handleKeyDown);
+    } else {
+      // Re-enable scrolling
+      document.body.style.overflow = 'auto';
+    }
+
+    // Cleanup function
+    return () => {
+      document.body.style.overflow = 'auto';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [selectedVideo, selectedImage, handleKeyDown]);
+
+  // Simplified click handler
+  const handleVideoClick = (videoId: string) => {
+    setSelectedVideo(videoId);
+  };
 
   return (
     <section id="gallery" className="py-20 bg-white">
@@ -99,34 +142,95 @@ export function Gallery() {
           ))}
         </motion.div>
         
-        {/* Gallery grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {filteredImages.map((image, index) => (
-            <motion.div
-              key={image.id}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="relative overflow-hidden rounded-xl shadow-md cursor-pointer group"
-              onClick={() => setSelectedImage(image.id)}
-            >
-              <div className="relative w-full h-64">
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-                  <p className="text-white font-medium">{image.caption}</p>
+        {/* Gallery content - conditionally render photos or videos */}
+        {!isVideoTab ? (
+          // Photos Grid
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {filteredImages.map((image, index) => (
+              <motion.div
+                key={image.id}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="relative overflow-hidden rounded-xl shadow-md cursor-pointer group"
+                onClick={() => setSelectedImage(image.id)}
+              >
+                <div className="relative w-full h-64">
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                    <p className="text-white font-medium">{image.caption}</p>
+                  </div>
                 </div>
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          // Videos Grid
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {videosLoading ? (
+              // Video loading state - matches the photo grid layout
+              Array.from({ length: 6 }).map((_, index) => (
+                <motion.div
+                  key={`loading-${index}`}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="relative overflow-hidden rounded-xl shadow-md bg-gray-100 animate-pulse"
+                >
+                  <div className="relative w-full h-64"></div>
+                </motion.div>
+              ))
+            ) : videosError ? (
+              <div className="col-span-full text-center py-10">
+                <p className="text-gray-500">Couldn&apos;t load videos. Please try again later.</p>
               </div>
-            </motion.div>
-          ))}
-        </div>
+            ) : videos.length === 0 ? (
+              <div className="col-span-full text-center py-10">
+                <p className="text-gray-500">No videos available at the moment</p>
+              </div>
+            ) : (
+              // Video cards - update onClick to use simplified handler
+              videos.map((video, index) => (
+                <motion.div
+                  key={video.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="relative overflow-hidden rounded-xl shadow-md cursor-pointer group"
+                  onClick={() => handleVideoClick(video.id)}
+                >
+                  <div className="relative w-full h-64">
+                    <div className="absolute inset-0 w-full h-full">
+                      <iframe
+                        className="w-full h-full"
+                        src={video.embedUrl}
+                        title={video.name}
+                        allow="autoplay"
+                        allowFullScreen
+                      ></iframe>
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 pointer-events-none">
+                      <p className="text-white font-medium truncate">{video.name}</p>
+                      <p className="text-white text-sm opacity-80">
+                        {new Date(video.createdTime).toLocaleDateString()}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))
+            )}
+          </div>
+        )}
         
-        {/* Lightbox modal */}
+        {/* Photo Lightbox modal */}
         {selectedImage && (
           <div 
             className="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4"
@@ -161,6 +265,70 @@ export function Gallery() {
               </div>
             </div>
           </div>
+        )}
+        
+        {/* Video Popup Dialog - simplified */}
+        {isClient && (
+          <AnimatePresence>
+            {selectedVideo && (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6"
+                onClick={() => setSelectedVideo(null)}
+              >
+                {/* Semi-transparent overlay */}
+                <div className="absolute inset-0 bg-black bg-opacity-50" />
+                
+                {/* Popup Dialog */}
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.7 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.7 }}
+                  transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                  className="relative w-full max-w-3xl z-10 bg-white rounded-2xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)]"
+                  onClick={e => e.stopPropagation()}
+                >
+                  {/* Close button */}
+                  <button 
+                    onClick={() => setSelectedVideo(null)}
+                    className="absolute top-3 right-3 z-10 bg-white/80 backdrop-blur-sm text-gray-800 hover:text-pink-500 p-2 rounded-full transition-colors duration-200"
+                    aria-label="Close modal"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                  
+                  {/* Video container */}
+                  <div className="relative w-full" style={{ paddingBottom: '56.25%' }}> {/* 16:9 aspect ratio */}
+                    {videos.find(v => v.id === selectedVideo) && (
+                      <iframe
+                        src={videos.find(v => v.id === selectedVideo)!.embedUrl}
+                        title={videos.find(v => v.id === selectedVideo)!.name}
+                        className="absolute top-0 left-0 w-full h-full"
+                        allowFullScreen
+                        allow="autoplay"
+                      ></iframe>
+                    )}
+                  </div>
+                  
+                  {/* Video info */}
+                  <div className="p-5 bg-white">
+                    <h3 className="text-gray-800 font-medium text-lg md:text-xl">
+                      {videos.find(v => v.id === selectedVideo)?.name}
+                    </h3>
+                    <p className="text-gray-500 text-sm mt-1">
+                      {videos.find(v => v.id === selectedVideo) && 
+                       new Date(videos.find(v => v.id === selectedVideo)!.createdTime).toLocaleDateString()}
+                    </p>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         )}
         
         <motion.div
