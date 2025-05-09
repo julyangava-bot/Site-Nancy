@@ -9,7 +9,7 @@ const galleryImages = [
   // General images (will appear in All Photos)
   {
     id: 201,
-    src: "/images/gallery/team-with-dogs.jpg",
+    src: "/images/gallery/all/team-with-dogs.jpg",
     alt: "Pink Dog staff with pets",
     caption: "Our team with our furry friends",
     category: "general"
@@ -133,21 +133,25 @@ export function Gallery() {
     return shuffled.slice(0, count);
   };
 
-  // Update random photos every 30 seconds
+  // Update random photos every 10 seconds instead of 30
   useEffect(() => {
     // Initial random selection
     const generalImages = galleryImages.filter(img => img.category === "general");
     const otherImages = galleryImages.filter(img => img.category !== "videos" && img.category !== "general");
     
+    // Ensure we have images to display
+    console.log("General images:", generalImages.length);
+    console.log("Other images available:", otherImages.length);
+    
     // Combine general images with some random other images to reach 6 total
     const randomOthers = getRandomItems(otherImages, 6 - generalImages.length);
     setRandomAllPhotos([...generalImages, ...randomOthers]);
     
-    // Set interval to update random photos
+    // Set interval to update random photos every 10 seconds
     const interval = setInterval(() => {
       const newRandomOthers = getRandomItems(otherImages, 6 - generalImages.length);
       setRandomAllPhotos([...generalImages, ...newRandomOthers]);
-    }, 30000); // 30 seconds
+    }, 10000); // 10 seconds instead of 30 seconds
     
     return () => clearInterval(interval);
   }, []);
@@ -249,7 +253,7 @@ export function Gallery() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="relative overflow-hidden rounded-xl shadow-md cursor-pointer group"
+                className="relative overflow-hidden rounded-xl shadow-md cursor-pointer group bg-pink-100"
                 onClick={() => setSelectedImage(image.id)}
               >
                 <div className="relative w-full h-64">
@@ -259,7 +263,7 @@ export function Gallery() {
                     fill
                     className="object-contain transition-transform duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#E73992]/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                     <p className="text-white font-medium">{image.caption}</p>
                   </div>
                 </div>
