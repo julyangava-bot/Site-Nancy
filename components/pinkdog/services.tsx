@@ -11,8 +11,8 @@ const services = [
     id: "pet-hotel",
     title: "Pet Hotel",
     description: "Luxurious accommodations for your pets while you&apos;re away. 24/7 care with comfortable beds and personalized attention.",
-    icon: "/images/paw-print.svg",
-    image: "/images/pink-dog-resort.png",
+    icon: "/images/icons/pethotel-icon.png",
+    image: "/images/services/pet-hotel-card.png",
     color: "bg-[#FCD1E6]",
     link: "/services/pet-hotel"
   },
@@ -20,8 +20,8 @@ const services = [
     id: "daycare",
     title: "Daycare",
     description: "Supervised play and socialization for your pets. Safe environment with trained professionals and fun activities.",
-    icon: "/images/paw-print.svg",
-    image: "/images/pinkdog-mascots.png",
+    icon: "/images/icons/daycare-icon.png",
+    image: "/images/services/daycare-card.jpg",
     color: "bg-[#FFEBF5]",
     link: "/services/daycare"
   },
@@ -29,8 +29,8 @@ const services = [
     id: "grooming",
     title: "Grooming",
     description: "Professional grooming services to keep your pet looking and feeling their best. Includes bathing, trimming, and styling.",
-    icon: "/images/paw-print.svg",
-    image: "/images/carrosel-1.png",
+    icon: "/images/icons/grooming-icon.png",
+    image: "/images/services/grooming-card.jpg",
     color: "bg-[#FCD1E6]",
     link: "/services/grooming"
   },
@@ -38,8 +38,8 @@ const services = [
     id: "van-service",
     title: "Van Service",
     description: "Convenient pet transport to and from our facility. Comfortable and safe rides for your furry friends.",
-    icon: "/images/paw-print.svg",
-    image: "/images/pinkdog-flow.png",
+    icon: "/images/icons/van-icon.png",
+    image: "/images/services/van-card.jpg",
     color: "bg-[#FFEBF5]",
     link: "/services/van-service"
   }
@@ -92,7 +92,7 @@ export function Services() {
                       src={service.icon}
                       alt={`${service.title} icon`}
                       fill
-                      className="p-4 object-contain"
+                      className="object-contain"
                     />
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">{service.title}</h3>
