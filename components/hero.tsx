@@ -55,6 +55,23 @@ const imageConfig = {
 
 export function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if screen is mobile
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    
+    // Initial check
+    checkIsMobile();
+    
+    // Add event listener for window resize
+    window.addEventListener("resize", checkIsMobile);
+    
+    // Cleanup
+    return () => window.removeEventListener("resize", checkIsMobile);
+  }, []);
 
   // Modified scroll control - no longer locks scrolling
   useEffect(() => {
@@ -140,12 +157,13 @@ export function Hero() {
     }
   };
 
-  return (
-    <AuroraBackground className="overflow-hidden">
+  // Render content with conditional background
+  const renderContent = () => {
+    return (
       <div className="relative z-10 w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Hero content with optimized layout - reduced min-height to bring elements closer */}
-          <div className="relative pt-70 sm:pt-60 md:pt-60 pb-16 sm:pb-20 md:pb-24 min-h-[600px] sm:min-h-[600px] md:min-h-[650px] lg:min-h-[calc(100vh-6rem)] max-h-[800px] xl:max-h-[900px] flex flex-col lg:flex-row items-center justify-center">
+          <div className="relative pt-40 sm:pt-60 md:pt-60 pb-16 sm:pb-20 md:pb-24 min-h-[600px] sm:min-h-[600px] md:min-h-[650px] lg:min-h-[calc(100vh-6rem)] max-h-[800px] xl:max-h-[900px] flex flex-col lg:flex-row items-center justify-center">
             <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-4 md:gap-6 lg:gap-8 xl:gap-12">
               {/* Text content */}
               <div className="max-w-xl w-full text-center lg:text-left z-10">
@@ -266,6 +284,20 @@ export function Hero() {
         <div className="absolute -top-16 -right-16 w-32 h-32 md:w-48 md:h-48 rounded-full bg-[#FCD1E6] opacity-20 hidden sm:block"></div>
         <div className="absolute -bottom-24 -left-24 w-48 h-48 md:w-72 md:h-72 rounded-full bg-[#FCD1E6] opacity-20 hidden sm:block"></div>
       </div>
-    </AuroraBackground>
+    );
+  };
+
+  return (
+    <>
+      {isMobile ? (
+        <div className="bg-gradient-to-b from-white to-[#FFF7FB] overflow-hidden">
+          {renderContent()}
+        </div>
+      ) : (
+        <AuroraBackground className="overflow-hidden aurora-background">
+          {renderContent()}
+        </AuroraBackground>
+      )}
+    </>
   );
 }
