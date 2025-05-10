@@ -48,7 +48,7 @@ const imageConfig = {
       alt: "Decorative element top right",
       width: 30,
       height: 30,
-      position: "absolute -top-6 -right-3 w-6 h-6 opacity-40 hidden md:block"
+      position: "absolute -top-2 -right-3 w-6 h-6 opacity-40 hidden md:block"
     }
   ]
 };
@@ -145,7 +145,7 @@ export function Hero() {
       <div className="relative z-10 w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Hero content with optimized layout - reduced min-height to bring elements closer */}
-          <div className="relative pt-40 sm:pt-40 md:pt-40 pb-16 sm:pb-20 md:pb-24 min-h-[600px] sm:min-h-[600px] md:min-h-[650px] lg:min-h-[calc(100vh-6rem)] max-h-[800px] xl:max-h-[900px] flex flex-col lg:flex-row items-center justify-center">
+          <div className="relative pt-60 sm:pt-60 md:pt-40 pb-16 sm:pb-20 md:pb-24 min-h-[600px] sm:min-h-[600px] md:min-h-[650px] lg:min-h-[calc(100vh-6rem)] max-h-[800px] xl:max-h-[900px] flex flex-col lg:flex-row items-center justify-center">
             <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-4 md:gap-6 lg:gap-8 xl:gap-12">
               {/* Text content */}
               <div className="max-w-xl w-full text-center lg:text-left z-10">

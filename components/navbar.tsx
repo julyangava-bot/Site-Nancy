@@ -187,11 +187,13 @@ const DesktopNav = ({
         boxShadow: visible
           ? "0 10px 30px -10px rgba(0,0,0,0.1)"
           : "0 0 0 transparent",
+        borderRadius: "9999px",
       }}
       initial={{
         width: "80%",
         scale: 0.95,
         opacity: 0,
+        borderRadius: "9999px",
       }}
       whileInView={{
         scale: 1,
@@ -372,11 +374,13 @@ const DesktopNav = ({
               opacity: 0,
               height: 0,
               y: -10,
+              borderRadius: "9999px",
             }}
             animate={{
               opacity: 1,
               height: "auto",
               y: 0,
+              borderRadius: "9999px",
             }}
             exit={{
               opacity: 0,
@@ -387,7 +391,7 @@ const DesktopNav = ({
               duration: 0.2,
               ease: "easeInOut",
             }}
-            className="flex rounded-2xl absolute top-20 mt-2 backdrop-blur-xl bg-white/95 inset-x-0 z-50 flex-col items-start justify-start w-full px-6 py-6 shadow-lg"
+            className="flex rounded-full backdrop-blur-xl bg-white/95 inset-x-0 z-50 flex-col items-start justify-start w-full px-6 py-6 shadow-lg absolute top-20 mt-2 overflow-hidden"
           >
             {navItems.map((navItem, idx) => (
               <motion.div
@@ -498,7 +502,7 @@ const MobileNav = ({
             : "rgba(255, 255, 255, 0.8)",
           width: visible ? "85%" : "90%",
           y: visible ? 4 : 0,
-          borderRadius: "full",
+          borderRadius: "9999px",
           padding: "12px 20px",
           boxShadow: visible
             ? "0 10px 30px -10px rgba(0,0,0,0.1)"
@@ -508,6 +512,7 @@ const MobileNav = ({
           width: "85%",
           scale: 0.95,
           opacity: 0,
+          borderRadius: "9999px",
         }}
         whileInView={{
           scale: 1,
@@ -518,7 +523,7 @@ const MobileNav = ({
           ease: "easeInOut",
         }}
         className={cn(
-          "flex relative flex-col lg:hidden w-full justify-between items-center max-w-[calc(100vw-2rem)] mx-auto z-50"
+          "flex relative flex-col lg:hidden w-full justify-between items-center max-w-[calc(100vw-2rem)] mx-auto z-50 rounded-full"
         )}
       >
         <div className="flex flex-row justify-between items-center w-full">
@@ -554,11 +559,13 @@ const MobileNav = ({
                 opacity: 0,
                 height: 0,
                 y: -10,
+                borderRadius: "9999px",
               }}
               animate={{
                 opacity: 1,
                 height: "auto",
                 y: 0,
+                borderRadius: "9999px",
               }}
               exit={{
                 opacity: 0,
@@ -569,7 +576,7 @@ const MobileNav = ({
                 duration: 0.2,
                 ease: "easeInOut",
               }}
-              className="flex rounded-2xl absolute top-20 mt-2 backdrop-blur-xl bg-white/95 inset-x-0 z-50 flex-col items-start justify-start w-full px-6 py-6 shadow-lg"
+              className="flex rounded-full absolute top-20 mt-2 backdrop-blur-xl bg-white/95 inset-x-0 z-50 flex-col items-start justify-start w-full px-6 py-6 shadow-lg overflow-hidden"
             >
               {navItems.map((navItem, idx) => (
                 <motion.div
