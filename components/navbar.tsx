@@ -165,6 +165,11 @@ const DesktopNav = ({
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const toggleDropdown = (itemName: string) => {
+    setActiveDropdown(activeDropdown === itemName ? null : itemName);
+  };
 
   return (
     <motion.div
@@ -201,131 +206,258 @@ const DesktopNav = ({
       )}
     >
       <Logo />
-      <motion.div
-        className="lg:flex flex-row flex-1 items-center justify-center space-x-2 text-sm"
-        animate={{
-          scale: 1,
-          justifyContent: visible ? "flex-end" : "center",
-        }}
-      >
-        {navItems.map((navItem, idx) => (
-          <motion.div
-            key={`nav-item-${idx}`}
-            onHoverStart={() => {
-              setHoveredIndex(idx);
-              if (navItem.hasDropdown) {
-                setActiveDropdown(navItem.name);
-              } else {
-                setActiveDropdown(null);
-              }
-            }}
-            className="relative"
+      
+      {visible ? (
+        // Show compact version when scrolled (hamburger + Book Now)
+        <div className="flex items-center gap-3">
+          <Button
+            className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full"
+            asChild
           >
-            <a
-              className="text-black/90 relative px-3 py-1.5 transition-colors cursor-pointer flex items-center"
-              href={navItem.isSection ? `#${navItem.link}` : navItem.link}
-              onClick={(e) => {
-                if (!navItem.hasDropdown) {
-                  onNavClick(e, navItem);
-                } else if (navItem.isSection) {
-                  e.preventDefault();
-                  scrollToSection(navItem.link);
-                }
-              }}
-            >
-              <span className="relative z-10">{navItem.name}</span>
-              {navItem.hasDropdown && (
-                <IconChevronDown className="h-4 w-4 ml-1 text-black/70" />
-              )}
-              {hoveredIndex === idx && (
-                <motion.div
-                  layoutId="menu-hover"
-                  className="absolute inset-0 rounded-full"
-                  initial={{ opacity: 0 }}
-                  animate={{
-                    opacity: 1,
-                    background:
-                      "linear-gradient(145deg, rgba(252,209,230,0.6) 0%, rgba(231,57,146,0.2) 100%)",
-                    boxShadow: "0 4px 15px rgba(231,57,146,0.1)",
-                  }}
-                  exit={{
-                    opacity: 0,
-                  }}
-                  transition={{
-                    duration: 0.05,
-                  }}
-                />
-              )}
-            </a>
-
-            {/* Dropdown Menu */}
-            {navItem.hasDropdown && activeDropdown === navItem.name && (
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                className="absolute top-[calc(100%_+_0.5rem)] left-1/2 -translate-x-1/2 bg-white rounded-xl shadow-lg p-4 z-50 w-[500px]"
+            <Link href="/login">Book Now</Link>
+          </Button>
+          
+          <motion.div 
+            whileHover={{ scale: 1.1 }} 
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="cursor-pointer"
+          >
+            {mobileMenuOpen ? (
+              <IconX className="text-black/90" />
+            ) : (
+              <IconMenu2 className="text-black/90" />
+            )}
+          </motion.div>
+        </div>
+      ) : (
+        // Show full navigation when not scrolled
+        <>
+          <motion.div
+            className="lg:flex flex-row flex-1 items-center justify-center space-x-2 text-sm"
+            animate={{
+              scale: 1,
+              justifyContent: visible ? "flex-end" : "center",
+            }}
+          >
+            {navItems.map((navItem, idx) => (
+              <motion.div
+                key={`nav-item-${idx}`}
+                onHoverStart={() => {
+                  setHoveredIndex(idx);
+                  if (navItem.hasDropdown) {
+                    setActiveDropdown(navItem.name);
+                  } else {
+                    setActiveDropdown(null);
+                  }
+                }}
+                className="relative"
               >
-                <div className="grid grid-cols-2 gap-4">
-                  {navItem.dropdownItems?.map((item, i) => (
-                    <Link 
-                      key={`dropdown-${i}`}
-                      href={item.link}
-                      className="flex items-start gap-3 p-3 rounded-lg hover:bg-pink-50 transition-colors duration-200"
-                      onClick={() => setActiveDropdown(null)}
-                    >
-                      <div className="flex-shrink-0 h-14 w-14 relative">
-                        <Image 
-                          src={item.imageSrc} 
-                          alt={item.name}
-                          width={56}
-                          height={56}
-                          className="rounded-md object-contain"
-                        />
-                      </div>
-                      <div>
-                        <h3 className="font-medium text-gray-900">{item.name}</h3>
-                        {item.description && (
-                          <p className="text-xs text-gray-500 mt-0.5">{item.description}</p>
-                        )}
-                      </div>
-                    </Link>
-                  ))}
+                <a
+                  className="text-black/90 relative px-3 py-1.5 transition-colors cursor-pointer flex items-center"
+                  href={navItem.isSection ? `#${navItem.link}` : navItem.link}
+                  onClick={(e) => {
+                    if (!navItem.hasDropdown) {
+                      onNavClick(e, navItem);
+                    } else if (navItem.isSection) {
+                      e.preventDefault();
+                      scrollToSection(navItem.link);
+                    }
+                  }}
+                >
+                  <span className="relative z-10">{navItem.name}</span>
+                  {navItem.hasDropdown && (
+                    <IconChevronDown className="h-4 w-4 ml-1 text-black/70" />
+                  )}
+                  {hoveredIndex === idx && (
+                    <motion.div
+                      layoutId="menu-hover"
+                      className="absolute inset-0 rounded-full"
+                      initial={{ opacity: 0 }}
+                      animate={{
+                        opacity: 1,
+                        background:
+                          "linear-gradient(145deg, rgba(252,209,230,0.6) 0%, rgba(231,57,146,0.2) 100%)",
+                        boxShadow: "0 4px 15px rgba(231,57,146,0.1)",
+                      }}
+                      exit={{
+                        opacity: 0,
+                      }}
+                      transition={{
+                        duration: 0.05,
+                      }}
+                    />
+                  )}
+                </a>
+
+                {/* Dropdown Menu */}
+                {navItem.hasDropdown && activeDropdown === navItem.name && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                    className="absolute top-[calc(100%_+_0.5rem)] left-1/2 -translate-x-1/2 bg-white rounded-xl shadow-lg p-4 z-50 w-[500px]"
+                  >
+                    <div className="grid grid-cols-2 gap-4">
+                      {navItem.dropdownItems?.map((item, i) => (
+                        <Link 
+                          key={`dropdown-${i}`}
+                          href={item.link}
+                          className="flex items-start gap-3 p-3 rounded-lg hover:bg-pink-50 transition-colors duration-200"
+                          onClick={() => setActiveDropdown(null)}
+                        >
+                          <div className="flex-shrink-0 h-14 w-14 relative">
+                            <Image 
+                              src={item.imageSrc} 
+                              alt={item.name}
+                              width={56}
+                              height={56}
+                              className="rounded-md object-contain"
+                            />
+                          </div>
+                          <div>
+                            <h3 className="font-medium text-gray-900">{item.name}</h3>
+                            {item.description && (
+                              <p className="text-xs text-gray-500 mt-0.5">{item.description}</p>
+                            )}
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <AnimatePresence mode="popLayout" initial={false}>
+            {!visible && (
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{
+                  opacity: 1,
+                  x: 0,
+                  transition: {
+                    duration: 0.2,
+                  },
+                }}
+                exit={{
+                  opacity: 0,
+                  x: 20,
+                  transition: {
+                    duration: 0.2,
+                  },
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <Button
+                    className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full"
+                    asChild
+                  >
+                    <Link href="/login">Book Now</Link>
+                  </Button>
                 </div>
               </motion.div>
             )}
-          </motion.div>
-        ))}
-      </motion.div>
+          </AnimatePresence>
+        </>
+      )}
 
-      <AnimatePresence mode="popLayout" initial={false}>
-        {!visible && (
+      {/* Compact menu dropdown */}
+      <AnimatePresence>
+        {visible && mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
+            initial={{
+              opacity: 0,
+              height: 0,
+              y: -10,
+            }}
             animate={{
               opacity: 1,
-              x: 0,
-              transition: {
-                duration: 0.2,
-              },
+              height: "auto",
+              y: 0,
             }}
             exit={{
               opacity: 0,
-              x: 20,
-              transition: {
-                duration: 0.2,
-              },
+              height: 0,
+              y: -10,
             }}
+            transition={{
+              duration: 0.2,
+              ease: "easeInOut",
+            }}
+            className="flex rounded-2xl absolute top-20 mt-2 backdrop-blur-xl bg-white/95 inset-x-0 z-50 flex-col items-start justify-start w-full px-6 py-6 shadow-lg"
           >
-            <div className="flex items-center gap-2">
-              <Button
-                className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full"
-                asChild
+            {navItems.map((navItem, idx) => (
+              <motion.div
+                key={`desktop-compact-link-${idx}`}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{
+                  opacity: 1,
+                  x: 0,
+                  transition: {
+                    delay: idx * 0.05,
+                  },
+                }}
+                className="w-full border-b border-gray-100 last:border-0 py-3"
               >
-                <Link href="/login">Book Now</Link>
-              </Button>
-            </div>
+                {navItem.hasDropdown ? (
+                  <div className="w-full">
+                    <button
+                      onClick={() => toggleDropdown(navItem.name)}
+                      className="flex w-full justify-between items-center text-black/90 hover:text-black"
+                    >
+                      <span>{navItem.name}</span>
+                      <IconChevronDown 
+                        className={`h-4 w-4 transition-transform ${
+                          activeDropdown === navItem.name ? "rotate-180" : ""
+                        }`} 
+                      />
+                    </button>
+                    
+                    <AnimatePresence>
+                      {activeDropdown === navItem.name && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="pl-4 mt-2 flex flex-col space-y-2"
+                        >
+                          {navItem.dropdownItems?.map((item, i) => (
+                            <Link
+                              key={`desktop-compact-dropdown-${i}`}
+                              href={item.link}
+                              className="text-gray-700 hover:text-[#E73992] py-1"
+                              onClick={() => {
+                                setActiveDropdown(null);
+                                setMobileMenuOpen(false);
+                              }}
+                            >
+                              {item.name}
+                            </Link>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <a
+                    href={navItem.isSection ? `#${navItem.link}` : navItem.link}
+                    onClick={(e) => {
+                      onNavClick(e, navItem);
+                      setMobileMenuOpen(false);
+                    }}
+                    className="relative text-black/90 hover:text-black transition-colors"
+                  >
+                    <motion.span className="block">
+                      {navItem.name}
+                    </motion.span>
+                  </a>
+                )}
+              </motion.div>
+            ))}
           </motion.div>
         )}
       </AnimatePresence>
@@ -366,7 +498,7 @@ const MobileNav = ({
             : "rgba(255, 255, 255, 0.8)",
           width: visible ? "85%" : "90%",
           y: visible ? 4 : 0,
-          borderRadius: open ? "24px" : "full",
+          borderRadius: "full",
           padding: "12px 20px",
           boxShadow: visible
             ? "0 10px 30px -10px rgba(0,0,0,0.1)"
@@ -391,16 +523,28 @@ const MobileNav = ({
       >
         <div className="flex flex-row justify-between items-center w-full">
           <Logo />
-          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-            {open ? (
-              <IconX className="text-black/90" onClick={() => setOpen(!open)} />
-            ) : (
-              <IconMenu2
-                className="text-black/90"
-                onClick={() => setOpen(!open)}
-              />
-            )}
-          </motion.div>
+          <div className="flex items-center gap-3">
+            {/* Book Now button - visible until sm breakpoint */}
+            <div className="hidden sm:block">
+              <Button
+                className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full"
+                asChild
+              >
+                <Link href="/login">Book Now</Link>
+              </Button>
+            </div>
+            
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+              {open ? (
+                <IconX className="text-black/90" onClick={() => setOpen(!open)} />
+              ) : (
+                <IconMenu2
+                  className="text-black/90"
+                  onClick={() => setOpen(!open)}
+                />
+              )}
+            </motion.div>
+          </div>
         </div>
 
         <AnimatePresence>
@@ -425,7 +569,7 @@ const MobileNav = ({
                 duration: 0.2,
                 ease: "easeInOut",
               }}
-              className="flex rounded-2xl absolute top-16 backdrop-blur-xl bg-white/95 inset-x-0 z-50 flex-col items-start justify-start w-full px-6 py-6 shadow-lg"
+              className="flex rounded-2xl absolute top-20 mt-2 backdrop-blur-xl bg-white/95 inset-x-0 z-50 flex-col items-start justify-start w-full px-6 py-6 shadow-lg"
             >
               {navItems.map((navItem, idx) => (
                 <motion.div
@@ -494,7 +638,8 @@ const MobileNav = ({
                 </motion.div>
               ))}
 
-              <div className="flex flex-col w-full gap-3 mt-4">
+              {/* Book Now button - only visible in mobile menu when not in top bar */}
+              <div className="flex flex-col w-full gap-3 mt-4 sm:hidden">
                 <Button
                   className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full w-full"
                   asChild
