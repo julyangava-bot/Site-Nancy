@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 // Testimonial data for PinkDog
 const testimonialData = [
@@ -74,13 +75,11 @@ export function Testimonials() {
                 asChild
                 className="z-40 bg-gradient-to-r from-pink-400 to-pink-600 text-white px-6 py-2.5 rounded-full hover:opacity-90 transition-all duration-200 shadow-[0_1px_2px_rgba(0,0,0,0.2)]"
               >
-                <a 
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link 
+                  href="/booking"
                 >
-                  Book Now
-                </a>
+                  Try Pink Dog Today
+                </Link>
               </Button>
             </div>
      

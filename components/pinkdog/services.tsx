@@ -1,9 +1,10 @@
 "use client";
 import React from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { BackgroundGradient } from "@/components/ui/background-gradient";
 
 // Service card data
 const services = [
@@ -81,30 +82,39 @@ export function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="relative bg-white rounded-2xl shadow-lg overflow-hidden group"
             >
-              <div className={`absolute top-0 left-0 w-1/2 h-full ${service.color} opacity-40 rounded-r-full transform -translate-x-1/4 transition-transform group-hover:translate-x-0`}></div>
-              
-              <div className="p-6 h-full relative">
-                <div className="w-full">
-                  <div className="relative w-20 h-20 mb-4 bg-[#FCD1E6] rounded-xl p-4">
-                    <Image
-                      src={service.icon}
-                      alt={`${service.title} icon`}
-                      fill
-                      className="object-contain"
-                    />
+              <BackgroundGradient 
+                containerClassName="rounded-2xl"
+                className="p-0"
+                animate={true}
+                pinkTheme={true}
+                subtle={true}
+              >
+                <div className="relative bg-white rounded-3xl overflow-hidden group h-full">
+                  <div className={`absolute top-0 left-0 w-1/2 h-full ${service.color} opacity-30 rounded-r-full transform -translate-x-1/4 transition-transform group-hover:translate-x-0`}></div>
+                  
+                  <div className="p-6 h-full relative">
+                    <div className="w-full">
+                      <div className="relative w-20 h-20 mb-4 bg-[#FCD1E6] rounded-xl p-4">
+                        <Image
+                          src={service.icon}
+                          alt={`${service.title} icon`}
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">{service.title}</h3>
+                      <p className="text-gray-600 mb-4">{service.description}</p>
+                      <Button
+                        className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full"
+                        asChild
+                      >
+                        <Link href={service.link}>Learn More</Link>
+                      </Button>
+                    </div>
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{service.title}</h3>
-                  <p className="text-gray-600 mb-4">{service.description}</p>
-                  <Button
-                    className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full"
-                    asChild
-                  >
-                    <Link href={service.link}>Learn More</Link>
-                  </Button>
                 </div>
-              </div>
+              </BackgroundGradient>
             </motion.div>
           ))}
         </div>

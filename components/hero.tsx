@@ -184,7 +184,7 @@ export function Hero() {
                     className="bg-[#E73992] text-white hover:bg-[#d3337f] text-base sm:text-base md:text-lg font-medium px-6 sm:px-6 md:px-8 py-3 sm:py-3 md:py-3.5 h-auto rounded-full shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
                     asChild
                   >
-                    <Link href="/booking">Book Now</Link>
+                    <Link href="/booking">Schedule Visit</Link>
                   </Button>
                   <Button
                     className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] text-base sm:text-base md:text-lg font-medium px-6 sm:px-6 md:px-8 py-3 sm:py-3 md:py-3.5 h-auto rounded-full shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
