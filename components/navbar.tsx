@@ -146,7 +146,7 @@ export const Navbar = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
-      className="w-full fixed top-4 sm:top-2 inset-x-0 z-50"
+      className="w-full fixed top-4 sm:top-2 inset-x-0 z-50 rounded-full"
     >
       <DesktopNav visible={visible} navItems={navItems} onNavClick={handleNavClick} />
       <MobileNav visible={visible} navItems={navItems} onNavClick={handleNavClick} />
@@ -184,16 +184,15 @@ const DesktopNav = ({
           : "rgba(255,255,255,0.5)",
         backdropFilter: visible ? "blur(10px)" : "blur(5px)",
         y: visible ? 4 : 0,
+        borderRadius: "full",
         boxShadow: visible
           ? "0 10px 30px -10px rgba(0,0,0,0.1)"
           : "0 0 0 transparent",
-        borderRadius: "9999px",
       }}
       initial={{
         width: "80%",
         scale: 0.95,
         opacity: 0,
-        borderRadius: "9999px",
       }}
       whileInView={{
         scale: 1,
@@ -374,13 +373,11 @@ const DesktopNav = ({
               opacity: 0,
               height: 0,
               y: -10,
-              borderRadius: "9999px",
             }}
             animate={{
               opacity: 1,
               height: "auto",
               y: 0,
-              borderRadius: "9999px",
             }}
             exit={{
               opacity: 0,
@@ -391,7 +388,7 @@ const DesktopNav = ({
               duration: 0.2,
               ease: "easeInOut",
             }}
-            className="flex rounded-full backdrop-blur-xl bg-white/95 inset-x-0 z-50 flex-col items-start justify-start w-full px-6 py-6 shadow-lg absolute top-20 mt-2 overflow-hidden"
+            className="flex rounded-2xl absolute top-20 mt-2 backdrop-blur-xl bg-white/95 inset-x-0 z-50 flex-col items-start justify-start w-full px-6 py-6 shadow-lg"
           >
             {navItems.map((navItem, idx) => (
               <motion.div
@@ -502,7 +499,7 @@ const MobileNav = ({
             : "rgba(255, 255, 255, 0.8)",
           width: visible ? "85%" : "90%",
           y: visible ? 4 : 0,
-          borderRadius: "9999px",
+          borderRadius: "full",
           padding: "12px 20px",
           boxShadow: visible
             ? "0 10px 30px -10px rgba(0,0,0,0.1)"
@@ -512,7 +509,6 @@ const MobileNav = ({
           width: "85%",
           scale: 0.95,
           opacity: 0,
-          borderRadius: "9999px",
         }}
         whileInView={{
           scale: 1,
@@ -559,13 +555,11 @@ const MobileNav = ({
                 opacity: 0,
                 height: 0,
                 y: -10,
-                borderRadius: "9999px",
               }}
               animate={{
                 opacity: 1,
                 height: "auto",
                 y: 0,
-                borderRadius: "9999px",
               }}
               exit={{
                 opacity: 0,
@@ -576,7 +570,7 @@ const MobileNav = ({
                 duration: 0.2,
                 ease: "easeInOut",
               }}
-              className="flex rounded-full absolute top-20 mt-2 backdrop-blur-xl bg-white/95 inset-x-0 z-50 flex-col items-start justify-start w-full px-6 py-6 shadow-lg overflow-hidden"
+              className="flex rounded-2xl absolute top-20 mt-2 backdrop-blur-xl bg-white/95 inset-x-0 z-50 flex-col items-start justify-start w-full px-6 py-6 shadow-lg"
             >
               {navItems.map((navItem, idx) => (
                 <motion.div
