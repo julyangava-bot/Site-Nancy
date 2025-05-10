@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
+import { AuroraBackground } from "./ui/aurora-background";
 
 // Centralized image configuration object
 const imageConfig = {
@@ -140,68 +141,68 @@ export function Hero() {
   };
 
   return (
-    <div className="relative overflow-hidden bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Hero content with optimized layout - reduced min-height to bring elements closer */}
-        <div className="relative pt-40 sm:pt-40 md:pt-40 pb-6 min-h-[600px] sm:min-h-[600px] md:min-h-[650px] lg:min-h-[calc(100vh-6rem)] max-h-[800px] xl:max-h-[900px] flex flex-col lg:flex-row items-center justify-center">
-          <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-4 md:gap-6 lg:gap-8 xl:gap-12">
-            {/* Text content */}
-            <div className="max-w-xl w-full text-center lg:text-left z-10">
-              <motion.h1 
-                initial="hidden"
-                animate="visible"
-                variants={fadeInVariants}
-                transition={{ duration: 0.4 }}
-                className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 font-display"
-                style={{ willChange: "opacity" }}
-              >
-                Welcome to <span className="text-[#E73992]">Pink Dog</span>
-                <span className="block mt-1">Your Pet&apos;s Favorite Place!</span>
-              </motion.h1>
-              
-              <motion.p
-                initial="hidden"
-                animate="visible"
-                variants={fadeInVariants}
-                transition={{ duration: 0.4, delay: 0.1 }}
-                className="mt-3 sm:mt-4 text-base sm:text-lg text-gray-600 max-w-2xl"
-                style={{ willChange: "opacity" }}
-              >
-                Pet Hotel • Daycare • Grooming – All with ❤️
-              </motion.p>
-              
-              <motion.div 
-                initial="hidden"
-                animate="visible"
-                variants={fadeInVariants}
-                transition={{ duration: 0.4, delay: 0.2 }}
-                className="mt-5 sm:mt-8 md:mt-8 flex flex-wrap justify-center lg:justify-start gap-3 sm:gap-4 md:gap-5"
-                style={{ willChange: "opacity" }}
-              >
-                <Button
-                  className="bg-[#E73992] text-white hover:bg-[#d3337f] text-base sm:text-base md:text-lg font-medium px-6 sm:px-6 md:px-8 py-3 sm:py-3 md:py-3.5 h-auto rounded-full shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
-                  asChild
+    <AuroraBackground className="overflow-hidden">
+      <div className="relative z-10 w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Hero content with optimized layout - reduced min-height to bring elements closer */}
+          <div className="relative pt-40 sm:pt-40 md:pt-40 pb-16 sm:pb-20 md:pb-24 min-h-[600px] sm:min-h-[600px] md:min-h-[650px] lg:min-h-[calc(100vh-6rem)] max-h-[800px] xl:max-h-[900px] flex flex-col lg:flex-row items-center justify-center">
+            <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-4 md:gap-6 lg:gap-8 xl:gap-12">
+              {/* Text content */}
+              <div className="max-w-xl w-full text-center lg:text-left z-10">
+                <motion.h1 
+                  initial="hidden"
+                  animate="visible"
+                  variants={fadeInVariants}
+                  transition={{ duration: 0.4 }}
+                  className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 font-display"
+                  style={{ willChange: "opacity" }}
                 >
-                  <Link href="/booking">Book Now</Link>
-                </Button>
-                <Button
-                  className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] text-base sm:text-base md:text-lg font-medium px-6 sm:px-6 md:px-8 py-3 sm:py-3 md:py-3.5 h-auto rounded-full shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
-                  asChild
+                  Welcome to <span className="text-[#E73992]">Pink Dog</span>
+                  <span className="block mt-1">Your Pet&apos;s Favorite Place!</span>
+                </motion.h1>
+                
+                <motion.p
+                  initial="hidden"
+                  animate="visible"
+                  variants={fadeInVariants}
+                  transition={{ duration: 0.4, delay: 0.1 }}
+                  className="mt-3 sm:mt-4 text-base sm:text-lg text-gray-600 max-w-2xl"
+                  style={{ willChange: "opacity" }}
                 >
-                  <Link href="#services">View Services</Link>
-                </Button>
-              </motion.div>
-            </div>
-            
-            {/* Image Carousel with Keen Slider - optimized and reduced margin-top */}
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={scaleInVariants}
-              className="relative z-10 w-full max-w-[380px] sm:max-w-[420px] md:max-w-[480px] lg:max-w-lg xl:max-w-xl mt-4 sm:mt-4 md:mt-0"
-              style={{ willChange: "transform, opacity" }}
-            >
-              <div className="relative">
+                  Pet Hotel • Daycare • Grooming – All with ❤️
+                </motion.p>
+                
+                <motion.div 
+                  initial="hidden"
+                  animate="visible"
+                  variants={fadeInVariants}
+                  transition={{ duration: 0.4, delay: 0.2 }}
+                  className="mt-5 sm:mt-8 md:mt-8 flex flex-wrap justify-center lg:justify-start gap-3 sm:gap-4 md:gap-5"
+                  style={{ willChange: "opacity" }}
+                >
+                  <Button
+                    className="bg-[#E73992] text-white hover:bg-[#d3337f] text-base sm:text-base md:text-lg font-medium px-6 sm:px-6 md:px-8 py-3 sm:py-3 md:py-3.5 h-auto rounded-full shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
+                    asChild
+                  >
+                    <Link href="/booking">Book Now</Link>
+                  </Button>
+                  <Button
+                    className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] text-base sm:text-base md:text-lg font-medium px-6 sm:px-6 md:px-8 py-3 sm:py-3 md:py-3.5 h-auto rounded-full shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
+                    asChild
+                  >
+                    <Link href="#services">View Services</Link>
+                  </Button>
+                </motion.div>
+              </div>
+              
+              {/* Image Carousel - directly over Aurora background without any containers/boxes */}
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={scaleInVariants}
+                className="relative z-10 w-full max-w-[380px] sm:max-w-[420px] md:max-w-[480px] lg:max-w-lg xl:max-w-xl mt-4 sm:mt-4 md:mt-0"
+                style={{ willChange: "transform, opacity" }}
+              >
                 {/* Keen Slider carousel - preset height to prevent layout shift */}
                 <div 
                   ref={sliderRef} 
@@ -210,7 +211,7 @@ export function Hero() {
                   {imageConfig.carousel.map((image, idx) => (
                     <div 
                       key={idx} 
-                      className={`keen-slider__slide ${image.className} flex items-center justify-center`}
+                      className={`keen-slider__slide ${image.className} flex items-center justify-center bg-transparent`}
                     >
                       <div className="w-full h-full relative">
                         <Image
@@ -256,22 +257,15 @@ export function Hero() {
                     </div>
                   </div>
                 ))}
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
           </div>
         </div>
+        
+        {/* Simplified background decoration elements - hidden on mobile */}
+        <div className="absolute -top-16 -right-16 w-32 h-32 md:w-48 md:h-48 rounded-full bg-[#FCD1E6] opacity-20 hidden sm:block"></div>
+        <div className="absolute -bottom-24 -left-24 w-48 h-48 md:w-72 md:h-72 rounded-full bg-[#FCD1E6] opacity-20 hidden sm:block"></div>
       </div>
-      
-      {/* Simplified pink wave bottom border */}
-      <div className="w-full h-14 sm:h-16 md:h-20 bg-gradient-to-b from-white to-[#FCD1E6]">
-        <div className="h-full w-full bg-[#FCD1E6]/10 relative">
-          <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-[#FCD1E6]/40"></div>
-        </div>
-      </div>
-      
-      {/* Simplified background decoration elements - hidden on mobile */}
-      <div className="absolute -top-16 -right-16 w-32 h-32 md:w-48 md:h-48 rounded-full bg-[#FCD1E6] opacity-20 hidden sm:block"></div>
-      <div className="absolute -bottom-24 -left-24 w-48 h-48 md:w-72 md:h-72 rounded-full bg-[#FCD1E6] opacity-20 hidden sm:block"></div>
-    </div>
+    </AuroraBackground>
   );
 }

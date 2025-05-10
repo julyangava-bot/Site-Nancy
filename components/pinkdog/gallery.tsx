@@ -4,123 +4,195 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useStoriesVideos } from '@/hooks/useStoriesVideos';
 
-// Gallery images - in a real project, you would replace these with actual pet images
+// Gallery images - updated with actual file names from public/images/gallery/all
 const galleryImages = [
   // General images (will appear in All Photos)
   {
-    id: 201,
+    id: 1,
     src: "/images/gallery/all/image-1.JPG",
-    alt: "Dog image",
+    alt: "Happy dog enjoying our facility",
     caption: "Happy dog enjoying our facility",
     category: "general"
   },
   {
-    id: 202,
+    id: 2,
     src: "/images/gallery/all/image-2.jpg",
     alt: "Dogs playing together",
     caption: "Dogs enjoying playtime together",
     category: "general"
   },
   {
-    id: 203,
+    id: 3,
     src: "/images/gallery/all/image-3.JPG",
     alt: "Cute dog portrait",
     caption: "One of our adorable guests",
     category: "general"
   },
+  {
+    id: 4,
+    src: "/images/gallery/all/image-4.JPG",
+    alt: "Dog enjoying playtime",
+    caption: "Playtime at Pink Dog",
+    category: "general"
+  },
+  {
+    id: 5,
+    src: "/images/gallery/all/image-5.JPG",
+    alt: "Dog with stylish bandana",
+    caption: "Stylish pup with our branded bandana",
+    category: "general"
+  },
+  {
+    id: 6,
+    src: "/images/gallery/all/image-6.JPG",
+    alt: "Dog after grooming",
+    caption: "Fresh and clean after grooming",
+    category: "general"
+  },
   
   // Service images
   {
-    id: 12,
+    id: 7,
     src: "/images/gallery/all/image-17.JPG",
     alt: "Dog grooming service",
-    caption: "Loving care during grooming sessions",
+    caption: "Professional grooming service",
     category: "services"
   },
   {
-    id: 13,
+    id: 8,
     src: "/images/gallery/all/image-20.JPG",
     alt: "Professional grooming",
     caption: "Our expert groomers provide personalized attention",
     category: "services"
   },
   {
-    id: 1,
+    id: 9,
     src: "/images/gallery/all/image-21.JPG",
     alt: "Professional grooming",
-    caption: "Our expert groomers provide personalized attention",
+    caption: "Grooming with care and attention",
     category: "services"
   },
+  {
+    id: 10,
+    src: "/images/gallery/all/image-13.JPG",
+    alt: "Dog grooming session",
+    caption: "Gentle grooming for your pet",
+    category: "services"
+  },
+  {
+    id: 11,
+    src: "/images/gallery/all/image-22.JPG",
+    alt: "Dog grooming detail",
+    caption: "Attention to every detail",
+    category: "services"
+  },
+  
   // Happy Pets images
   {
+    id: 12,
+    src: "/images/gallery/all/image-7.jpg",
+    alt: "Happy dogs playing",
+    caption: "Happy pups enjoying outdoor time",
+    category: "pets"
+  },
+  {
+    id: 13,
+    src: "/images/gallery/all/image-8.JPG",
+    alt: "Dog outdoor portrait",
+    caption: "Beautiful portrait of our guest",
+    category: "pets"
+  },
+  {
     id: 14,
-    src: "/images/gallery/all/image-1.JPG",
-    alt: "White Samoyed smiling",
-    caption: "Happy white Samoyed enjoying our play area",
+    src: "/images/gallery/all/image-9.jpg",
+    alt: "Dog playtime",
+    caption: "Fun and exercise at Pink Dog",
     category: "pets"
   },
   {
     id: 15,
-    src: "/images/gallery/all/image-2.jpg",
-    alt: "Group of dogs playing together",
-    caption: "Friendly pack enjoying outdoor playtime",
+    src: "/images/gallery/all/image-10.JPG",
+    alt: "Happy dog smiling",
+    caption: "The smile says it all!",
     category: "pets"
   },
   {
     id: 16,
-    src: "/images/gallery/all/image-4.JPG",
-    alt: "Collie closeup",
-    caption: "Beautiful collie enjoying personal attention",
+    src: "/images/gallery/all/image-11.JPG",
+    alt: "Dog enjoying outdoors",
+    caption: "Outdoor adventure time",
     category: "pets"
   },
   {
     id: 17,
-    src: "/images/gallery/all/image-5.JPG",
-    alt: "Alaskan Malamute with bandana",
-    caption: "Stylish Malamute sporting a pink bandana",
+    src: "/images/gallery/all/image-12.JPG",
+    alt: "Happy dog guest",
+    caption: "Another happy guest at Pink Dog",
     category: "pets"
   },
   {
     id: 18,
-    src: "/images/gallery/all/image-6.JPG",
-    alt: "Goldendoodle relaxing",
-    caption: "Relaxed Goldendoodle after grooming session",
+    src: "/images/gallery/all/image-14.JPG",
+    alt: "Dog with toy",
+    caption: "Playtime with favorite toys",
     category: "pets"
   },
   {
     id: 19,
-    src: "/images/gallery/all/image-9.jpg",
-    alt: "Boston Terrier puppy",
-    caption: "Adorable Boston Terrier puppy with toy",
+    src: "/images/gallery/all/image-15.JPG",
+    alt: "Dog portrait",
+    caption: "Professional pet portrait",
     category: "pets"
   },
+  {
+    id: 20,
+    src: "/images/gallery/all/image-16.JPG",
+    alt: "Dog enjoying resort",
+    caption: "Relaxing at our pet resort",
+    category: "pets"
+  },
+  
   // Facility images
   {
-    id: 7,
+    id: 21,
     src: "/images/gallery/all/image-27.jpg",
     alt: "Pink Dog Resort Facility",
     caption: "Our spacious facility",
     category: "facility"
   },
   {
-    id: 8,
+    id: 22,
     src: "/images/gallery/all/image-40.jpg",
     alt: "Pink Dog Resort Interior",
     caption: "Modern and clean interior",
     category: "facility"
   },
   {
-    id: 9,
+    id: 23,
     src: "/images/gallery/all/image-41.jpg",
     alt: "Pink Dog Resort Entrance",
     caption: "Welcome to Pink Dog Resort",
     category: "facility"
   },
   {
-    id: 10,
+    id: 24,
     src: "/images/gallery/all/image-43.PNG",
     alt: "Pink Dog Resort Play Area",
     caption: "Dedicated play area for pets",
+    category: "facility"
+  },
+  {
+    id: 25,
+    src: "/images/gallery/all/image-28.jpg",
+    alt: "Pink Dog Resort Garden",
+    caption: "Beautiful outdoor space",
+    category: "facility"
+  },
+  {
+    id: 26,
+    src: "/images/gallery/all/image-29.jpg",
+    alt: "Pink Dog Resort Reception",
+    caption: "Our welcoming reception area",
     category: "facility"
   }
 ];
@@ -140,6 +212,7 @@ export function Gallery() {
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
   const [randomAllPhotos, setRandomAllPhotos] = useState<typeof galleryImages>([]);
   const { videos, isLoading: videosLoading, error: videosError } = useStoriesVideos();
+  const [isMounted, setIsMounted] = useState(false);
 
   // Function to get random items from array
   const getRandomItems = (array: typeof galleryImages, count: number) => {
@@ -147,48 +220,88 @@ export function Gallery() {
     return shuffled.slice(0, count);
   };
 
-  // Update random photos every 10 seconds instead of 30
+  // First mount flag to prevent hydration mismatch
   useEffect(() => {
-    // Initial random selection
+    setIsMounted(true);
+  }, []);
+
+  // Update random photos every 10 seconds
+  useEffect(() => {
+    // Only run this effect on the client after component has mounted
+    if (!isMounted) return;
+
+    // Initial selection - ensure we have general images and others for diversity
     const generalImages = galleryImages.filter(img => img.category === "general");
     const otherImages = galleryImages.filter(img => img.category !== "videos" && img.category !== "general");
     
-    // Ensure we have images to display
-    console.log("General images:", generalImages.length);
-    console.log("Other images available:", otherImages.length);
-    
     // Function to combine images to ensure we always have photos to display
     const updateRandomPhotos = () => {
-      // Always make sure we have at least 6 images
-      const targetCount = Math.max(6, generalImages.length);
-      const randomOthers = getRandomItems(otherImages, targetCount - generalImages.length);
-      const newRandomPhotos = [...generalImages, ...randomOthers];
+      // Always use exactly 6 images for All Photos
+      const targetCount = 6;
       
-      // Only update if we actually have images to show
-      if (newRandomPhotos.length > 0) {
-        setRandomAllPhotos(newRandomPhotos);
+      // Get all available images except videos
+      const allAvailableImages = galleryImages.filter(img => img.category !== "videos");
+      
+      // If we have fewer than 6 general images, supplement with others
+      const generalToUse = getRandomItems(generalImages, Math.min(generalImages.length, 4));
+      const othersNeeded = targetCount - generalToUse.length;
+      const othersToUse = getRandomItems(otherImages, othersNeeded);
+      
+      // Combine general and other images
+      let newRandomPhotos = [...generalToUse, ...othersToUse];
+      
+      // Final safeguard: if we still don't have enough, get random from all
+      if (newRandomPhotos.length < targetCount) {
+        const missingCount = targetCount - newRandomPhotos.length;
+        const extraImages = getRandomItems(
+          allAvailableImages.filter(img => !newRandomPhotos.some(p => p.id === img.id)), 
+          missingCount
+        );
+        newRandomPhotos = [...newRandomPhotos, ...extraImages];
       }
+      
+      // Shuffle for visual variety
+      setRandomAllPhotos(newRandomPhotos.sort(() => 0.5 - Math.random()));
     };
     
-    // Initialize with all images if no random ones are available
-    if (generalImages.length === 0 && otherImages.length === 0) {
-      // Fallback: use all non-video images
-      setRandomAllPhotos(galleryImages.filter(img => img.category !== "videos"));
-    } else {
-      // Normal case: use random selection
-      updateRandomPhotos();
-    }
+    // Initialize
+    updateRandomPhotos();
     
     // Set interval to update random photos every 10 seconds
     const interval = setInterval(updateRandomPhotos, 10000);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [isMounted]);
 
+  // Ensure we ALWAYS have exactly 6 images for All Photos
+  const getAllPhotosImages = () => {
+    // During initial server render or before client mount, use a deterministic subset
+    // This prevents hydration mismatch errors
+    if (!isMounted) {
+      // Use first 6 images from general and other categories in a deterministic order
+      return galleryImages
+        .filter(img => img.category !== "videos")
+        .slice(0, 6);
+    }
+    
+    // After client-side mount, use random photos as before
+    if (randomAllPhotos.length === 6) {
+      return randomAllPhotos;
+    }
+    
+    // Fallback to deterministic subset if randomAllPhotos isn't populated yet
+    return galleryImages
+      .filter(img => img.category !== "videos")
+      .slice(0, 6);
+  };
+  
   // Filter based on selected category
   const filteredImages = selectedCategory === "all" 
-    ? (randomAllPhotos.length > 0 ? randomAllPhotos : galleryImages.filter(img => img.category !== "videos"))
+    ? getAllPhotosImages()
     : galleryImages.filter(image => image.category === selectedCategory);
+  
+  // For non-All Photos categories, use all available images in that category
+  const displayedImages = filteredImages;
   
   const isVideoTab = selectedCategory === "videos";
 
@@ -273,24 +386,29 @@ export function Gallery() {
         
         {/* Gallery content - conditionally render photos or videos */}
         {!isVideoTab ? (
-          // Photos Grid
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {filteredImages.map((image, index) => (
+          // Photos - Enhanced Masonry Layout with better spacing
+          <div className="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4">
+            {displayedImages.map((image, index) => (
               <motion.div
                 key={image.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: index * 0.05 }} // Faster delay for smoother appearance
                 viewport={{ once: true }}
-                className="relative overflow-hidden rounded-xl shadow-md cursor-pointer group bg-pink-100"
+                className="relative break-inside-avoid mb-4 overflow-hidden rounded-xl shadow-md cursor-pointer group"
                 onClick={() => setSelectedImage(image.id)}
               >
-                <div className="relative w-full h-64">
+                <div className="relative w-full">
                   <Image
                     src={image.src}
                     alt={image.alt}
-                    fill
-                    className="object-contain transition-transform duration-500 group-hover:scale-110"
+                    width={500}
+                    height={500}
+                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                    className="w-full object-cover rounded-xl"
+                    style={{ aspectRatio: 'auto' }}
+                    placeholder="blur"
+                    blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjJkN2U1Ii8+PC9zdmc+"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#E73992]/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                     <p className="text-white font-medium">{image.caption}</p>
@@ -300,20 +418,20 @@ export function Gallery() {
             ))}
           </div>
         ) : (
-          // Videos Grid
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          // Videos Grid - also converted to Masonry Layout
+          <div className="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4">
             {videosLoading ? (
-              // Video loading state - matches the photo grid layout
+              // Video loading state - matches the masonry layout
               Array.from({ length: 6 }).map((_, index) => (
                 <motion.div
                   key={`loading-${index}`}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="relative overflow-hidden rounded-xl shadow-md bg-gray-100 animate-pulse"
+                  className="relative break-inside-avoid mb-4 overflow-hidden rounded-xl shadow-md bg-gray-100 animate-pulse"
+                  style={{ height: '250px' }}
                 >
-                  <div className="relative w-full h-64"></div>
                 </motion.div>
               ))
             ) : videosError ? (
@@ -325,27 +443,25 @@ export function Gallery() {
                 <p className="text-gray-500">No videos available at the moment</p>
               </div>
             ) : (
-              // Video cards - update onClick to use simplified handler
+              // Video cards in masonry layout
               videos.map((video, index) => (
                 <motion.div
                   key={video.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="relative overflow-hidden rounded-xl shadow-md cursor-pointer group"
+                  className="relative break-inside-avoid mb-4 overflow-hidden rounded-xl shadow-md cursor-pointer group"
                   onClick={() => handleVideoClick(video.id)}
                 >
-                  <div className="relative w-full h-64">
-                    <div className="absolute inset-0 w-full h-full">
-                      <iframe
-                        className="w-full h-full"
-                        src={video.embedUrl}
-                        title={video.name}
-                        allow="autoplay"
-                        allowFullScreen
-                      ></iframe>
-                    </div>
+                  <div className="relative w-full aspect-video">
+                    <iframe
+                      className="w-full h-full rounded-xl"
+                      src={video.embedUrl}
+                      title={video.name}
+                      allow="autoplay"
+                      allowFullScreen
+                    ></iframe>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 pointer-events-none">
                       <p className="text-white font-medium truncate">{video.name}</p>
                       <p className="text-white text-sm opacity-80">
@@ -362,10 +478,10 @@ export function Gallery() {
         {/* Photo Lightbox modal */}
         {selectedImage && (
           <div 
-            className="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
             onClick={() => setSelectedImage(null)}
           >
-            <div className="relative max-w-4xl w-full" onClick={e => e.stopPropagation()}>
+            <div className="relative max-w-4xl w-full max-h-[90vh]" onClick={e => e.stopPropagation()}>
               <button 
                 onClick={() => setSelectedImage(null)}
                 className="absolute -top-12 right-0 text-white hover:text-pink-300"
@@ -375,19 +491,22 @@ export function Gallery() {
                 </svg>
               </button>
               
-              <div className="bg-white rounded-xl overflow-hidden">
-                <div className="relative aspect-video w-full h-[400px]">
+              <div className="bg-transparent rounded-xl overflow-hidden">
+                <div className="relative w-full max-h-[80vh] flex items-center justify-center">
                   {galleryImages.find(img => img.id === selectedImage) && (
                     <Image
                       src={galleryImages.find(img => img.id === selectedImage)!.src}
                       alt={galleryImages.find(img => img.id === selectedImage)!.alt}
-                      fill
-                      className="object-contain"
+                      width={1200}
+                      height={800}
+                      className="object-contain max-h-[80vh] rounded-xl"
+                      placeholder="blur"
+                      blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjJkN2U1Ii8+PC9zdmc+"
                     />
                   )}
                 </div>
                 <div className="p-4 text-center">
-                  <p className="text-gray-800 font-medium">
+                  <p className="text-white font-medium">
                     {galleryImages.find(img => img.id === selectedImage)?.caption}
                   </p>
                 </div>
