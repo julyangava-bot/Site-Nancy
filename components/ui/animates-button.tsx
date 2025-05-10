@@ -7,7 +7,7 @@ import {
   ModalFooter,
   ModalTrigger,
 } from "../ui/animated-modal";
-
+import Image from "next/image";
 import { motion } from "motion/react";
 
 export function AnimatedModalDemo() {
@@ -57,11 +57,11 @@ export function AnimatedModalDemo() {
                   }}
                   className="rounded-xl -mr-4 mt-4 p-1 bg-white dark:bg-neutral-800 dark:border-neutral-700 border border-neutral-100 shrink-0 overflow-hidden"
                 >
-                  <img
+                  <Image
                     src={image}
                     alt="bali images"
-                    width="500"
-                    height="500"
+                    width={500}
+                    height={500}
                     className="rounded-lg h-20 w-20 md:h-40 md:w-40 object-cover shrink-0"
                   />
                 </motion.div>
