@@ -28,23 +28,26 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+/* Completely disable Aurora background globally */
+.aurora-background,
+.aurora-background::before,
+.aurora-background::after,
+.aurora-background > div,
+.aurora-background > * {
+  background: linear-gradient(to bottom, white, #FFF7FB) !important;
+  animation: none !important;
+  opacity: 0 !important;
+  display: none !important;
+  visibility: hidden !important;
+  position: static !important;
+}
+
 /* Improve scrolling behavior on mobile */
 @media (max-width: 768px) {
   html, body {
     overscroll-behavior-y: none;
     position: relative;
     touch-action: pan-y;
-  }
-  
-  /* Hide Aurora background on mobile */
-  .aurora-background {
-    opacity: 0 !important;
-    display: none !important;
-  }
-  
-  /* Disable aurora animation on mobile */
-  :root {
-    --animate-aurora: none !important;
   }
 }
 
@@ -53,29 +56,12 @@ section[id] {
   scroll-margin-top: 7rem;
 }
 
+/* Disable Aurora animation completely */
 @theme inline {
-  --animate-aurora: aurora 60s linear infinite;
-  @keyframes aurora {
-    from {
-      background-position:
-        50% 50%,
-        50% 50%;
-    }
-    to {
-      background-position:
-        350% 50%,
-        350% 50%;
-    }
-  }
+  --animate-aurora: none;
 }
 
-/* Mobile aurora fix */
-@media (max-width: 640px) {
-  .aurora-background > div {
-    display: none !important;
-  }
-  
-  .aurora-background {
-    background: linear-gradient(to bottom, white, #FFF7FB) !important;
-  }
+/* Replace aurora with simple background everywhere */
+.aurora-background {
+  background: linear-gradient(to bottom, white, #FFF7FB) !important;
 }

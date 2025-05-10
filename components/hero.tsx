@@ -6,7 +6,6 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
-import { AuroraBackground } from "./ui/aurora-background";
 
 // Centralized image configuration object
 const imageConfig = {
@@ -55,23 +54,6 @@ const imageConfig = {
 
 export function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Check if screen is mobile
-  useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 640);
-    };
-    
-    // Initial check
-    checkIsMobile();
-    
-    // Add event listener for window resize
-    window.addEventListener("resize", checkIsMobile);
-    
-    // Cleanup
-    return () => window.removeEventListener("resize", checkIsMobile);
-  }, []);
 
   // Modified scroll control - no longer locks scrolling
   useEffect(() => {
@@ -157,7 +139,7 @@ export function Hero() {
     }
   };
 
-  // Render content with conditional background
+  // Render content
   const renderContent = () => {
     return (
       <div className="relative z-10 w-full">
@@ -288,16 +270,8 @@ export function Hero() {
   };
 
   return (
-    <>
-      {isMobile ? (
-        <div className="bg-gradient-to-b from-white to-[#FFF7FB] overflow-hidden">
-          {renderContent()}
-        </div>
-      ) : (
-        <AuroraBackground className="overflow-hidden aurora-background">
-          {renderContent()}
-        </AuroraBackground>
-      )}
-    </>
+    <div className="bg-gradient-to-b from-white to-[#FFF7FB] overflow-hidden">
+      {renderContent()}
+    </div>
   );
 }
