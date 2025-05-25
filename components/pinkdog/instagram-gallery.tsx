@@ -160,7 +160,7 @@ export function InstagramGallery() {
             Follow on Instagram
           </Link>
           <Link 
-            href="https://facebook.com/pinkdogresort" 
+            href="https://facebook.com/pinkdogspa" 
             target="_blank" 
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center bg-white text-[#3b5998] border border-[#3b5998] hover:bg-[#edf0f7] px-6 py-2.5 rounded-full font-medium transition-colors"

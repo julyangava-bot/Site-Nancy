@@ -122,45 +122,6 @@ export function AboutUs() {
           </motion.div>
         </div>
         
-        {/* Meet Our Team */}
-        <motion.h3
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="text-2xl font-bold text-gray-900 mb-8 text-center"
-        >
-          Meet Our Team
-        </motion.h3>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {teamMembers.map((member, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-xl shadow-md overflow-hidden group"
-            >
-              <div className="relative h-60">
-                <Image
-                  src={member.image}
-                  alt={member.name}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#E73992]/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </div>
-              <div className="p-6">
-                <h4 className="text-xl font-bold text-gray-900">{member.name}</h4>
-                <p className="text-[#E73992] font-medium mb-3">{member.role}</p>
-                <p className="text-gray-600">{member.bio}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        
         {/* Call to Action */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -196,7 +157,7 @@ export function AboutUs() {
               <IconBrandFacebook size={36} className="text-[#3b5998] mb-2" />
               <h4 className="font-semibold text-gray-900 mb-1">Facebook</h4>
               <Link 
-                href="https://facebook.com/pinkdogresort" 
+                href="https://facebook.com/pinkdogspa" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-[#3b5998] hover:underline"
