@@ -1,10 +1,10 @@
 "use client";
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { IconBrandInstagram, IconBrandFacebook, IconPlus } from "@tabler/icons-react";
+import { IconBrandInstagram, IconBrandFacebook } from "@tabler/icons-react";
 
 // Team member data
 const teamMembers = [
@@ -38,29 +38,7 @@ const features = [
   "Daily photo and video updates for pet parents"
 ];
 
-// FAQ data
-const faqs = [
-  {
-    question: "What do I do if my dog has fleas?",
-    answer: "Get a treatment from your Veterinarian and also worm your animal for tapeworm, as the flea is the intermediate host for this parasite. Also get a household spray for fleas from your vet to use in all areas your dog is going into, e.g., sofas, carpets, skirtings, as these are where the flea breeds. They only go to the dog to feed. So, for every flea you find on your dog there are much more in its surroundings."
-  },
-  {
-    question: "Can someone other than myself pick up my pet?",
-    answer: "Yes, anyone is able to pick up your pet from PinkDog. We ask that the expected person's name be noted in your account and must present a valid ID to us upon arrival."
-  },
-  {
-    question: "What if I don't like my dog's new haircut?",
-    answer: "Just tell us, we really won't be offended. We keep detailed records of how each dog is styled for just this reason, but we can only change things if you let us know, and we always appreciate your feedback. Sometimes due to the condition of a dog's coat, we have no choice but to perform a clip off/shortie style. The dematting process may be very painful, or sometimes there is just no other way. So we, at PinkDog, will try our best to do what would be more comfortable to your dog. Do not worry! We will let you know in advance, in our short talk during the drop off or through a phone call. However, once we have done this we will be more than happy to show you how to groom your dog to prevent this happening again, and hopefully, will soon have your pet looking exactly the way you want."
-  },
-  {
-    question: "Should I walk my dog before or after his grooming session?",
-    answer: "We always recommend that dogs are given a little walk before they arrive so that they can relieve themselves and expel any excess energy. Once your dog leaves the salon it is best to walk again right way since some of the dogs do not do their business in different places. Most dogs are tired after their salon treatments and appreciate a quiet and relaxed evening."
-  }
-];
-
 export function AboutUs() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
   return (
     <section id="about-us" className="py-20 bg-[#FDF2F8] relative overflow-hidden">
       {/* Decorative elements */}
@@ -182,70 +160,6 @@ export function AboutUs() {
             </motion.div>
           ))}
         </div>
-        
-        {/* FAQ Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="mb-16"
-          id="faq"
-        >
-          <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">
-            Frequently <span className="text-[#E73992]">Asked</span> Questions
-          </h3>
-          
-          <div className="space-y-4 max-w-3xl mx-auto">
-            {faqs.map((faq, index) => (
-              <motion.div 
-                key={index} 
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-white rounded-xl border border-[#FCD1E6] overflow-hidden"
-              >
-                <button 
-                  className="w-full px-6 py-4 flex items-center gap-3 text-left"
-                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                  aria-expanded={openIndex === index}
-                >
-                  <motion.div
-                    initial={false}
-                    animate={{ rotate: openIndex === index ? 45 : 0 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    className="rounded-full bg-[#FDF2F8] p-1 flex items-center justify-center"
-                  >
-                    <IconPlus size={18} className="text-[#E73992]" />
-                  </motion.div>
-                  <h4 className="text-lg font-medium text-[#E73992]">{faq.question}</h4>
-                </button>
-                
-                <AnimatePresence>
-                  {openIndex === index && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ 
-                        duration: 0.3,
-                        type: "spring",
-                        stiffness: 400,
-                        damping: 40
-                      }}
-                      className="overflow-hidden"
-                    >
-                      <div className="px-6 pb-5 pl-14">
-                        <p className="text-gray-700">{faq.answer}</p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
         
         {/* Call to Action */}
         <motion.div

@@ -100,8 +100,8 @@ export const Navbar = () => {
     },
     {
       name: "FAQ",
-      link: "faq",
-      isSection: true,
+      link: "/faq",
+      isSection: false,
     },
     {
       name: "Blog",
