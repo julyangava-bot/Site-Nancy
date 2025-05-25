@@ -157,7 +157,8 @@ export function Hero() {
                   className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 font-display"
                   style={{ willChange: "opacity" }}
                 >
-                  Welcome to <span className="text-[#E73992]">Pink Dog</span>
+                  Welcome to <br/>
+                  <span className="text-[#E73992]">PinkDog Pet Resort</span>
                   <span className="block mt-1">Your Pet&apos;s Favorite Place!</span>
                 </motion.h1>
                 

@@ -11,39 +11,43 @@ const services = [
   {
     id: "pet-hotel",
     title: "Pet Hotel",
-    description: "Luxurious accommodations for your pets while you&apos;re away. 24/7 care with comfortable beds and personalized attention.",
+    description:
+      "Luxurious accommodations for your pets while you're away. 24/7 care with comfortable beds and personalized attention.",
     icon: "/images/icons/pethotel-icon.png",
     image: "/images/services/pet-hotel-card.png",
     color: "bg-[#FCD1E6]",
-    link: "/pet-hotel"
+    link: "/pet-hotel",
   },
   {
     id: "daycare",
     title: "Daycare",
-    description: "Supervised play and socialization for your pets. Safe environment with trained professionals and fun activities.",
+    description:
+      "Supervised play and socialization for your pets. Safe environment with trained professionals and fun activities.",
     icon: "/images/icons/daycare-icon.png",
     image: "/images/services/daycare-card.jpg",
     color: "bg-[#FFEBF5]",
-    link: "/daycare"
+    link: "/daycare",
   },
   {
     id: "grooming",
     title: "Grooming",
-    description: "Professional grooming services to keep your pet looking and feeling their best. Includes bathing, trimming, and styling.",
+    description:
+      "Professional grooming services to keep your pet looking and feeling their best. Includes bathing, trimming, and styling.",
     icon: "/images/icons/grooming-icon.png",
     image: "/images/services/grooming-card.jpg",
     color: "bg-[#FCD1E6]",
-    link: "/grooming"
+    link: "/grooming",
   },
   {
     id: "van-service",
     title: "Van Service",
-    description: "Convenient pet transport to and from our facility. Comfortable and safe rides for your furry friends.",
+    description:
+      "Convenient pet transport to and from our facility. Comfortable and safe rides for your furry friends.",
     icon: "/images/icons/van-icon.png",
     image: "/images/services/van-card.jpg",
     color: "bg-[#FFEBF5]",
-    link: "/van-service"
-  }
+    link: "/van-service",
+  },
 ];
 
 export function Services() {
@@ -51,10 +55,10 @@ export function Services() {
     <section id="services" className="relative py-20 overflow-hidden bg-white">
       {/* Pink wave background at top */}
       {/* <div className="absolute top-0 left-0 right-0 h-32 bg-[#FCD1E6] rounded-b-[50%] transform -translate-y-16"></div> */}
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -70,10 +74,11 @@ export function Services() {
             viewport={{ once: true }}
             className="text-lg text-gray-600 max-w-3xl mx-auto"
           >
-            Providing exceptional care for your furry family members with our premium services
+            Providing exceptional care for your furry family members with our
+            premium services
           </motion.p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {services.map((service, index) => (
             <motion.div
@@ -83,7 +88,7 @@ export function Services() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
             >
-              <BackgroundGradient 
+              <BackgroundGradient
                 containerClassName="rounded-2xl"
                 className="p-0"
                 animate={true}
@@ -91,8 +96,10 @@ export function Services() {
                 subtle={true}
               >
                 <div className="relative bg-white rounded-3xl overflow-hidden group h-full">
-                  <div className={`absolute top-0 left-0 w-1/2 h-full ${service.color} opacity-30 rounded-r-full transform -translate-x-1/4 transition-transform group-hover:translate-x-0`}></div>
-                  
+                  <div
+                    className={`absolute top-0 left-0 w-1/2 h-full ${service.color} opacity-30 rounded-r-full transform -translate-x-1/4 transition-transform group-hover:translate-x-0`}
+                  ></div>
+
                   <div className="p-6 h-full relative">
                     <div className="w-full">
                       <div className="relative w-20 h-20 mb-4 bg-[#FCD1E6] rounded-xl p-4">
@@ -103,8 +110,12 @@ export function Services() {
                           className="object-contain"
                         />
                       </div>
-                      <h3 className="text-2xl font-bold text-gray-900 mb-2">{service.title}</h3>
-                      <p className="text-gray-600 mb-4">{service.description}</p>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                        {service.title}
+                      </h3>
+                      <p className="text-gray-600 mb-4">
+                        {service.description}
+                      </p>
                       <Button
                         className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full"
                         asChild
@@ -121,4 +132,4 @@ export function Services() {
       </div>
     </section>
   );
-} 
+}
