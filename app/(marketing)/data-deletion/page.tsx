@@ -58,8 +58,8 @@ export default function DataDeletion() {
               </p>
               <p className="flex items-center mt-3">
                 <span className="mr-2">📧</span>
-                <a href="mailto:info@pinkdogresort.com" className="text-[#E73992] hover:underline font-medium">
-                  info@pinkdogresort.com
+                <a href="mailto:pinkdogpetresort@gmail.com" className="text-[#E73992] hover:underline font-medium">
+                  pinkdogpetresort@gmail.com
                 </a>
               </p>
             </div>

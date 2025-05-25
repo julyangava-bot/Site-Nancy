@@ -62,7 +62,7 @@ export default function PrivacyPolicy() {
             
             <div className="mt-12 p-6 bg-[#FDF2F8] rounded-xl shadow-sm">
               <p className="font-medium mb-2">
-                <strong>Contact:</strong> <a href="mailto:info@pinkdogresort.com" className="text-[#E73992] hover:underline">info@pinkdogresort.com</a>
+                <strong>Contact:</strong> <a href="mailto:pinkdogpetresort@gmail.com" className="text-[#E73992] hover:underline">pinkdogpetresort@gmail.com</a>
               </p>
               <p className="text-sm text-gray-600">
                 <strong>Last updated:</strong> May 2025

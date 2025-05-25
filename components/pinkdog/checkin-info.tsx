@@ -113,7 +113,7 @@ export function CheckInInfo() {
                     </svg>
                     <div>
                       <h4 className="font-medium text-gray-700">Email</h4>
-                      <a href="mailto:info@pinkdogresort.com" className="text-[#E73992] font-semibold hover:underline">{contactInfo.email}</a>
+                      <a href="mailto:pinkdogpetresort@gmail.com" className="text-[#E73992] font-semibold hover:underline">{contactInfo.email}</a>
                     </div>
                   </div> */}
                   
