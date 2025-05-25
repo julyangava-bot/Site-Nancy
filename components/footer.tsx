@@ -4,8 +4,22 @@ import Link from "next/link";
 import { Logo } from "./logo";
 import { IconBrandInstagram, IconBrandFacebook, IconMapPin, IconClock, IconPhone, IconBrandWhatsapp, IconExternalLink } from "@tabler/icons-react";
 import { motion } from "motion/react";
+import { useRouter, usePathname } from "next/navigation";
+import { handleSectionNavigation, isSectionLink } from "@/lib/navigation";
 
 export function Footer() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (isSectionLink(href)) {
+      e.preventDefault();
+      handleSectionNavigation(href, isHomePage, router);
+    }
+    // For non-section links, let the normal Link navigation happen
+  };
+
   const quickLinks = [
     { name: "Home", href: "/" },
     { name: "About", href: "#about-us" },
@@ -22,9 +36,8 @@ export function Footer() {
 
   const supportLinks = [
     { name: "FAQ", href: "/faq" },
-    { name: "Check-in Info", href: "#checkin-info" },
-    { name: "Contact Us", href: "#contact" },
-    { name: "Book Now", href: "#booking" },
+    { name: "Contact Us", href: "#checkin-info" },
+    { name: "Book Now", href: "/booking" },
   ];
 
   const legalLinks = [
@@ -136,6 +149,7 @@ export function Footer() {
                 <li key={idx}>
                   <Link
                     href={item.href}
+                    onClick={(e) => handleLinkClick(e, item.href)}
                     className="text-gray-600 hover:text-[#E73992] transition-colors text-sm block py-1"
                   >
                     {item.name}
@@ -153,6 +167,7 @@ export function Footer() {
                 <li key={idx}>
                   <Link
                     href={item.href}
+                    onClick={(e) => handleLinkClick(e, item.href)}
                     className="text-gray-600 hover:text-[#E73992] transition-colors text-sm block py-1"
                   >
                     {item.name}
@@ -170,6 +185,7 @@ export function Footer() {
                 <li key={idx}>
                   <Link
                     href={item.href}
+                    onClick={(e) => handleLinkClick(e, item.href)}
                     className="text-gray-600 hover:text-[#E73992] transition-colors text-sm block py-1"
                   >
                     {item.name}
@@ -231,7 +247,7 @@ export function Footer() {
                 {/* External Site Indicator */}
                 {location.hasExternalSite && (
                   <div className="absolute -top-2 -left-2">
-                    <IconExternalLink size={14} className="text-[#E73992]" />
+                    {/* <IconExternalLink size={14} className="text-[#E73992]" /> */}
                   </div>
                 )}
 
@@ -320,6 +336,7 @@ export function Footer() {
                 <Link
                   key={idx}
                   href={item.href}
+                  onClick={(e) => handleLinkClick(e, item.href)}
                   className="text-gray-500 hover:text-[#E73992] transition-colors"
                 >
                   {item.name}

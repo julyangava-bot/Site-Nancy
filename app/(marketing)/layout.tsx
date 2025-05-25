@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../globals.css";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { ScrollToHash } from "@/components/scroll-to-hash";
 
 export const metadata: Metadata = {
   title: "Pink Dog Resort | Premier Pet Care",
@@ -17,6 +18,7 @@ export default function MarketingLayout({
   return (
     <>
       <Navbar />
+      <ScrollToHash />
       {children}
       <Footer />
     </>

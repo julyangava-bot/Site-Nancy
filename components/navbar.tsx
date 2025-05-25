@@ -13,6 +13,7 @@ import { useRouter, usePathname } from "next/navigation";
 import React, { useRef, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "./logo";
+import { handleSectionNavigation, scrollToSection } from "@/lib/navigation";
 
 interface NavItem {
   name: string;
@@ -28,17 +29,6 @@ interface DropdownItem {
   imageSrc: string;
   description?: string;
 }
-
-// Smooth scroll function
-const scrollToSection = (sectionId: string) => {
-  const section = document.getElementById(sectionId);
-  if (section) {
-    section.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  }
-};
 
 export const Navbar = () => {
   const router = useRouter();
@@ -89,7 +79,7 @@ export const Navbar = () => {
       isSection: true,
     },
     {
-      name: "Info",
+      name: "Contact",
       link: "checkin-info",
       isSection: true,
     },
@@ -131,11 +121,8 @@ export const Navbar = () => {
       scrollToSection(item.link);
     } else if (!isHomePage && item.isSection) {
       // If not on home page but clicking a section link, first navigate to home
-      router.push('/');
-      // Need a slight delay before scrolling to ensure the page loads
-      setTimeout(() => {
-        scrollToSection(item.link);
-      }, 100);
+      e.preventDefault();
+      handleSectionNavigation(`#${item.link}`, isHomePage, router);
     }
     // For non-section links like blog, let the normal navigation happen
   }, [isHomePage, router]);
