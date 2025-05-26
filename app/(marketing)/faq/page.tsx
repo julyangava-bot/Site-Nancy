@@ -698,7 +698,7 @@ export default function FAQPage() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-lg text-gray-600"
           >
-            Find answers to common questions about Pink Dog Pet Resort
+            Find answers to common questions about PinkDog Pet Resort
           </motion.p>
         </div>
       </section>

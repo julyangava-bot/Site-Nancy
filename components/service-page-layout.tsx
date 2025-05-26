@@ -175,7 +175,7 @@ export function ServicePageLayout({
             >
               <Image
                 src="/images/pinkdog-happy-pets.jpg"
-                alt="Happy pets at Pink Dog"
+                alt="Happy pets at PinkDog"
                 width={600}
                 height={400}
                 className="rounded-2xl shadow-xl"
@@ -257,7 +257,7 @@ export function ServicePageLayout({
               Ready to Give Your Pet the Best Care?
             </h2>
             <p className="text-xl text-white/90 mb-8">
-              Book your pet&apos;s appointment today and see why Pink Dog is the preferred choice for pet parents.
+              Book your pet&apos;s appointment today and see why PinkDog is the preferred choice for pet parents.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button

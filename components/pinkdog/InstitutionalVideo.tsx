@@ -129,7 +129,7 @@ export function InstitutionalVideo() {
               ref={iframeRef}
               onLoad={handleIframeLoad}
               src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&color=white`}
-              title="Pink Dog Institutional Video"
+              title="PinkDog Institutional Video"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
               className={`w-full h-full absolute inset-0 ${showFallback ? 'opacity-0' : 'opacity-100'}`}
               frameBorder="0"
@@ -141,7 +141,7 @@ export function InstitutionalVideo() {
                 <div className="absolute inset-0 w-full h-full">
                   <Image 
                     src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
-                    alt="Pink Dog Institutional Video"
+                    alt="PinkDog Institutional Video"
                     fill
                     className="object-cover"
                     onError={(e) => {

@@ -87,7 +87,7 @@ export const Logo = ({ className }: { className?: string }) => {
     >
       <Image 
         src="/images/navbar-logo.png"
-        alt="Pink Dog Pet Resort Logo"
+        alt="PinkDog Pet Resort Logo"
         width={180}
         height={48}
         className="h-auto w-auto"

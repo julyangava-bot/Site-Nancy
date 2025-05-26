@@ -172,7 +172,7 @@ export default function AboutPage() {
               className="text-center mb-12"
             >
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Why Choose <span className="text-[#E73992]">Pink Dog Pet Resort</span>?
+                Why Choose <span className="text-[#E73992]">PinkDog Pet Resort</span>?
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
                 With over 23 years of experience, we&apos;ve built more than a pet care facility—we&apos;ve created a home away from home
@@ -238,7 +238,7 @@ export default function AboutPage() {
                 <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-xl">
                   <Image
                     src="/images/pinkdog-happy-pets.jpg"
-                    alt="Happy pets at Pink Dog"
+                    alt="Happy pets at PinkDog"
                     fill
                     className="object-cover"
                   />

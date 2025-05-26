@@ -32,7 +32,7 @@ const galleryImages = [
     id: 4,
     src: "/images/gallery/all/image-4.JPG",
     alt: "Dog enjoying playtime",
-    caption: "Playtime at Pink Dog",
+    caption: "Playtime at PinkDog",
     category: "general"
   },
   {
@@ -106,7 +106,7 @@ const galleryImages = [
     id: 14,
     src: "/images/gallery/all/image-9.jpg",
     alt: "Dog playtime",
-    caption: "Fun and exercise at Pink Dog",
+    caption: "Fun and exercise at PinkDog",
     category: "pets"
   },
   {
@@ -127,7 +127,7 @@ const galleryImages = [
     id: 17,
     src: "/images/gallery/all/image-12.JPG",
     alt: "Happy dog guest",
-    caption: "Another happy guest at Pink Dog",
+    caption: "Another happy guest at PinkDog",
     category: "pets"
   },
   {
@@ -156,42 +156,42 @@ const galleryImages = [
   {
     id: 21,
     src: "/images/gallery/all/image-27.jpg",
-    alt: "Pink Dog Pet Resort Facility",
+    alt: "PinkDog Pet Resort Facility",
     caption: "Our spacious facility",
     category: "facility"
   },
   {
     id: 22,
     src: "/images/gallery/all/image-40.jpg",
-    alt: "Pink Dog Pet Resort Interior",
+    alt: "PinkDog Pet Resort Interior",
     caption: "Modern and clean interior",
     category: "facility"
   },
   {
     id: 23,
     src: "/images/gallery/all/image-41.jpg",
-    alt: "Pink Dog Pet Resort Entrance",
-    caption: "Welcome to Pink Dog Pet Resort",
+    alt: "PinkDog Pet Resort Entrance",
+    caption: "Welcome to PinkDog Pet Resort",
     category: "facility"
   },
   {
     id: 24,
     src: "/images/gallery/all/image-43.PNG",
-    alt: "Pink Dog Pet Resort Play Area",
+    alt: "PinkDog Pet Resort Play Area",
     caption: "Dedicated play area for pets",
     category: "facility"
   },
   {
     id: 25,
     src: "/images/gallery/all/image-28.jpg",
-    alt: "Pink Dog Pet Resort Garden",
+    alt: "PinkDog Pet Resort Garden",
     caption: "Beautiful outdoor space",
     category: "facility"
   },
   {
     id: 26,
     src: "/images/gallery/all/image-29.jpg",
-    alt: "Pink Dog Pet Resort Reception",
+    alt: "PinkDog Pet Resort Reception",
     caption: "Our welcoming reception area",
     category: "facility"
   }

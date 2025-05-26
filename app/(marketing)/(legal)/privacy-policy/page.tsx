@@ -3,7 +3,7 @@ import seoData from "@/lib/next-metadata";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | " + seoData.title,
-  description: "Learn about Pink Dog Pet Resort's privacy policy and how we protect your personal information.",
+  description: "Learn about PinkDog Pet Resort's privacy policy and how we protect your personal information.",
   openGraph: {
     images: seoData.openGraph.images,
   },
@@ -20,7 +20,7 @@ export default function PrivacyPolicy() {
           
           <div className="prose max-w-none">
             <p className="text-gray-700 mb-6">
-              Your privacy is important to us. It is Pink Dog Pet Resort&apos;s policy to respect your privacy 
+              Your privacy is important to us. It is PinkDog Pet Resort&apos;s policy to respect your privacy 
               regarding any information we may collect on our website.
             </p>
             

@@ -12,7 +12,7 @@ const testimonialData = [
   {
     image: "/images/testimonial/testimonial-maltese.jpg",
     quote:
-      "Since we discovered the Pink Dog Hotel, we've trusted them completely. Our Maltese always comes back happy, clean, and well cared for. The team is kind and truly makes a difference.",
+      "Since we discovered the PinkDog Hotel, we've trusted them completely. Our Maltese always comes back happy, clean, and well cared for. The team is kind and truly makes a difference.",
     name: "J. M., Customer",
   },
   {
@@ -24,13 +24,13 @@ const testimonialData = [
   {
     image: "/images/testimonial/testimonial-bd.jpg",
     quote:
-      "We've been using the Pink Dog Hotel for a few months now. The care, comfort, and attention they give our dogs is amazing. We've trusted their team since day one.",
+      "We've been using the PinkDog Hotel for a few months now. The care, comfort, and attention they give our dogs is amazing. We've trusted their team since day one.",
     name: "B. D., Customer",
   },
   {
     image: "/images/testimonial/testimonial-anna.jpg", // novo avatar da Anna
     quote:
-      "My cat Anna stayed at Pink Dog Hotel for a weekend and loved it! She came back calm, clean, and clearly well looked after. Great experience from start to finish.",
+      "My cat Anna stayed at PinkDog Hotel for a weekend and loved it! She came back calm, clean, and clearly well looked after. Great experience from start to finish.",
     name: "T.B., Customer",
   },
 ];
@@ -50,7 +50,7 @@ export function Testimonials() {
             </h2>
 
             <p className="text-gray-700 text-lg max-w-md">
-              At Pink Dog Spa, we prioritize quality and care for your pet.
+              At PinkDog Spa, we prioritize quality and care for your pet.
               See what our clients have to say about our services.
             </p>
 
@@ -78,7 +78,7 @@ export function Testimonials() {
                 <Link 
                   href="/booking"
                 >
-                  Try Pink Dog Today
+                  Try PinkDog Today
                 </Link>
               </Button>
             </div>
@@ -110,7 +110,7 @@ const PawStarsIcon = ({ className }: { className?: string }) => {
       {/* Paw Icon */}
       <Image
         src="/images/pinkdog-flow.png"
-        alt="Pink Dog Spa Logo"
+        alt="PinkDog Spa Logo"
         className="block"
         width={100}
         height={100}

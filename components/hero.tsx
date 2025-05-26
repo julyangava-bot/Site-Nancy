@@ -13,21 +13,21 @@ const imageConfig = {
   carousel: [
     {
       src: "/images/carrosel-1.png", 
-      alt: "Pink Dog Carousel Image",
+      alt: "PinkDog Carousel Image",
       width: 500,
       height: 500,
       className: "p-6 sm:p-8"
     },
     {
       src: "/images/pinkdog-mascots.png", 
-      alt: "Pink Dog Friends",
+      alt: "PinkDog Friends",
       width: 500,
       height: 700,
       className: ""
     },
     {
       src: "/images/carrosel-3.png", 
-      alt: "Pink Dog Friends",
+      alt: "PinkDog Friends",
       width: 500,
       height: 700,
       className: ""

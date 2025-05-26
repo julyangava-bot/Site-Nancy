@@ -212,7 +212,7 @@ export function Footer() {
                 rel="noopener noreferrer"
                 className="text-[#E73992] hover:text-[#d3337f] underline font-medium"
               >
-                Pink Dog Spa
+                PinkDog Spa
               </Link>
               {" "}for Sudbury, Boxborough & Coconut Creek locations
             </p>
@@ -327,7 +327,7 @@ export function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             {/* Copyright */}
             <div className="text-sm text-gray-500">
-              © {new Date().getFullYear()} Pink Dog Pet Resort. All rights reserved.
+              © {new Date().getFullYear()} PinkDog Pet Resort. All rights reserved.
             </div>
             
             {/* Legal Links */}
