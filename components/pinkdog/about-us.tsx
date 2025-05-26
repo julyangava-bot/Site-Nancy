@@ -32,7 +32,7 @@ export function AboutUs() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            About <span className="text-[#E73992]">Pink Dog Resort</span>
+            About <span className="text-[#E73992]">Pink Dog Pet Resort</span>
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Our dedicated team and premium facilities make us the perfect home away from home for your pets
@@ -51,7 +51,7 @@ export function AboutUs() {
             <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Story</h3>
             <div className="space-y-4 text-gray-600">
               <p>
-                Pink Dog Resort began with a simple idea: create a place where pets feel as loved and cared for as they do at home. Founded in 2015, we&apos;ve grown from a small grooming salon to a full-service pet care facility.
+                Pink Dog Pet Resort began with a simple idea: create a place where pets feel as loved and cared for as they do at home. Founded in 2015, we&apos;ve grown from a small grooming salon to a full-service pet care facility.
               </p>
               <p>
                 What sets us apart is our genuine love for animals and commitment to their wellbeing. Every member of our team is trained in pet first aid and behavior management, ensuring your furry family members receive the best care possible.

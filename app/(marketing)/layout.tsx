@@ -5,9 +5,9 @@ import { Footer } from "@/components/footer";
 import { ScrollToHash } from "@/components/scroll-to-hash";
 
 export const metadata: Metadata = {
-  title: "Pink Dog Resort | Premier Pet Care",
+  title: "Pink Dog Pet Resort | Premier Pet Care",
   description:
-    "Pink Dog Resort offers premium pet care services including grooming, daycare, and boarding in a safe and loving environment.",
+    "Pink Dog Pet Resort offers premium pet care services including grooming, daycare, and boarding in a safe and loving environment.",
 };
 
 export default function MarketingLayout({

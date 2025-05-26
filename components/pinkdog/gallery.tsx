@@ -156,42 +156,42 @@ const galleryImages = [
   {
     id: 21,
     src: "/images/gallery/all/image-27.jpg",
-    alt: "Pink Dog Resort Facility",
+    alt: "Pink Dog Pet Resort Facility",
     caption: "Our spacious facility",
     category: "facility"
   },
   {
     id: 22,
     src: "/images/gallery/all/image-40.jpg",
-    alt: "Pink Dog Resort Interior",
+    alt: "Pink Dog Pet Resort Interior",
     caption: "Modern and clean interior",
     category: "facility"
   },
   {
     id: 23,
     src: "/images/gallery/all/image-41.jpg",
-    alt: "Pink Dog Resort Entrance",
-    caption: "Welcome to Pink Dog Resort",
+    alt: "Pink Dog Pet Resort Entrance",
+    caption: "Welcome to Pink Dog Pet Resort",
     category: "facility"
   },
   {
     id: 24,
     src: "/images/gallery/all/image-43.PNG",
-    alt: "Pink Dog Resort Play Area",
+    alt: "Pink Dog Pet Resort Play Area",
     caption: "Dedicated play area for pets",
     category: "facility"
   },
   {
     id: 25,
     src: "/images/gallery/all/image-28.jpg",
-    alt: "Pink Dog Resort Garden",
+    alt: "Pink Dog Pet Resort Garden",
     caption: "Beautiful outdoor space",
     category: "facility"
   },
   {
     id: 26,
     src: "/images/gallery/all/image-29.jpg",
-    alt: "Pink Dog Resort Reception",
+    alt: "Pink Dog Pet Resort Reception",
     caption: "Our welcoming reception area",
     category: "facility"
   }

@@ -3,7 +3,7 @@ import seoData from "@/lib/next-metadata";
 
 export const metadata: Metadata = {
   title: "Terms of Service | " + seoData.title,
-  description: "Learn about Pink Dog Resort's terms of service and conditions of use.",
+  description: "Learn about Pink Dog Pet Resort's terms of service and conditions of use.",
   openGraph: {
     images: seoData.openGraph.images,
   },
@@ -20,7 +20,7 @@ export default function Terms() {
           
           <div className="prose max-w-none">
             <p className="text-gray-700 mb-6">
-              These Terms of Service govern your access and use of the Pink Dog Resort website and any services or integrations provided by FlowQuantic.
+              These Terms of Service govern your access and use of the Pink Dog Pet Resort website and any services or integrations provided by FlowQuantic.
             </p>
             
             <h2 className="text-xl md:text-2xl font-semibold mt-8 mb-4 text-[#E73992]">
