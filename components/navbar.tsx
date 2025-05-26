@@ -85,8 +85,8 @@ export const Navbar = () => {
     },
     {
       name: "About",
-      link: "about-us",
-      isSection: true,
+      link: "/about",
+      isSection: false,
     },
     {
       name: "FAQ",
