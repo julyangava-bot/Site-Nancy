@@ -11,13 +11,13 @@ const fallbackImages = [
   {
     id: "1",
     src: "/images/pinkdog-mascots.png",
-    alt: "Happy pets at PinkDog Pet Resort",
+    alt: "Happy pets at Pink Dog Resort",
     url: "https://instagram.com/pinkdogspa"
   },
   {
     id: "2",
     src: "/images/carrosel-1.png",
-    alt: "Professional grooming at PinkDog Pet Resort",
+    alt: "Professional grooming at Pink Dog Resort",
     url: "https://instagram.com/pinkdogspa"
   },
   {
@@ -29,13 +29,13 @@ const fallbackImages = [
   {
     id: "4",
     src: "/images/pinkdog-flow.png",
-    alt: "Doggy playtime at PinkDog Pet Resort",
+    alt: "Doggy playtime at Pink Dog Resort",
     url: "https://instagram.com/pinkdogspa"
   },
   {
     id: "5",
     src: "/images/PinkDogSpaLogo.png",
-    alt: "PinkDog Spa - Your pet's favorite place",
+    alt: "Pink Dog Spa - Your pet's favorite place",
     url: "https://instagram.com/pinkdogspa"
   },
   {
@@ -55,7 +55,7 @@ export function InstagramGallery() {
     ? posts.slice(0, 6).map(post => ({
         id: post.id,
         src: post.media_url,
-        alt: post.caption || "PinkDog Pet Resort Instagram post",
+        alt: post.caption || "Pink Dog Resort Instagram post",
         url: post.permalink
       }))
     : fallbackImages;
@@ -82,7 +82,7 @@ export function InstagramGallery() {
               Followers on <span className="text-[#E73992]">Instagram</span>
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Check out our latest photos and videos of happy pets enjoying their time at PinkDog Pet Resort.
+              Check out our latest photos and videos of happy pets enjoying their time at Pink Dog Resort.
             </p>
           </motion.div>
           
