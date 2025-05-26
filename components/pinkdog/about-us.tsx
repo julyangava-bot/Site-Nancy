@@ -1,32 +1,10 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { IconBrandInstagram, IconBrandFacebook } from "@tabler/icons-react";
 
-// Team member data
-const teamMembers = [
-  {
-    name: "Maria Johnson",
-    role: "Founder & Lead Groomer",
-    bio: "With over 15 years of experience in pet care, Maria founded Pink Dog Resort with a vision to create a safe haven for pets.",
-    image: "/images/pinkdog-mascots.png"
-  },
-  {
-    name: "Robert Chen",
-    role: "Veterinary Consultant",
-    bio: "Robert ensures all our practices meet the highest health standards, providing peace of mind to pet parents.",
-    image: "/images/pinkdog-flow.png"
-  },
-  {
-    name: "Sarah Williams",
-    role: "Pet Behavior Specialist",
-    bio: "Sarah specializes in understanding pet behavior and creating tailored experiences for each furry guest.",
-    image: "/images/carrosel-1.png"
-  }
-];
 
 // Features list
 const features = [

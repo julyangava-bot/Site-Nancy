@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Logo } from "./logo";
-import { IconBrandInstagram, IconBrandFacebook, IconMapPin, IconClock, IconPhone, IconBrandWhatsapp, IconExternalLink } from "@tabler/icons-react";
+import { IconBrandInstagram, IconBrandFacebook, IconMapPin, IconClock, IconPhone, IconBrandWhatsapp } from "@tabler/icons-react";
 import { motion } from "motion/react";
 import { useRouter, usePathname } from "next/navigation";
 import { handleSectionNavigation, isSectionLink } from "@/lib/navigation";
