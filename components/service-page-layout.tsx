@@ -273,7 +273,7 @@ export function ServicePageLayout({
                 className="bg-transparent text-white border-white hover:bg-white/10 rounded-full px-8 py-6 text-lg font-semibold"
                 asChild
               >
-                <Link href="/contact">Have Questions?</Link>
+                <Link href="/faq">Have Questions?</Link>
               </Button>
             </div>
           </motion.div>

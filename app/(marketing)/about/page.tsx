@@ -289,7 +289,7 @@ export default function AboutPage() {
               >
                 <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-xl">
                   <Image
-                    src="/images/front Harvard Pets Ca Nan.jpg"
+                    src="/images/gallery/facility/image-41.jpg"
                     alt="PinkDog Pet Resort Facility"
                     fill
                     className="object-cover"
@@ -426,7 +426,7 @@ export default function AboutPage() {
                   className="bg-transparent text-white border-white hover:bg-white/10 rounded-full px-8 py-6 text-lg font-semibold"
                   asChild
                 >
-                  <Link href="/contact">Have Questions?</Link>
+                  <Link href="/faq">Have Questions?</Link>
                 </Button>
               </div>
             </motion.div>
