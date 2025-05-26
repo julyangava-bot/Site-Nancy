@@ -2,7 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { IconBrandWhatsapp } from "@tabler/icons-react";
-import Link from "next/link";
+
 
 // Hours data
 const hours = [
