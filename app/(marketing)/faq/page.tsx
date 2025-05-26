@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "motion/react";
 import { IconPlus, IconPhone, IconMail, IconBrandWhatsapp, IconClock, IconMapPin, IconCalendarEvent, IconPaw } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
 
 interface FAQItem {
   question: string;
@@ -680,7 +682,9 @@ export default function FAQPage() {
   };
 
   return (
-    <main className="bg-white relative">
+    <>
+      <Navbar />
+      <main className="bg-white relative">
       {/* Hero Section */}
       <section className="relative pt-32 pb-12 overflow-hidden bg-gradient-to-b from-[#FFF0F7] to-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -835,5 +839,7 @@ export default function FAQPage() {
         </div>
       </section>
     </main>
+    <Footer />
+    </>
   );
 }

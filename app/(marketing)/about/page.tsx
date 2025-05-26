@@ -82,19 +82,22 @@ export default function AboutPage() {
     }
   }, []);
 
-  // Control body scroll when modal is open
+  // Set client-side flag
   useEffect(() => {
     setIsClient(true);
-    
+  }, []);
+
+  // Control body scroll when modal is open
+  useEffect(() => {
     if (selectedImage) {
       document.body.style.overflow = 'hidden';
       window.addEventListener('keydown', handleKeyDown);
     } else {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = 'unset';
     }
 
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = 'unset';
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [selectedImage, handleKeyDown]);
@@ -115,7 +118,7 @@ export default function AboutPage() {
               transition={{ duration: 0.5 }}
             >
               <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                Welcome to <span className="text-[#E73992]">PinkDog Pet Resort</span>
+                Welcome to <br/> <span className="text-[#E73992]">PinkDog Pet Resort</span>
               </h1>
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
                 Exceptional Pet Care in a Space Built for Comfort, Play, and Peace of Mind
@@ -132,7 +135,7 @@ export default function AboutPage() {
                   className="rounded-full px-8 py-6 text-lg border-[#E73992] text-[#E73992] hover:bg-[#FFF0F7]"
                   asChild
                 >
-                  <Link href="/contact">Contact Us</Link>
+                  <Link href="/faq">Have Question?</Link>
                 </Button>
               </div>
             </motion.div>
