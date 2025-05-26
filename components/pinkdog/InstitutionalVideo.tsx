@@ -103,7 +103,7 @@ export function InstitutionalVideo() {
               
               {/* Learn more link */}
               <Link
-                href="#about-us"
+                href="/philosophy"
                 className="inline-flex items-center text-white hover:text-pink-100 transition-colors mt-6 text-lg font-light"
               >
                 <span>Learn more</span>
