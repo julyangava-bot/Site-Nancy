@@ -350,7 +350,7 @@ export default function AboutPage() {
         </section>
 
         {/* Meet the Founders Section - With clickable images */}
-        <section className="py-20 bg-white">
+        <section className="py-20 bg-gradient-to-b from-white to-[#FFF9FC]">
           <div className="max-w-6xl mx-auto px-4">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -366,9 +366,52 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className="text-gray-600 text-lg text-center mb-12 max-w-3xl mx-auto"
+              className="text-gray-600 text-lg text-center mb-16 max-w-3xl mx-auto"
             >
               Carina Ramos and Nancy Wyrebski, co-founders of PinkDog Pet Resort, bring decades of expertise and a shared passion for animal well-being. Together, they&apos;ve created a space where pets thrive and families feel at peace.
+            </motion.p>
+            
+            {/* Founders Introduction Video - with enhanced design */}
+            <div className="relative mb-20">
+              {/* Decorative background shape */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-full max-w-5xl h-[400px] bg-[#FCD1E6] opacity-20 rounded-3xl blur-3xl"></div>
+              </div>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="relative rounded-3xl overflow-hidden shadow-2xl mx-auto max-w-4xl bg-[#E73992] p-[3px]"
+              >
+                <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-black">
+                  <iframe
+                    src="https://www.youtube.com/embed/sXMOyctffRw?autoplay=0&mute=0&loop=0&controls=1&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3"
+                    title="Meet Nancy and Karina - PinkDog Pet Resort Founders"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    className="w-full h-full absolute inset-0"
+                    frameBorder="0"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Visual separator */}
+            <div className="flex items-center justify-center mb-12">
+              <div className="h-px bg-gradient-to-r from-transparent via-[#E73992]/30 to-transparent w-full max-w-md"></div>
+            </div>
+
+            {/* Gallery subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              viewport={{ once: true }}
+              className="text-center text-gray-600 mb-8"
+            >
+              Get to know our team through these special moments
             </motion.p>
             
             {/* Founders Images Grid - Clickable */}
