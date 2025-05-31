@@ -736,7 +736,7 @@ export function Gallery() {
                     {storyVideos.find(v => v.id === selectedVideo) && (
                       <iframe
                         className="w-full h-full"
-                        src={`https://www.youtube.com/embed/${storyVideos.find(v => v.id === selectedVideo)!.youtubeId}?autoplay=1&modestbranding=1&showinfo=0&rel=0`}
+                        src={`https://www.youtube.com/embed/${storyVideos.find(v => v.id === selectedVideo)!.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${storyVideos.find(v => v.id === selectedVideo)!.youtubeId}&controls=1&showinfo=0&rel=0&modestbranding=1`}
                         title={storyVideos.find(v => v.id === selectedVideo)!.name}
                         frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
