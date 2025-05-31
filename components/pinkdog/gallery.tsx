@@ -78,11 +78,18 @@ const galleryImages = [
     caption: "Gentle grooming for your pet",
     category: "services"
   },
+  // {
+  //   id: 11,
+  //   src: "/images/gallery/all/image-22.JPG",
+  //   alt: "Dog grooming detail",
+  //   caption: "Attention to every detail",
+  //   category: "services"
+  // },
   {
-    id: 11,
-    src: "/images/gallery/all/image-22.JPG",
-    alt: "Dog grooming detail",
-    caption: "Attention to every detail",
+    id: 28,
+    src: "/images/gallery/services/image-50.jpg",
+    alt: "Professional pet care service",
+    caption: "Our expert team providing professional pet care",
     category: "services"
   },
   

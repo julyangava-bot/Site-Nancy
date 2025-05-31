@@ -31,6 +31,13 @@ const imageConfig = {
       width: 500,
       height: 700,
       className: ""
+    },
+    {
+      src: "/images/sleeping-pinkdog.png", 
+      alt: "PinkDog Friends",
+      width: 500,
+      height: 700,
+      className: ""
     }
   ],
   // Decorative elements

@@ -109,7 +109,7 @@ const PawStarsIcon = ({ className }: { className?: string }) => {
     <div className={cn("relative", className)}>
       {/* Paw Icon */}
       <Image
-        src="/images/pinkdog-flow.png"
+        src="/images/pinkdog_original_no_txt.png"
         alt="PinkDog Spa Logo"
         className="block"
         width={100}
