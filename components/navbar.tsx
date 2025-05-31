@@ -116,12 +116,12 @@ export const Navbar = () => {
           icon: <HelpCircle className="w-8 h-8" />,
           description: "Common questions answered"
         },
-        {
-          name: "Blog",
-          link: "/blog",
-          icon: <BookOpen className="w-8 h-8" />,
-          description: "Tips and pet care insights"
-        }
+        // {
+        //   name: "Blog",
+        //   link: "/blog",
+        //   icon: <BookOpen className="w-8 h-8" />,
+        //   description: "Tips and pet care insights"
+        // }
       ]
     },
     {

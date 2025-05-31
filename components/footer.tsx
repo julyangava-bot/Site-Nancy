@@ -24,7 +24,7 @@ export function Footer() {
     { name: "Home", href: "/" },
     { name: "About", href: "#about-us" },
     { name: "Gallery", href: "#gallery" },
-    { name: "Blog", href: "/blog" },
+    // { name: "Blog", href: "/blog" },
   ];
 
   const servicesLinks = [
