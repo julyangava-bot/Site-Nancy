@@ -164,7 +164,7 @@ export const Navbar = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
-      className="w-full fixed top-4 sm:top-2 inset-x-0 z-50 rounded-full"
+      className="w-full fixed top-4 sm:top-2 inset-x-0 z-50"
     >
       <DesktopNav visible={visible} navItems={navItems} onNavClick={handleNavClick} />
       <MobileNav visible={visible} navItems={navItems} onNavClick={handleNavClick} />
@@ -220,414 +220,422 @@ const DesktopNav = ({
   };
 
   return (
-    <motion.div
-      onMouseLeave={() => {
-        setHoveredIndex(null);
-        setActiveDropdown(null);
-      }}
-      animate={{
-        width: visible ? "50%" : "80%",
-        backgroundColor: visible
-          ? "rgba(255,255,255,0.95)"
-          : "rgba(255,255,255,1.0)",
-        backdropFilter: visible ? "blur(10px)" : "blur(5px)",
-        y: visible ? 4 : 0,
-        borderRadius: "full",
-        boxShadow: visible
-          ? "0 10px 30px -10px rgba(0,0,0,0.1)"
-          : "0 0 0 transparent",
-      }}
-      initial={{
-        width: "80%",
-        scale: 0.95,
-        opacity: 0,
-      }}
-      whileInView={{
-        scale: 1,
-        opacity: 1,
-      }}
-      transition={{
-        duration: 0.3,
-        ease: "easeInOut",
-      }}
-      className={cn(
-        "hidden lg:flex flex-row self-center items-center justify-between py-3 mx-auto px-8 rounded-full relative z-[100]"
-      )}
-    >
-      <Logo />
-      
-      {visible ? (
-        // Show compact version when scrolled (hamburger + Book Now)
-        <div className="flex items-center gap-3">
-          <Button
-            className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full"
-            asChild
-          >
-            <Link href="/login">Book Now</Link>
-          </Button>
-          
-          <motion.div 
-            whileHover={{ scale: 1.1 }} 
-            whileTap={{ scale: 0.9 }}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="cursor-pointer"
-          >
-            {mobileMenuOpen ? (
-              <IconX className="text-black/90" />
-            ) : (
-              <IconMenu2 className="text-black/90" />
-            )}
-          </motion.div>
-        </div>
-      ) : (
-        // Show full navigation when not scrolled
-        <>
-          <motion.div
-            className="lg:flex flex-row flex-1 items-center justify-center space-x-2 text-sm"
-            animate={{
-              scale: 1,
-              justifyContent: visible ? "flex-end" : "center",
+    <div className="hidden lg:block w-full">
+      <div className={cn(
+        "mx-auto transition-all duration-300",
+        visible ? "max-w-3xl" : "max-w-7xl"
+      )}>
+        <motion.div
+          animate={{
+            backgroundColor: visible
+              ? "rgba(255,255,255,0.95)"
+              : "rgba(255,255,255,1.0)",
+            backdropFilter: visible ? "blur(10px)" : "blur(5px)",
+            y: visible ? 4 : 0,
+            boxShadow: visible
+              ? "0 10px 30px -10px rgba(0,0,0,0.1)"
+              : "0 0 0 transparent",
+          }}
+          initial={{
+            scale: 0.95,
+            opacity: 0,
+          }}
+          whileInView={{
+            scale: 1,
+            opacity: 1,
+          }}
+          transition={{
+            duration: 0.3,
+            ease: "easeInOut",
+          }}
+          className="rounded-full"
+        >
+          <div 
+            className="px-4 sm:px-6 lg:px-8"
+            onMouseLeave={() => {
+              setHoveredIndex(null);
+              setActiveDropdown(null);
             }}
           >
-            {navItems.map((navItem, idx) => (
-              <motion.div
-                key={`nav-item-${idx}`}
-                onHoverStart={() => {
-                  setHoveredIndex(idx);
-                  if (navItem.hasDropdown) {
-                    setActiveDropdown(navItem.name);
-                  } else {
-                    setActiveDropdown(null);
-                  }
-                }}
-                className="relative"
-              >
-                <a
-                  className="text-black/90 relative px-3 py-1.5 transition-colors cursor-pointer flex items-center"
-                  href={navItem.isSection ? `#${navItem.link}` : navItem.link}
-                  onClick={(e) => {
-                    if (!navItem.hasDropdown) {
-                      onNavClick(e, navItem);
-                    } else if (navItem.isSection) {
-                      e.preventDefault();
-                      scrollToSection(navItem.link);
-                    }
-                  }}
-                >
-                  <span className="relative z-10">{navItem.name}</span>
-                  {navItem.hasDropdown && (
-                    <IconChevronDown className="h-4 w-4 ml-1 text-black/70" />
-                  )}
-                  {hoveredIndex === idx && (
-                    <motion.div
-                      layoutId="menu-hover"
-                      className="absolute inset-0 rounded-full"
-                      initial={{ opacity: 0 }}
-                      animate={{
-                        opacity: 1,
-                        background:
-                          "linear-gradient(145deg, rgba(252,209,230,0.6) 0%, rgba(231,57,146,0.2) 100%)",
-                        boxShadow: "0 4px 15px rgba(231,57,146,0.1)",
-                      }}
-                      exit={{
-                        opacity: 0,
-                      }}
-                      transition={{
-                        duration: 0.05,
-                      }}
-                    />
-                  )}
-                </a>
-
-                {/* Dropdown Menu */}
-                {navItem.hasDropdown && activeDropdown === navItem.name && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                    className="absolute top-[calc(100%_+_0.5rem)] left-1/2 -translate-x-1/2 bg-white rounded-xl shadow-lg p-4 z-50 w-[500px]"
-                  >
-                    <div className={`
-                      ${navItem.name === "Services" ? "grid grid-cols-2 gap-4" : ""}
-                      ${navItem.name === "About" ? "grid grid-cols-2 gap-4" : ""}
-                      ${navItem.name === "Resources" ? "flex justify-center gap-4" : ""}
-                    `}>
-                      {navItem.name === "About" && navItem.dropdownItems ? (
-                        <>
-                          {/* First row - About Us and Our Philosophy */}
-                          {navItem.dropdownItems.slice(0, 2).map((item, i) => (
-                            <Link 
-                              key={`dropdown-${i}`}
-                              href={item.link}
-                              className="flex items-start gap-3 p-3 rounded-lg hover:bg-pink-50 transition-colors duration-200"
-                              onClick={() => setActiveDropdown(null)}
-                            >
-                              <div className="flex-shrink-0 h-14 w-14 relative flex items-center justify-center">
-                                {item.icon && (
-                                  <div className="text-[#E73992]">{item.icon}</div>
-                                )}
-                              </div>
-                              <div>
-                                <h3 className="font-medium text-gray-900">{item.name}</h3>
-                                {item.description && (
-                                  <p className="text-xs text-gray-500 mt-0.5">{item.description}</p>
-                                )}
-                              </div>
-                            </Link>
-                          ))}
-                          {/* Second row - Gallery centered */}
-                          <div className="col-span-2 flex justify-center">
-                            {navItem.dropdownItems[2] && (
-                              <Link 
-                                href={navItem.dropdownItems[2].link}
-                                className="flex items-start gap-3 p-3 rounded-lg hover:bg-pink-50 transition-colors duration-200 max-w-[250px]"
-                                onClick={() => setActiveDropdown(null)}
-                              >
-                                <div className="flex-shrink-0 h-14 w-14 relative flex items-center justify-center">
-                                  {navItem.dropdownItems[2].icon && (
-                                    <div className="text-[#E73992]">{navItem.dropdownItems[2].icon}</div>
-                                  )}
-                                </div>
-                                <div>
-                                  <h3 className="font-medium text-gray-900">{navItem.dropdownItems[2].name}</h3>
-                                  {navItem.dropdownItems[2].description && (
-                                    <p className="text-xs text-gray-500 mt-0.5">{navItem.dropdownItems[2].description}</p>
-                                  )}
-                                </div>
-                              </Link>
-                            )}
-                          </div>
-                        </>
-                      ) : (
-                        navItem.dropdownItems?.map((item, i) => (
-                          <Link 
-                            key={`dropdown-${i}`}
-                            href={item.link}
-                            className="flex items-start gap-3 p-3 rounded-lg hover:bg-pink-50 transition-colors duration-200"
-                            onClick={() => setActiveDropdown(null)}
-                          >
-                            <div className="flex-shrink-0 h-14 w-14 relative flex items-center justify-center">
-                              {item.imageSrc ? (
-                                <Image 
-                                  src={item.imageSrc} 
-                                  alt={item.name}
-                                  width={56}
-                                  height={56}
-                                  className="rounded-md object-contain"
-                                />
-                              ) : item.icon ? (
-                                <div className="text-[#E73992]">{item.icon}</div>
-                              ) : null}
-                            </div>
-                            <div>
-                              <h3 className="font-medium text-gray-900">{item.name}</h3>
-                              {item.description && (
-                                <p className="text-xs text-gray-500 mt-0.5">{item.description}</p>
-                              )}
-                            </div>
-                          </Link>
-                        ))
-                      )}
-                    </div>
-                  </motion.div>
-                )}
-              </motion.div>
-            ))}
-          </motion.div>
-
-          <AnimatePresence mode="popLayout" initial={false}>
-            {!visible && (
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{
-                  opacity: 1,
-                  x: 0,
-                  transition: {
-                    duration: 0.2,
-                  },
-                }}
-                exit={{
-                  opacity: 0,
-                  x: 20,
-                  transition: {
-                    duration: 0.2,
-                  },
-                }}
-              >
-                <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between py-3 relative z-[100]">
+              <Logo />
+              
+              {visible ? (
+                // Show compact version when scrolled (hamburger + Book Now)
+                <div className="flex items-center gap-3">
                   <Button
                     className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full"
                     asChild
                   >
                     <Link href="/login">Book Now</Link>
                   </Button>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </>
-      )}
-
-      {/* Compact menu dropdown */}
-      <AnimatePresence>
-        {visible && mobileMenuOpen && (
-          <motion.div
-            initial={{
-              opacity: 0,
-              height: 0,
-              y: -10,
-            }}
-            animate={{
-              opacity: 1,
-              height: "auto",
-              y: 0,
-            }}
-            exit={{
-              opacity: 0,
-              height: 0,
-              y: -10,
-            }}
-            transition={{
-              duration: 0.2,
-              ease: "easeInOut",
-            }}
-            className="flex rounded-3xl absolute top-20 mt-2 backdrop-blur-xl bg-white/98 inset-x-0 z-50 flex-col items-center justify-start w-full px-4 py-6 shadow-2xl"
-          >
-            {navItems.map((navItem, idx) => (
-              <motion.div
-                key={`desktop-compact-link-${idx}`}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                  transition: {
-                    delay: idx * 0.05,
-                  },
-                }}
-                className="w-full"
-              >
-                {navItem.hasDropdown ? (
-                  <div className="w-full py-3">
-                    <button
-                      onClick={() => toggleDropdown(navItem.name)}
-                      className="flex w-full items-center justify-between text-black/90 hover:text-[#E73992] transition-colors px-4 py-3 rounded-xl hover:bg-[#FFF0F7]"
-                    >
-                      <div className="flex items-center gap-4">
-                        <div className="text-[#E73992]">
-                          {getItemIcon(navItem.name)}
-                        </div>
-                        <span className="font-medium text-lg">{navItem.name}</span>
-                      </div>
-                      <IconChevronDown 
-                        className={`h-5 w-5 transition-transform text-[#E73992] ${
-                          activeDropdown === navItem.name ? "rotate-180" : ""
-                        }`} 
-                      />
-                    </button>
-                    
-                    <AnimatePresence>
-                      {activeDropdown === navItem.name && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.2 }}
-                          className="overflow-hidden"
-                        >
-                          <div className="pl-12 pr-4 pb-2 space-y-1">
-                            {navItem.dropdownItems?.map((item, i) => (
-                              <Link
-                                key={`desktop-compact-dropdown-${i}`}
-                                href={item.link}
-                                className="block py-3 px-4 text-gray-700 hover:text-[#E73992] hover:bg-[#FFEBF5] rounded-lg transition-all duration-200 font-medium"
-                                onClick={() => {
-                                  setActiveDropdown(null);
-                                  setMobileMenuOpen(false);
-                                }}
-                              >
-                                <div className="flex items-center gap-4">
-                                  <div className="text-[#E73992]/70 flex-shrink-0 h-8 w-8 relative flex items-center justify-center">
-                                    {item.imageSrc ? (
-                                      <Image 
-                                        src={item.imageSrc} 
-                                        alt={item.name}
-                                        width={32}
-                                        height={32}
-                                        className="rounded-md object-contain"
-                                      />
-                                    ) : item.icon ? (
-                                      <div className="w-5 h-5 text-[#E73992]">
-                                        {item.icon}
-                                      </div>
-                                    ) : (
-                                      <div className="w-5 h-5 rounded-full bg-[#E73992]/20"></div>
-                                    )}
-                                  </div>
-                                  <div>
-                                    <p className="text-base">{item.name}</p>
-                                    {item.description && (
-                                      <p className="text-xs text-gray-500 mt-0.5">{item.description}</p>
-                                    )}
-                                  </div>
-                                </div>
-                              </Link>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ) : (
-                  <a
-                    href={navItem.isSection ? `#${navItem.link}` : navItem.link}
-                    onClick={(e) => {
-                      onNavClick(e, navItem);
-                      setMobileMenuOpen(false);
-                    }}
-                    className="flex items-center gap-4 text-black/90 hover:text-[#E73992] transition-colors w-full px-4 py-3 my-3 rounded-xl hover:bg-[#FFF0F7]"
+                  
+                  <motion.div 
+                    whileHover={{ scale: 1.1 }} 
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    className="cursor-pointer"
                   >
-                    <div className="text-[#E73992]">
-                      {getItemIcon(navItem.name)}
-                    </div>
-                    <span className="font-medium text-lg">{navItem.name}</span>
-                  </a>
-                )}
-              </motion.div>
-            ))}
+                    {mobileMenuOpen ? (
+                      <IconX className="text-black/90" />
+                    ) : (
+                      <IconMenu2 className="text-black/90" />
+                    )}
+                  </motion.div>
+                </div>
+              ) : (
+                // Show full navigation when not scrolled
+                <>
+                  <motion.div
+                    className="lg:flex flex-row flex-1 items-center justify-center space-x-2 text-sm"
+                    animate={{
+                      scale: 1,
+                      justifyContent: visible ? "flex-end" : "center",
+                    }}
+                  >
+                    {navItems.map((navItem, idx) => (
+                      <motion.div
+                        key={`nav-item-${idx}`}
+                        onHoverStart={() => {
+                          setHoveredIndex(idx);
+                          if (navItem.hasDropdown) {
+                            setActiveDropdown(navItem.name);
+                          } else {
+                            setActiveDropdown(null);
+                          }
+                        }}
+                        className="relative"
+                      >
+                        <a
+                          className="text-black/90 relative px-3 py-1.5 transition-colors cursor-pointer flex items-center"
+                          href={navItem.isSection ? `#${navItem.link}` : navItem.link}
+                          onClick={(e) => {
+                            if (!navItem.hasDropdown) {
+                              onNavClick(e, navItem);
+                            } else if (navItem.isSection) {
+                              e.preventDefault();
+                              scrollToSection(navItem.link);
+                            }
+                          }}
+                        >
+                          <span className="relative z-10">{navItem.name}</span>
+                          {navItem.hasDropdown && (
+                            <IconChevronDown className="h-4 w-4 ml-1 text-black/70" />
+                          )}
+                          {hoveredIndex === idx && (
+                            <motion.div
+                              layoutId="menu-hover"
+                              className="absolute inset-0 rounded-full"
+                              initial={{ opacity: 0 }}
+                              animate={{
+                                opacity: 1,
+                                background:
+                                  "linear-gradient(145deg, rgba(252,209,230,0.6) 0%, rgba(231,57,146,0.2) 100%)",
+                                boxShadow: "0 4px 15px rgba(231,57,146,0.1)",
+                              }}
+                              exit={{
+                                opacity: 0,
+                              }}
+                              transition={{
+                                duration: 0.05,
+                              }}
+                            />
+                          )}
+                        </a>
 
-            {/* Social Media Icons - Modern 2 column layout */}
-            <div className="mt-8 pt-6 border-t border-gray-100 w-full">
-              <div className="flex justify-center gap-6 px-4">
-                <Link 
-                  href="https://instagram.com/pinkdogspa" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="group relative"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#E73992] to-[#FF6B9D] rounded-2xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
-                  <div className="relative bg-white hover:bg-[#FFF0F7] p-4 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 border border-pink-100">
-                    <IconBrandInstagram size={28} className="text-[#E73992]" />
-                  </div>
-                </Link>
-                
-                <Link 
-                  href="https://facebook.com/pinkdogspa" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="group relative"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#E73992] to-[#FF6B9D] rounded-2xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
-                  <div className="relative bg-white hover:bg-[#FFF0F7] p-4 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 border border-pink-100">
-                    <IconBrandFacebook size={28} className="text-[#E73992]" />
-                  </div>
-                </Link>
-              </div>
+                        {/* Dropdown Menu */}
+                        {navItem.hasDropdown && activeDropdown === navItem.name && (
+                          <motion.div 
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                            className="absolute top-[calc(100%_+_0.5rem)] left-1/2 -translate-x-1/2 bg-white rounded-xl shadow-lg p-4 z-50 w-[500px]"
+                          >
+                            <div className={`
+                              ${navItem.name === "Services" ? "grid grid-cols-2 gap-4" : ""}
+                              ${navItem.name === "About" ? "grid grid-cols-2 gap-4" : ""}
+                              ${navItem.name === "Resources" ? "flex justify-center gap-4" : ""}
+                            `}>
+                              {navItem.name === "About" && navItem.dropdownItems ? (
+                                <>
+                                  {/* First row - About Us and Our Philosophy */}
+                                  {navItem.dropdownItems.slice(0, 2).map((item, i) => (
+                                    <Link 
+                                      key={`dropdown-${i}`}
+                                      href={item.link}
+                                      className="flex items-start gap-3 p-3 rounded-lg hover:bg-pink-50 transition-colors duration-200"
+                                      onClick={() => setActiveDropdown(null)}
+                                    >
+                                      <div className="flex-shrink-0 h-14 w-14 relative flex items-center justify-center">
+                                        {item.icon && (
+                                          <div className="text-[#E73992]">{item.icon}</div>
+                                        )}
+                                      </div>
+                                      <div>
+                                        <h3 className="font-medium text-gray-900">{item.name}</h3>
+                                        {item.description && (
+                                          <p className="text-xs text-gray-500 mt-0.5">{item.description}</p>
+                                        )}
+                                      </div>
+                                    </Link>
+                                  ))}
+                                  {/* Second row - Gallery centered */}
+                                  <div className="col-span-2 flex justify-center">
+                                    {navItem.dropdownItems[2] && (
+                                      <Link 
+                                        href={navItem.dropdownItems[2].link}
+                                        className="flex items-start gap-3 p-3 rounded-lg hover:bg-pink-50 transition-colors duration-200 max-w-[250px]"
+                                        onClick={() => setActiveDropdown(null)}
+                                      >
+                                        <div className="flex-shrink-0 h-14 w-14 relative flex items-center justify-center">
+                                          {navItem.dropdownItems[2].icon && (
+                                            <div className="text-[#E73992]">{navItem.dropdownItems[2].icon}</div>
+                                          )}
+                                        </div>
+                                        <div>
+                                          <h3 className="font-medium text-gray-900">{navItem.dropdownItems[2].name}</h3>
+                                          {navItem.dropdownItems[2].description && (
+                                            <p className="text-xs text-gray-500 mt-0.5">{navItem.dropdownItems[2].description}</p>
+                                          )}
+                                        </div>
+                                      </Link>
+                                    )}
+                                  </div>
+                                </>
+                              ) : (
+                                navItem.dropdownItems?.map((item, i) => (
+                                  <Link 
+                                    key={`dropdown-${i}`}
+                                    href={item.link}
+                                    className="flex items-start gap-3 p-3 rounded-lg hover:bg-pink-50 transition-colors duration-200"
+                                    onClick={() => setActiveDropdown(null)}
+                                  >
+                                    <div className="flex-shrink-0 h-14 w-14 relative flex items-center justify-center">
+                                      {item.imageSrc ? (
+                                        <Image 
+                                          src={item.imageSrc} 
+                                          alt={item.name}
+                                          width={56}
+                                          height={56}
+                                          className="rounded-md object-contain"
+                                        />
+                                      ) : item.icon ? (
+                                        <div className="text-[#E73992]">{item.icon}</div>
+                                      ) : null}
+                                    </div>
+                                    <div>
+                                      <h3 className="font-medium text-gray-900">{item.name}</h3>
+                                      {item.description && (
+                                        <p className="text-xs text-gray-500 mt-0.5">{item.description}</p>
+                                      )}
+                                    </div>
+                                  </Link>
+                                ))
+                              )}
+                            </div>
+                          </motion.div>
+                        )}
+                      </motion.div>
+                    ))}
+                  </motion.div>
+
+                  <AnimatePresence mode="popLayout" initial={false}>
+                    {!visible && (
+                      <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{
+                          opacity: 1,
+                          x: 0,
+                          transition: {
+                            duration: 0.2,
+                          },
+                        }}
+                        exit={{
+                          opacity: 0,
+                          x: 20,
+                          transition: {
+                            duration: 0.2,
+                          },
+                        }}
+                      >
+                        <div className="flex items-center gap-2">
+                          <Button
+                            className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full"
+                            asChild
+                          >
+                            <Link href="/login">Book Now</Link>
+                          </Button>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </>
+              )}
+
+              {/* Compact menu dropdown */}
+              <AnimatePresence>
+                {visible && mobileMenuOpen && (
+                  <motion.div
+                    initial={{
+                      opacity: 0,
+                      height: 0,
+                      y: -10,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      height: "auto",
+                      y: 0,
+                    }}
+                    exit={{
+                      opacity: 0,
+                      height: 0,
+                      y: -10,
+                    }}
+                    transition={{
+                      duration: 0.2,
+                      ease: "easeInOut",
+                    }}
+                    className="flex rounded-3xl absolute top-16 mt-2 backdrop-blur-xl bg-white/98 left-0 right-0 z-50 flex-col items-center justify-start w-full px-4 py-6 shadow-2xl"
+                  >
+                    {navItems.map((navItem, idx) => (
+                      <motion.div
+                        key={`desktop-compact-link-${idx}`}
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{
+                          opacity: 1,
+                          y: 0,
+                          transition: {
+                            delay: idx * 0.05,
+                          },
+                        }}
+                        className="w-full"
+                      >
+                        {navItem.hasDropdown ? (
+                          <div className="w-full py-3">
+                            <button
+                              onClick={() => toggleDropdown(navItem.name)}
+                              className="flex w-full items-center justify-between text-black/90 hover:text-[#E73992] transition-colors px-4 py-3 rounded-xl hover:bg-[#FFF0F7]"
+                            >
+                              <div className="flex items-center gap-4">
+                                <div className="text-[#E73992]">
+                                  {getItemIcon(navItem.name)}
+                                </div>
+                                <span className="font-medium text-lg">{navItem.name}</span>
+                              </div>
+                              <IconChevronDown 
+                                className={`h-5 w-5 transition-transform text-[#E73992] ${
+                                  activeDropdown === navItem.name ? "rotate-180" : ""
+                                }`} 
+                              />
+                            </button>
+                            
+                            <AnimatePresence>
+                              {activeDropdown === navItem.name && (
+                                <motion.div
+                                  initial={{ height: 0, opacity: 0 }}
+                                  animate={{ height: "auto", opacity: 1 }}
+                                  exit={{ height: 0, opacity: 0 }}
+                                  transition={{ duration: 0.2 }}
+                                  className="overflow-hidden"
+                                >
+                                  <div className="pl-12 pr-4 pb-2 space-y-1">
+                                    {navItem.dropdownItems?.map((item, i) => (
+                                      <Link
+                                        key={`desktop-compact-dropdown-${i}`}
+                                        href={item.link}
+                                        className="block py-3 px-4 text-gray-700 hover:text-[#E73992] hover:bg-[#FFEBF5] rounded-lg transition-all duration-200 font-medium"
+                                        onClick={() => {
+                                          setActiveDropdown(null);
+                                          setMobileMenuOpen(false);
+                                        }}
+                                      >
+                                        <div className="flex items-center gap-4">
+                                          <div className="text-[#E73992]/70 flex-shrink-0 h-8 w-8 relative flex items-center justify-center">
+                                            {item.imageSrc ? (
+                                              <Image 
+                                                src={item.imageSrc} 
+                                                alt={item.name}
+                                                width={32}
+                                                height={32}
+                                                className="rounded-md object-contain"
+                                              />
+                                            ) : item.icon ? (
+                                              <div className="w-5 h-5 text-[#E73992]">
+                                                {item.icon}
+                                              </div>
+                                            ) : (
+                                              <div className="w-5 h-5 rounded-full bg-[#E73992]/20"></div>
+                                            )}
+                                          </div>
+                                          <div>
+                                            <p className="text-base">{item.name}</p>
+                                            {item.description && (
+                                              <p className="text-xs text-gray-500 mt-0.5">{item.description}</p>
+                                            )}
+                                          </div>
+                                        </div>
+                                      </Link>
+                                    ))}
+                                  </div>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        ) : (
+                          <a
+                            href={navItem.isSection ? `#${navItem.link}` : navItem.link}
+                            onClick={(e) => {
+                              onNavClick(e, navItem);
+                              setMobileMenuOpen(false);
+                            }}
+                            className="flex items-center gap-4 text-black/90 hover:text-[#E73992] transition-colors w-full px-4 py-3 my-3 rounded-xl hover:bg-[#FFF0F7]"
+                          >
+                            <div className="text-[#E73992]">
+                              {getItemIcon(navItem.name)}
+                            </div>
+                            <span className="font-medium text-lg">{navItem.name}</span>
+                          </a>
+                        )}
+                      </motion.div>
+                    ))}
+
+                    {/* Social Media Icons - Modern 2 column layout */}
+                    <div className="mt-8 pt-6 border-t border-gray-100 w-full">
+                      <div className="flex justify-center gap-6 px-4">
+                        <Link 
+                          href="https://instagram.com/pinkdogspa" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="group relative"
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-r from-[#E73992] to-[#FF6B9D] rounded-2xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
+                          <div className="relative bg-white hover:bg-[#FFF0F7] p-4 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 border border-pink-100">
+                            <IconBrandInstagram size={28} className="text-[#E73992]" />
+                          </div>
+                        </Link>
+                        
+                        <Link 
+                          href="https://facebook.com/pinkdogspa" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="group relative"
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-r from-[#E73992] to-[#FF6B9D] rounded-2xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
+                          <div className="relative bg-white hover:bg-[#FFF0F7] p-4 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 border border-pink-100">
+                            <IconBrandFacebook size={28} className="text-[#E73992]" />
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
   );
 };
 
@@ -686,233 +694,240 @@ const MobileNav = ({
 
   return (
     <>
-      <motion.div
-        animate={{
-          backdropFilter: "blur(16px)",
-          background: visible
-            ? "rgba(255, 255, 255, 0.95)"
-            : "rgba(255, 255, 255, 1.0)",
-          width: visible ? "85%" : "90%",
-          y: visible ? 4 : 0,
-          borderRadius: "full",
-          padding: "12px 20px",
-          boxShadow: visible
-            ? "0 10px 30px -10px rgba(0,0,0,0.1)"
-            : "0 0 0 transparent",
-        }}
-        initial={{
-          width: "85%",
-          scale: 0.95,
-          opacity: 0,
-        }}
-        whileInView={{
-          scale: 1,
-          opacity: 1,
-        }}
-        transition={{
-          duration: 0.3,
-          ease: "easeInOut",
-        }}
-        className={cn(
-          "flex relative flex-col lg:hidden w-full justify-between items-center max-w-[calc(100vw-2rem)] mx-auto z-50 rounded-full"
-        )}
-      >
-        <div className="flex flex-row justify-between items-center w-full">
-          <Logo />
-          <div className="flex items-center gap-3">
-            {/* Book Now button - visible until sm breakpoint */}
-            <div className="hidden sm:block">
-              <Button
-                className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full"
-                asChild
-              >
-                <Link href="/login">Book Now</Link>
-              </Button>
+      <div className="lg:hidden w-full">
+        <div className={cn(
+          "mx-auto transition-all duration-300",
+          visible ? "max-w-lg" : "max-w-7xl"
+        )}>
+          <motion.div
+            animate={{
+              backdropFilter: "blur(16px)",
+              background: visible
+                ? "rgba(255, 255, 255, 0.95)"
+                : "rgba(255, 255, 255, 1.0)",
+              y: visible ? 4 : 0,
+              borderRadius: "50px",
+              boxShadow: visible
+                ? "0 10px 30px -10px rgba(0,0,0,0.1)"
+                : "0 0 0 transparent",
+            }}
+            initial={{
+              scale: 0.95,
+              opacity: 0,
+            }}
+            whileInView={{
+              scale: 1,
+              opacity: 1,
+            }}
+            transition={{
+              duration: 0.3,
+              ease: "easeInOut",
+            }}
+            className={cn(
+              "flex relative flex-col justify-between items-center z-50 rounded-full"
+            )}
+          >
+            <div className="flex flex-row justify-between items-center w-full px-4 sm:px-6 lg:px-8 py-3">
+              <Logo />
+              <div className="flex items-center gap-3">
+                {/* Book Now button - visible until sm breakpoint */}
+                <div className="hidden sm:block">
+                  <Button
+                    className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full"
+                    asChild
+                  >
+                    <Link href="/login">Book Now</Link>
+                  </Button>
+                </div>
+                
+                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                  {open ? (
+                    <IconX className="text-black/90" onClick={() => setOpen(!open)} />
+                  ) : (
+                    <IconMenu2
+                      className="text-black/90"
+                      onClick={() => setOpen(!open)}
+                    />
+                  )}
+                </motion.div>
+              </div>
             </div>
-            
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              {open ? (
-                <IconX className="text-black/90" onClick={() => setOpen(!open)} />
-              ) : (
-                <IconMenu2
-                  className="text-black/90"
-                  onClick={() => setOpen(!open)}
-                />
-              )}
-            </motion.div>
-          </div>
-        </div>
 
-        <AnimatePresence>
-          {open && (
-            <motion.div
-              initial={{
-                opacity: 0,
-                height: 0,
-                y: -10,
-              }}
-              animate={{
-                opacity: 1,
-                height: "auto",
-                y: 0,
-              }}
-              exit={{
-                opacity: 0,
-                height: 0,
-                y: -10,
-              }}
-              transition={{
-                duration: 0.2,
-                ease: "easeInOut",
-              }}
-              className="flex rounded-3xl absolute top-20 mt-2 backdrop-blur-xl bg-white/98 inset-x-0 z-50 flex-col items-center justify-start w-full px-4 py-6 shadow-2xl"
-            >
-              {navItems.map((navItem, idx) => (
+            <AnimatePresence>
+              {open && (
                 <motion.div
-                  key={`link=${idx}`}
-                  initial={{ opacity: 0, y: -10 }}
+                  initial={{
+                    opacity: 0,
+                    height: 0,
+                    y: -10,
+                  }}
                   animate={{
                     opacity: 1,
+                    height: "auto",
                     y: 0,
-                    transition: {
-                      delay: idx * 0.05,
-                    },
                   }}
-                  className="w-full"
+                  exit={{
+                    opacity: 0,
+                    height: 0,
+                    y: -10,
+                  }}
+                  transition={{
+                    duration: 0.2,
+                    ease: "easeInOut",
+                  }}
+                  className={cn(
+                    "flex rounded-3xl absolute top-16 mt-2 backdrop-blur-xl bg-white/98 z-50 flex-col items-center justify-start px-4 py-6 shadow-2xl",
+                    visible ? "left-0 right-0" : "left-[-100%] right-[-100%] max-w-7xl mx-auto"
+                  )}
                 >
-                  {navItem.hasDropdown ? (
-                    <div className="w-full py-3">
-                      <button
-                        onClick={() => toggleDropdown(navItem.name)}
-                        className="flex w-full items-center justify-between text-black/90 hover:text-[#E73992] transition-colors px-4 py-3 rounded-xl hover:bg-[#FFF0F7]"
-                      >
-                        <div className="flex items-center gap-4">
+                  {navItems.map((navItem, idx) => (
+                    <motion.div
+                      key={`link=${idx}`}
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{
+                        opacity: 1,
+                        y: 0,
+                        transition: {
+                          delay: idx * 0.05,
+                        },
+                      }}
+                      className="w-full"
+                    >
+                      {navItem.hasDropdown ? (
+                        <div className="w-full py-3">
+                          <button
+                            onClick={() => toggleDropdown(navItem.name)}
+                            className="flex w-full items-center justify-between text-black/90 hover:text-[#E73992] transition-colors px-4 py-3 rounded-xl hover:bg-[#FFF0F7]"
+                          >
+                            <div className="flex items-center gap-4">
+                              <div className="text-[#E73992]">
+                                {getItemIcon(navItem.name)}
+                              </div>
+                              <span className="font-medium text-lg mobile-nav-item">{navItem.name}</span>
+                            </div>
+                            <IconChevronDown 
+                              className={`h-5 w-5 transition-transform text-[#E73992] ${
+                                expandedItem === navItem.name ? "rotate-180" : ""
+                              }`} 
+                            />
+                          </button>
+                          
+                          <AnimatePresence>
+                            {expandedItem === navItem.name && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.2 }}
+                                className="overflow-hidden"
+                              >
+                                <div className="pl-12 pr-4 pb-2 space-y-1">
+                                  {navItem.dropdownItems?.map((item, i) => (
+                                    <Link
+                                      key={`mobile-dropdown-${i}`}
+                                      href={item.link}
+                                      className="block py-3 px-4 text-gray-700 hover:text-[#E73992] hover:bg-[#FFEBF5] rounded-lg transition-all duration-200 font-medium"
+                                      onClick={() => {
+                                        setExpandedItem(null);
+                                        setOpen(false);
+                                      }}
+                                    >
+                                      <div className="flex items-center gap-4">
+                                        <div className="text-[#E73992]/70 flex-shrink-0 h-8 w-8 relative flex items-center justify-center">
+                                          {item.imageSrc ? (
+                                            <Image 
+                                              src={item.imageSrc} 
+                                              alt={item.name}
+                                              width={32}
+                                              height={32}
+                                              className="rounded-md object-contain"
+                                            />
+                                          ) : item.icon ? (
+                                            <div className="w-5 h-5 text-[#E73992]">
+                                              {item.icon}
+                                            </div>
+                                          ) : (
+                                            <div className="w-5 h-5 rounded-full bg-[#E73992]/20"></div>
+                                          )}
+                                        </div>
+                                        <div>
+                                          <p className="text-base mobile-nav-item">{item.name}</p>
+                                          {item.description && (
+                                            <p className="text-xs text-gray-500 mt-0.5">{item.description}</p>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </Link>
+                                  ))}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      ) : (
+                        <a
+                          href={navItem.isSection ? `#${navItem.link}` : navItem.link}
+                          onClick={(e) => handleMobileNavClick(e, navItem)}
+                          className="flex items-center gap-4 text-black/90 hover:text-[#E73992] transition-colors w-full px-4 py-3 my-3 rounded-xl hover:bg-[#FFF0F7]"
+                        >
                           <div className="text-[#E73992]">
                             {getItemIcon(navItem.name)}
                           </div>
                           <span className="font-medium text-lg mobile-nav-item">{navItem.name}</span>
-                        </div>
-                        <IconChevronDown 
-                          className={`h-5 w-5 transition-transform text-[#E73992] ${
-                            expandedItem === navItem.name ? "rotate-180" : ""
-                          }`} 
-                        />
-                      </button>
-                      
-                      <AnimatePresence>
-                        {expandedItem === navItem.name && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.2 }}
-                            className="overflow-hidden"
-                          >
-                            <div className="pl-12 pr-4 pb-2 space-y-1">
-                              {navItem.dropdownItems?.map((item, i) => (
-                                <Link
-                                  key={`mobile-dropdown-${i}`}
-                                  href={item.link}
-                                  className="block py-3 px-4 text-gray-700 hover:text-[#E73992] hover:bg-[#FFEBF5] rounded-lg transition-all duration-200 font-medium"
-                                  onClick={() => {
-                                    setExpandedItem(null);
-                                    setOpen(false);
-                                  }}
-                                >
-                                  <div className="flex items-center gap-4">
-                                    <div className="text-[#E73992]/70 flex-shrink-0 h-8 w-8 relative flex items-center justify-center">
-                                      {item.imageSrc ? (
-                                        <Image 
-                                          src={item.imageSrc} 
-                                          alt={item.name}
-                                          width={32}
-                                          height={32}
-                                          className="rounded-md object-contain"
-                                        />
-                                      ) : item.icon ? (
-                                        <div className="w-5 h-5 text-[#E73992]">
-                                          {item.icon}
-                                        </div>
-                                      ) : (
-                                        <div className="w-5 h-5 rounded-full bg-[#E73992]/20"></div>
-                                      )}
-                                    </div>
-                                    <div>
-                                      <p className="text-base mobile-nav-item">{item.name}</p>
-                                      {item.description && (
-                                        <p className="text-xs text-gray-500 mt-0.5">{item.description}</p>
-                                      )}
-                                    </div>
-                                  </div>
-                                </Link>
-                              ))}
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  ) : (
-                    <a
-                      href={navItem.isSection ? `#${navItem.link}` : navItem.link}
-                      onClick={(e) => handleMobileNavClick(e, navItem)}
-                      className="flex items-center gap-4 text-black/90 hover:text-[#E73992] transition-colors w-full px-4 py-3 my-3 rounded-xl hover:bg-[#FFF0F7]"
+                        </a>
+                      )}
+                    </motion.div>
+                  ))}
+
+                  {/* Book Now button - only visible in mobile menu when not in top bar */}
+                  <div className="flex flex-col w-full gap-3 mt-6 px-4 sm:hidden">
+                    <Button
+                      className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full w-full py-6 text-lg font-semibold shadow-lg"
+                      asChild
                     >
-                      <div className="text-[#E73992]">
-                        {getItemIcon(navItem.name)}
-                      </div>
-                      <span className="font-medium text-lg mobile-nav-item">{navItem.name}</span>
-                    </a>
-                  )}
+                      <Link href="/login" onClick={() => setOpen(false)}>
+                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        Book Now
+                      </Link>
+                    </Button>
+                  </div>
+
+                  {/* Social Media Links */}
+                  <div className="mt-8 pt-6 border-t border-gray-100 w-full">
+                    <div className="flex justify-center gap-6 px-4">
+                      <Link 
+                        href="https://instagram.com/pinkdogspa" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="group relative"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#E73992] to-[#FF6B9D] rounded-2xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
+                        <div className="relative bg-white hover:bg-[#FFF0F7] p-4 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 border border-pink-100">
+                          <IconBrandInstagram size={28} className="text-[#E73992]" />
+                        </div>
+                      </Link>
+                      
+                      <Link 
+                        href="https://facebook.com/pinkdogspa" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="group relative"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#E73992] to-[#FF6B9D] rounded-2xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
+                        <div className="relative bg-white hover:bg-[#FFF0F7] p-4 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 border border-pink-100">
+                          <IconBrandFacebook size={28} className="text-[#E73992]" />
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
                 </motion.div>
-              ))}
-
-              {/* Book Now button - only visible in mobile menu when not in top bar */}
-              <div className="flex flex-col w-full gap-3 mt-6 px-4 sm:hidden">
-                <Button
-                  className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full w-full py-6 text-lg font-semibold shadow-lg"
-                  asChild
-                >
-                  <Link href="/login" onClick={() => setOpen(false)}>
-                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    Book Now
-                  </Link>
-                </Button>
-              </div>
-
-              {/* Social Media Links */}
-              <div className="mt-8 pt-6 border-t border-gray-100 w-full">
-                <div className="flex justify-center gap-6 px-4">
-                  <Link 
-                    href="https://instagram.com/pinkdogspa" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="group relative"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#E73992] to-[#FF6B9D] rounded-2xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
-                    <div className="relative bg-white hover:bg-[#FFF0F7] p-4 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 border border-pink-100">
-                      <IconBrandInstagram size={28} className="text-[#E73992]" />
-                    </div>
-                  </Link>
-                  
-                  <Link 
-                    href="https://facebook.com/pinkdogspa" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="group relative"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#E73992] to-[#FF6B9D] rounded-2xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
-                    <div className="relative bg-white hover:bg-[#FFF0F7] p-4 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 border border-pink-100">
-                      <IconBrandFacebook size={28} className="text-[#E73992]" />
-                    </div>
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </div>
+      </div>
     </>
   );
 };
