@@ -161,7 +161,7 @@ const galleryImages = [
   // Facility images
   {
     id: 21,
-    src: "/images/gallery/all/image-17.jpg",
+    src: "/images/gallery/all/image-17.JPG",
     alt: "PinkDog Pet Resort Facility",
     caption: "Our spacious facility",
     category: "facility"
@@ -203,7 +203,7 @@ const galleryImages = [
   },
   {
     id: 27,
-    src: "/images/gallery/all/image-20.jpg",
+    src: "/images/gallery/all/image-20.JPG",
     alt: "PinkDog Pet Resort Reception",
     caption: "Our welcoming reception area",
     category: "facility"
