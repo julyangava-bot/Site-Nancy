@@ -213,6 +213,49 @@ const DesktopNav = ({
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  // Block body scroll when desktop compact menu is open using Tailwind classes
+  React.useEffect(() => {
+    if (mobileMenuOpen && visible) {
+      document.documentElement.classList.add('overflow-hidden');
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.documentElement.classList.remove('overflow-hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+    
+    // Cleanup function to restore scroll when component unmounts
+    return () => {
+      document.documentElement.classList.remove('overflow-hidden');
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, [mobileMenuOpen, visible]);
+  
+  // Close compact menu when clicking outside or pressing escape
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (mobileMenuOpen && !target.closest('.desktop-nav-container')) {
+        setMobileMenuOpen(false);
+      }
+    };
+    
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+    };
+    
+    if (mobileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleEscapeKey);
+    }
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscapeKey);
+    };
+  }, [mobileMenuOpen]);
 
   const toggleDropdown = (itemName: string) => {
     setActiveDropdown(activeDropdown === itemName ? null : itemName);
@@ -677,6 +720,51 @@ const MobileNav = ({
   const [open, setOpen] = useState(false);
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
   
+  // Block body scroll when mobile menu is open using Tailwind classes
+  React.useEffect(() => {
+    if (open) {
+      document.documentElement.classList.add('overflow-hidden');
+      document.body.classList.add('overflow-hidden', 'fixed', 'w-full');
+    } else {
+      document.documentElement.classList.remove('overflow-hidden');
+      document.body.classList.remove('overflow-hidden', 'fixed', 'w-full');
+    }
+    
+    // Cleanup function to restore scroll when component unmounts
+    return () => {
+      document.documentElement.classList.remove('overflow-hidden');
+      document.body.classList.remove('overflow-hidden', 'fixed', 'w-full');
+    };
+  }, [open]);
+  
+  // Close menu when clicking outside or pressing escape
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (open && !target.closest('.mobile-nav-container')) {
+        setOpen(false);
+        setExpandedItem(null);
+      }
+    };
+    
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && open) {
+        setOpen(false);
+        setExpandedItem(null);
+      }
+    };
+    
+    if (open) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleEscapeKey);
+    }
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscapeKey);
+    };
+  }, [open]);
+  
   const handleMobileNavClick = (e: React.MouseEvent, navItem: NavItem) => {
     if (!navItem.hasDropdown) {
       onNavClick(e, navItem);
@@ -750,7 +838,7 @@ const MobileNav = ({
               ease: "easeInOut",
             }}
             className={cn(
-              "flex relative flex-col justify-between items-center z-50 rounded-full"
+              "flex relative flex-col justify-between items-center z-50 rounded-full mobile-nav-container"
             )}
           >
             <div className="flex flex-row justify-between items-center w-full px-4 sm:px-6 lg:px-8 py-3">
