@@ -306,7 +306,7 @@ const DesktopNav = ({
                         }}
                         className="relative"
                       >
-                        <a
+                        <Link
                           className="text-black/90 relative px-3 py-1.5 transition-colors cursor-pointer flex items-center"
                           href={navItem.isSection ? `#${navItem.link}` : navItem.link}
                           onClick={(e) => {
@@ -341,7 +341,7 @@ const DesktopNav = ({
                               }}
                             />
                           )}
-                        </a>
+                        </Link>
 
                         {/* Dropdown Menu */}
                         {navItem.hasDropdown && activeDropdown === navItem.name && (
@@ -777,7 +777,7 @@ const MobileNav = ({
                   }}
                   className={cn(
                     "flex rounded-3xl absolute top-16 mt-2 backdrop-blur-xl bg-white/98 z-50 flex-col items-center justify-start px-4 py-6 shadow-2xl",
-                    visible ? "left-0 right-0" : "left-[-100%] right-[-100%] max-w-7xl mx-auto"
+                    "left-0 right-0"
                   )}
                 >
                   {navItems.map((navItem, idx) => (
