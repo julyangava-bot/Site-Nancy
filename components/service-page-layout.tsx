@@ -80,7 +80,7 @@ export function ServicePageLayout({
                   className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-6 sm:px-8 py-3 sm:py-6 text-base sm:text-lg"
                   asChild
                 >
-                  <Link href={ctaLink} target="_blank" rel="noopener noreferrer">{ctaText}</Link>
+                  <Link href={ctaLink} {...(ctaLink.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{ctaText}</Link>
                 </Button>
                 {showSecondButton && (
                   <Button
@@ -365,7 +365,7 @@ export function ServicePageLayout({
                     className="w-full bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full"
                     asChild
                   >
-                    <Link href={ctaLink}>Select Plan</Link>
+                    <Link href={ctaLink} {...(ctaLink.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>Select Plan</Link>
                   </Button>
                 </motion.div>
               ))}
@@ -398,7 +398,7 @@ export function ServicePageLayout({
                 className="bg-white text-[#E73992] hover:bg-gray-100 rounded-full px-8 py-6 text-lg font-semibold"
                 asChild
               >
-                <Link href={ctaLink}>{ctaText}</Link>
+                <Link href={ctaLink} {...(ctaLink.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{ctaText}</Link>
               </Button>
               <Button
                 size="lg"

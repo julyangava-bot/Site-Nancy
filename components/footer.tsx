@@ -41,7 +41,6 @@ export function Footer() {
   ];
 
   const legalLinks = [
-    { name: "Legal", href: "/legal" },
     { name: "Privacy Policy", href: "/privacy-policy" },
     { name: "Terms of Service", href: "/terms" },
     { name: "Data Deletion", href: "/data-deletion" },
