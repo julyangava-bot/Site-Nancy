@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function GroomingPage() {
   return (
@@ -26,6 +27,22 @@ export default function GroomingPage() {
               <p className="text-lg text-gray-600 mb-8 leading-relaxed">
                 We treat pets like family — because to us, they are. Your dog deserves to be pampered with love and care, and our mission is to return them to you happy, healthy, fresh, and clean.
               </p>
+              <div className="flex gap-4">
+                <a
+                  href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-8 py-3 text-lg font-medium transition-colors inline-flex items-center justify-center"
+                >
+                  Book Spa Day
+                </a>
+                <Link
+                  href="/#checkin-info"
+                  className="border-2 border-[#E73992] text-[#E73992] hover:bg-[#FFF0F7] rounded-full px-8 py-3 text-lg font-medium transition-colors inline-flex items-center justify-center"
+                >
+                  Contact Us
+                </Link>
+              </div>
             </motion.div>
             
             <motion.div
@@ -152,7 +169,7 @@ export default function GroomingPage() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              💧 Our <span className="text-[#E73992]">Services Include</span>
+              ✨ Our <span className="text-[#E73992]">Services Include</span>
             </h2>
           </motion.div>
           
@@ -308,18 +325,20 @@ export default function GroomingPage() {
             Book your pet&apos;s spa day today and see why PinkDog is the preferred choice for pet grooming.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="/booking"
+            <Link
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service"
               className="inline-flex items-center justify-center bg-white text-[#E73992] hover:bg-gray-100 rounded-full px-8 py-4 text-lg font-semibold transition-colors"
             >
               Book Spa Day
-            </a>
-            <a
+            </Link>
+            <Link
               href="/contact"
               className="inline-flex items-center justify-center bg-transparent text-white border-2 border-white hover:bg-white/10 rounded-full px-8 py-4 text-lg font-semibold transition-colors"
             >
               Have Questions?
-            </a>
+            </Link>
           </div>
         </div>
       </section>
