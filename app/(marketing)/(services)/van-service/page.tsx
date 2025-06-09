@@ -75,7 +75,7 @@ export default function VanServicePage() {
   return (
     <ServicePageLayout
       title="PinkVan"
-      subtitle="Pick-Up & Drop-Off Service"
+      subtitle="Service"
       description="No time to drive? No problem! Let PinkVan, our safe and reliable pet transportation service, bring the spa and daycare experience to your doorstep. Whether you're at work, juggling a busy schedule, or simply want convenience, PinkVan takes the stress out of drop-offs and pickups. We'll make sure your furry friend gets to and from PinkDog Pet Resort safely, comfortably, and right on time."
       heroImage="/images/services/van-card.jpg"
       features={features}

@@ -57,7 +57,7 @@ export function ServicePageLayout({
   return (
     <main className="bg-white relative min-h-screen">
       {/* Hero Section */}
-      <section className="relative pt-24 sm:pt-36 pb-8 sm:pb-12">
+      <section className="relative pt-30 sm:pt-36 pb-8 sm:pb-12">
         <div className="absolute inset-0 bg-gradient-to-b from-[#FFF0F7] to-white"></div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
