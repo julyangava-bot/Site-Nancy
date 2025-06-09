@@ -1,100 +1,95 @@
 import React from "react";
 import { ServicePageLayout } from "@/components/service-page-layout";
-import { Car, Shield, Heart, Clock, MapPin, Phone } from "lucide-react";
+import { Car, Clock, MapPin, MessageCircle, Calendar, Heart } from "lucide-react";
 
 export default function VanServicePage() {
   const features = [
     {
-      icon: <Car className="w-7 h-7" />,
-      title: "Comfortable Vehicles",
-      description: "Climate-controlled vans equipped with secure crates and non-slip surfaces."
+      icon: <Calendar className="w-7 h-7" />,
+      title: "Morning Pick-ups & Afternoon Drop-offs",
+      description: "Convenient scheduling for grooming, daycare, and overnight hotel stays."
     },
     {
-      icon: <Shield className="w-7 h-7" />,
-      title: "Safety First",
-      description: "All pets are safely secured during transport with appropriate restraints."
+      icon: <Car className="w-7 h-7" />,
+      title: "Safe & Comfortable Transport",
+      description: "Climate-controlled van with secure kennels for your pet's safety."
     },
     {
       icon: <Heart className="w-7 h-7" />,
-      title: "Experienced Drivers",
-      description: "Our drivers are pet lovers trained in safe pet handling and transport."
+      title: "Professional Handlers",
+      description: "Trained staff in safe pet transportation who care for your furry friends."
     },
     {
-      icon: <Clock className="w-7 h-7" />,
-      title: "Punctual Service",
-      description: "We respect your time with on-time pickups and drop-offs."
+      icon: <MessageCircle className="w-7 h-7" />,
+      title: "Real-Time Updates",
+      description: "Text or WhatsApp updates available upon request for peace of mind."
     },
     {
       icon: <MapPin className="w-7 h-7" />,
-      title: "Door-to-Door",
-      description: "Convenient pickup from your home and safe return after services."
+      title: "Local Service Area",
+      description: "Located in Harvard, MA, serving nearby towns off Route 2."
     },
     {
-      icon: <Phone className="w-7 h-7" />,
-      title: "Real-Time Updates",
-      description: "Receive notifications when we pick up and drop off your pet."
+      icon: <Clock className="w-7 h-7" />,
+      title: "Convenient Time Windows",
+      description: "Morning pickups 8:00 AM - 10:00 AM, afternoon drop-offs after 3:00 PM."
     }
   ];
 
   const benefits = [
-    "Insured and licensed transport service",
-    "Individual crates for each pet",
-    "Fresh water available during transport",
-    "Maximum 30-minute travel time",
-    "GPS tracking on all vehicles",
-    "First aid kit on board",
-    "Regular vehicle sanitization",
-    "Comfort stops for longer trips",
-    "Special care for anxious travelers",
-    "Multiple pet discounts available"
+    "No time to drive? No problem!",
+    "Safe and reliable pet transportation",
+    "Stress-free drop-offs and pickups",
+    "Climate-controlled vehicle",
+    "Secure kennels for safe transport",
+    "Professional handlers trained in pet safety",
+    "Text or WhatsApp updates available",
+    "Service for grooming, daycare, and hotel stays",
+    "Morning and afternoon service windows",
+    "Advance notice appreciated"
   ];
 
-  const pricing = [
+  const howItWorks = [
+    "Morning Pick-Ups & Afternoon Drop-Offs",
+    "Available for grooming, daycare, and overnight hotel stays",
+    "Safe, climate-controlled van with secure kennels",
+    "Professional handlers trained in safe pet transportation",
+    "Text or WhatsApp updates available upon request"
+  ];
+
+  const faqItems = [
     {
-      title: "One-Way Trip",
-      price: "$15",
-      period: "per trip",
-      features: [
-        "Within 5 miles",
-        "Single pet",
-        "Door-to-door",
-        "Insured transport"
-      ]
+      question: "How do I schedule the PinkVan?",
+      answer: "Please call us to schedule PinkVan service, or text us directly to request availability. Advance notice is appreciated!"
     },
     {
-      title: "Round Trip",
-      price: "$25",
-      period: "same day",
-      features: [
-        "Within 5 miles",
-        "Single pet",
-        "Morning pickup",
-        "Evening return"
-      ]
+      question: "Is there an extra fee for the van service?",
+      answer: "Yes, there is a small transportation fee based on your distance from our resort. We'll give you a quote before confirming."
     },
     {
-      title: "Weekly Package",
-      price: "$100",
-      period: "5 round trips",
-      features: [
-        "Save $25",
-        "Flexible scheduling",
-        "Priority booking",
-        "Multiple pets OK"
-      ]
+      question: "What time will you arrive?",
+      answer: "Morning pick-up windows generally start between 8:00 AM – 10:00 AM, and drop-offs begin after 3:00 PM. We'll confirm your exact timing in advance."
     }
   ];
 
   return (
     <ServicePageLayout
-      title="Van"
-      subtitle="Service"
-      description="Let us handle the transportation! Our safe and comfortable pet transport service takes the stress out of getting your furry friend to and from our facility. Our specially equipped vans and caring drivers ensure a smooth, safe journey every time."
+      title="PinkVan"
+      subtitle="Pick-Up & Drop-Off Service"
+      description="No time to drive? No problem! Let PinkVan, our safe and reliable pet transportation service, bring the spa and daycare experience to your doorstep. Whether you're at work, juggling a busy schedule, or simply want convenience, PinkVan takes the stress out of drop-offs and pickups. We'll make sure your furry friend gets to and from PinkDog Pet Resort safely, comfortably, and right on time."
       heroImage="/images/services/van-card.jpg"
       features={features}
       benefits={benefits}
-      pricing={pricing}
-      ctaText="Schedule Transport"
+      howItWorks={howItWorks}
+      serviceArea={{
+        title: "📍 Service Area",
+        description: "We are located in Harvard, MA, right off Route 2, and our PinkVan services extend to several nearby towns. Contact us to check if we serve your location!"
+      }}
+      faqItems={faqItems}
+      pricingNote="Van service rate by distance - appointment only. Please contact us by phone for a personalized quote."
+      ctaText="Contact Us for PinkVan Service"
+      ctaLink="/#checkin-info"
+      showSecondButton={false}
     />
   );
 } 

@@ -23,7 +23,19 @@ interface ServicePageLayoutProps {
     period?: string;
     features: string[];
   }[];
+  howItWorks?: string[];
+  serviceArea?: {
+    title: string;
+    description: string;
+  };
+  faqItems?: {
+    question: string;
+    answer: string;
+  }[];
+  pricingNote?: string;
   ctaText?: string;
+  ctaLink?: string;
+  showSecondButton?: boolean;
 }
 
 export function ServicePageLayout({
@@ -34,7 +46,13 @@ export function ServicePageLayout({
   features,
   benefits,
   pricing,
+  howItWorks,
+  serviceArea,
+  faqItems,
+  pricingNote,
   ctaText = "Book Now",
+  ctaLink = "/booking",
+  showSecondButton = true,
 }: ServicePageLayoutProps) {
   return (
     <main className="bg-white relative">
@@ -60,15 +78,17 @@ export function ServicePageLayout({
                   className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-8 py-6 text-lg"
                   asChild
                 >
-                  <Link href="/booking">{ctaText}</Link>
+                  <Link href={ctaLink}>{ctaText}</Link>
                 </Button>
-                <Button
-                  variant="outline"
-                  className="rounded-full px-8 py-6 text-lg border-[#E73992] text-[#E73992] hover:bg-[#FFF0F7]"
-                  asChild
-                >
-                  <Link href="/contact">Contact Us</Link>
-                </Button>
+                {showSecondButton && (
+                  <Button
+                    variant="outline"
+                    className="rounded-full px-8 py-6 text-lg border-[#E73992] text-[#E73992] hover:bg-[#FFF0F7]"
+                    asChild
+                  >
+                    <Link href="/#checkin-info">Contact Us</Link>
+                  </Button>
+                )}
               </div>
             </motion.div>
             
@@ -185,6 +205,103 @@ export function ServicePageLayout({
         </div>
       </section>
 
+      {/* How It Works Section */}
+      {howItWorks && howItWorks.length > 0 && (
+        <section className="py-20 bg-gradient-to-b from-white to-[#FFF9FC]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                🐾 How It <span className="text-[#E73992]">Works</span>
+              </h2>
+            </motion.div>
+            <div className="max-w-3xl mx-auto">
+              <div className="space-y-4">
+                {howItWorks.map((step, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    className="flex items-start gap-4"
+                  >
+                    <div className="w-8 h-8 bg-[#E73992] rounded-full flex items-center justify-center flex-shrink-0 text-white font-semibold">
+                      {index + 1}
+                    </div>
+                    <p className="text-gray-700 text-lg">{step}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Service Area Section */}
+      {serviceArea && (
+        <section className="py-20 bg-white">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                {serviceArea.title}
+              </h2>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                {serviceArea.description}
+              </p>
+            </motion.div>
+          </div>
+        </section>
+      )}
+
+      {/* FAQ Section */}
+      {faqItems && faqItems.length > 0 && (
+        <section className="py-20 bg-gradient-to-b from-[#FFF9FC] to-white">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                💬 Common <span className="text-[#E73992]">Questions</span>
+              </h2>
+            </motion.div>
+            <div className="space-y-6">
+              {faqItems.map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="bg-white rounded-2xl p-6 shadow-lg"
+                >
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                    Q: {item.question}
+                  </h3>
+                  <p className="text-gray-700 leading-relaxed">
+                    A: {item.answer}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Pricing Section (Optional) */}
       {pricing && pricing.length > 0 && (
         <section className="py-20 bg-gradient-to-b from-[#FFF9FC] to-white">
@@ -234,7 +351,7 @@ export function ServicePageLayout({
                     className="w-full bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full"
                     asChild
                   >
-                    <Link href="/booking">Select Plan</Link>
+                    <Link href={ctaLink}>Select Plan</Link>
                   </Button>
                 </motion.div>
               ))}
@@ -242,6 +359,8 @@ export function ServicePageLayout({
           </div>
         </section>
       )}
+
+
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-[#E73992] to-[#FF69B4] relative overflow-hidden">
@@ -257,7 +376,7 @@ export function ServicePageLayout({
               Ready to Give Your Pet the Best Care?
             </h2>
             <p className="text-xl text-white/90 mb-8">
-              Book your pet&apos;s appointment today and see why PinkDog is the preferred choice for pet parents.
+              {pricingNote || "Book your pet's appointment today and see why PinkDog is the preferred choice for pet parents."}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
@@ -265,7 +384,7 @@ export function ServicePageLayout({
                 className="bg-white text-[#E73992] hover:bg-gray-100 rounded-full px-8 py-6 text-lg font-semibold"
                 asChild
               >
-                <Link href="/booking">{ctaText}</Link>
+                <Link href={ctaLink}>{ctaText}</Link>
               </Button>
               <Button
                 size="lg"
