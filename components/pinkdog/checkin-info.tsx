@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { IconBrandWhatsapp } from "@tabler/icons-react";
 
@@ -20,6 +20,51 @@ const contactInfo = {
 };
 
 export function CheckInInfo() {
+  const [isDirectAccess, setIsDirectAccess] = useState(false);
+
+  useEffect(() => {
+    // Check if page was loaded with #checkin-info hash
+    const hash = window.location.hash;
+    if (hash === "#checkin-info") {
+      setIsDirectAccess(true);
+    }
+  }, []);
+
+  // Animation variants
+  const getAnimationProps = (delay = 0) => {
+    if (isDirectAccess) {
+      return {
+        initial: { opacity: 1, y: 0, x: 0 },
+        animate: { opacity: 1, y: 0, x: 0 },
+        transition: { duration: 0 }
+      };
+    }
+    
+    return {
+      initial: { opacity: 0, y: 20 },
+      whileInView: { opacity: 1, y: 0 },
+      transition: { duration: 0.5, delay },
+      viewport: { once: true }
+    };
+  };
+
+  const getXAnimationProps = (direction = 0, delay = 0) => {
+    if (isDirectAccess) {
+      return {
+        initial: { opacity: 1, x: 0 },
+        animate: { opacity: 1, x: 0 },
+        transition: { duration: 0 }
+      };
+    }
+    
+    return {
+      initial: { opacity: 0, x: direction },
+      whileInView: { opacity: 1, x: 0 },
+      transition: { duration: 0.5, delay },
+      viewport: { once: true }
+    };
+  };
+
   return (
     <section id="checkin-info" className="py-20 bg-[#FDF2F8]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -32,10 +77,7 @@ export function CheckInInfo() {
 
           <div className="relative p-8 md:p-12 lg:p-16">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
+              {...getAnimationProps(0)}
               className="text-center mb-12"
             >
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -50,10 +92,7 @@ export function CheckInInfo() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
               {/* Operating Hours */}
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                viewport={{ once: true }}
+                {...getXAnimationProps(-20, 0.2)}
                 className="bg-[#FFEBF5] rounded-2xl p-6 md:p-8"
               >
                 <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
@@ -103,10 +142,7 @@ export function CheckInInfo() {
 
               {/* Contact Information */}
               <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                viewport={{ once: true }}
+                {...getXAnimationProps(20, 0.4)}
                 className="bg-white border-2 border-[#FCD1E6] rounded-2xl p-6 md:p-8"
               >
                 <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
@@ -245,10 +281,7 @@ export function CheckInInfo() {
             </div>
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              viewport={{ once: true }}
+              {...getAnimationProps(0.6)}
               className="mt-12 text-center"
             ></motion.div>
           </div>
