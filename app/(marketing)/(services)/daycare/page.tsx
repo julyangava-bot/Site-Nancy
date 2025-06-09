@@ -71,7 +71,7 @@ export default function DaycarePage() {
       benefits={benefits}
       howItWorks={whyChooseDaycare}
       serviceArea={{
-        title: "🏡 Designed for Joy & Peace of Mind",
+        title: "✨ Designed for Joy & Peace of Mind",
         description: "Our experienced and caring staff supervises all play sessions to ensure safety, encourage appropriate behavior, and provide lots of love and attention throughout the day. Whether your pup is high-energy or prefers gentle play, we tailor group activities based on temperament and size to ensure every dog feels comfortable and included."
       }}
       ctaText="Schedule Your Pup's Playdate"

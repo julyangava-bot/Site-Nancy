@@ -55,27 +55,27 @@ export function ServicePageLayout({
   showSecondButton = true,
 }: ServicePageLayoutProps) {
   return (
-    <main className="bg-white relative">
+    <main className="bg-white relative min-h-screen">
       {/* Hero Section */}
-      <section className="relative pt-36 pb-12 overflow-hidden">
+      <section className="relative pt-24 sm:pt-36 pb-8 sm:pb-12">
         <div className="absolute inset-0 bg-gradient-to-b from-[#FFF0F7] to-white"></div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
                 {title} <span className="text-[#E73992]">{subtitle}</span>
               </h1>
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+              <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 leading-relaxed">
                 {description}
               </p>
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-4">
                 <Button
-                  className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-8 py-6 text-lg"
+                  className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-6 sm:px-8 py-3 sm:py-6 text-base sm:text-lg"
                   asChild
                 >
                   <Link href={ctaLink}>{ctaText}</Link>
@@ -83,7 +83,7 @@ export function ServicePageLayout({
                 {showSecondButton && (
                   <Button
                     variant="outline"
-                    className="rounded-full px-8 py-6 text-lg border-[#E73992] text-[#E73992] hover:bg-[#FFF0F7]"
+                    className="rounded-full px-6 sm:px-8 py-3 sm:py-6 text-base sm:text-lg border-[#E73992] text-[#E73992] hover:bg-[#FFF0F7]"
                     asChild
                   >
                     <Link href="/#checkin-info">Contact Us</Link>
@@ -98,7 +98,7 @@ export function ServicePageLayout({
               transition={{ duration: 0.5, delay: 0.2 }}
               className="relative"
             >
-              <div className="relative h-[400px] lg:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
+              <div className="relative h-[300px] sm:h-[400px] lg:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
                 <Image
                   src={heroImage}
                   alt={`${title} service`}
@@ -109,8 +109,8 @@ export function ServicePageLayout({
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
               {/* Decorative elements */}
-              <div className="absolute -top-6 -right-6 w-24 h-24 bg-[#FCD1E6] rounded-full opacity-50 blur-xl"></div>
-              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-[#FFEBF5] rounded-full opacity-50 blur-xl"></div>
+              <div className="absolute -top-6 -right-6 w-24 h-24 bg-[#FCD1E6] rounded-full opacity-50 blur-xl hidden sm:block"></div>
+              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-[#FFEBF5] rounded-full opacity-50 blur-xl hidden sm:block"></div>
             </motion.div>
           </div>
         </div>
@@ -126,7 +126,7 @@ export function ServicePageLayout({
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Why Choose Our <span className="text-[#E73992]">{title}</span>?
             </h2>
           </motion.div>
@@ -164,7 +164,7 @@ export function ServicePageLayout({
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6 sm:mb-8">
                 What&apos;s <span className="text-[#E73992]">Included</span>
               </h2>
               <div className="space-y-4">
@@ -216,7 +216,7 @@ export function ServicePageLayout({
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                 🐾 How It <span className="text-[#E73992]">Works</span>
               </h2>
             </motion.div>
@@ -253,10 +253,10 @@ export function ServicePageLayout({
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                 {serviceArea.title}
               </h2>
-              <p className="text-lg text-gray-700 leading-relaxed">
+              <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
                 {serviceArea.description}
               </p>
             </motion.div>
@@ -275,7 +275,7 @@ export function ServicePageLayout({
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                 💬 Common <span className="text-[#E73992]">Questions</span>
               </h2>
             </motion.div>
@@ -363,7 +363,7 @@ export function ServicePageLayout({
 
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-[#E73992] to-[#FF69B4] relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-r from-[#E73992] to-[#FF69B4] relative">
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <motion.div
@@ -372,10 +372,10 @@ export function ServicePageLayout({
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
               Ready to Give Your Pet the Best Care?
             </h2>
-            <p className="text-xl text-white/90 mb-8">
+            <p className="text-base sm:text-xl text-white/90 mb-6 sm:mb-8">
               {pricingNote || "Book your pet's appointment today and see why PinkDog is the preferred choice for pet parents."}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

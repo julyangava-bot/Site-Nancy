@@ -1,100 +1,80 @@
 import React from "react";
 import { ServicePageLayout } from "@/components/service-page-layout";
-import { Clock, Shield, Heart, Award, Users, Bed } from "lucide-react";
+import { Clock, Heart, Users, Cat, Home, Activity } from "lucide-react";
 
 export default function PetHotelPage() {
   const features = [
     {
-      icon: <Shield className="w-7 h-7" />,
-      title: "24/7 Supervision",
-      description: "Round-the-clock care with trained professionals monitoring your pet's comfort and safety."
-    },
-    {
-      icon: <Bed className="w-7 h-7" />,
-      title: "Comfortable Accommodations",
-      description: "Spacious, climate-controlled rooms with cozy bedding and personal space for each guest."
+      icon: <Home className="w-7 h-7" />,
+      title: "🛏 Private Climate-Controlled Suites",
+      description: "Each pet enjoys their own space with soft bedding, clean surroundings, and constant temperature regulation."
     },
     {
       icon: <Heart className="w-7 h-7" />,
-      title: "Personalized Care",
-      description: "Individual attention tailored to your pet's specific needs, preferences, and routine."
-    },
-    {
-      icon: <Users className="w-7 h-7" />,
-      title: "Social Playtime",
-      description: "Optional supervised group play sessions for socialization with other friendly pets."
+      title: "💗 Daily Health & Wellness Monitoring",
+      description: "Our trained staff conducts daily check-ins, ensuring every guest is healthy, eating well, and emotionally settled."
     },
     {
       icon: <Clock className="w-7 h-7" />,
-      title: "Flexible Check-in/out",
-      description: "Convenient drop-off and pick-up times to accommodate your travel schedule."
+      title: "⏰ Tailored Feeding & Medication Schedules",
+      description: "We follow your instructions for meals, treats, supplements, and medications to maintain their routine."
     },
     {
-      icon: <Award className="w-7 h-7" />,
-      title: "Health Monitoring",
-      description: "Daily health checks and immediate veterinary care access if needed."
+      icon: <Users className="w-7 h-7" />,
+      title: "🐾 Safe, Supervised Group Play",
+      description: "Carefully monitored play sessions with temperament-matched dogs for social interaction and confidence building."
+    },
+    {
+      icon: <Activity className="w-7 h-7" />,
+      title: "🧠 Mental & Emotional Stimulation",
+      description: "Interactive toys, group activities, and fresh routines to prevent boredom and anxiety."
+    },
+    {
+      icon: <Cat className="w-7 h-7" />,
+      title: "🐱 Dedicated Cat Comfort Area",
+      description: "Quiet, separate cat suite area with cozy nooks, toys, and peaceful environment designed for tranquility."
     }
   ];
 
   const benefits = [
-    "Comfortable private suites with soft bedding",
-    "Three daily walks and outdoor playtime",
-    "Premium food or special diet accommodation",
-    "Daily photo updates sent to your phone",
-    "Medication administration if needed",
-    "Temperature-controlled environment",
-    "24-hour emergency veterinary access",
-    "Complimentary bath before pickup (5+ nights)",
-    "Personal belongings welcome (toys, blankets)",
-    "Special care for senior or anxious pets"
+    "Private, climate-controlled pet suites with soft bedding",
+    "24/7 monitored facility with trained staff supervision",
+    "Personalized feeding and medication administration",
+    "Safe social interaction with temperament-matched pets",
+    "Mental stimulation through interactive toys and activities",
+    "Separate quiet areas for cats with specialized care",
+    "Spacious indoor & outdoor play yards",
+    "Add-on spa or grooming services during stay",
+    "Easy parking and drop-off access",
+    "One-on-one enrichment for pets needing individual attention"
   ];
 
-  const pricing = [
-    {
-      title: "Small Dogs",
-      price: "$45",
-      period: "night",
-      features: [
-        "Under 25 lbs",
-        "Private suite",
-        "3 walks daily",
-        "Playtime included"
-      ]
-    },
-    {
-      title: "Medium Dogs",
-      price: "$55",
-      period: "night",
-      features: [
-        "25-60 lbs",
-        "Larger suite",
-        "3 walks daily",
-        "Extended playtime"
-      ]
-    },
-    {
-      title: "Large Dogs",
-      price: "$65",
-      period: "night",
-      features: [
-        "Over 60 lbs",
-        "Extra-large suite",
-        "3 walks daily",
-        "Premium activities"
-      ]
-    }
+  const whyChoosePinkDog = [
+    "Science-based care combined with deep love for animals",
+    "Over 23 years of experience in professional pet care",
+    "Latin women-led business that values trust and community",
+    "Structured social interaction that builds confidence and improves behavior",
+    "Stress-free environment that mirrors home routines",
+    "Gentle introductions for pets who prefer solitude or need time to adjust"
   ];
+
+
 
   return (
     <ServicePageLayout
       title="Pet"
       subtitle="Hotel"
-      description="Give your furry friend a vacation of their own! Our luxurious pet hotel offers comfortable accommodations, personalized care, and plenty of fun activities while you're away. Your pet will feel right at home with our loving staff and premium facilities."
+      description="Comfort. Care. Companionship. When you're away, your pet deserves a place where they'll be not only safe—but genuinely happy. Our overnight hotel offers a stress-free, cozy environment where dogs and cats can rest, play, and enjoy companionship in a well-supervised, loving atmosphere."
       heroImage="/images/services/pet-hotel-card.png"
       features={features}
       benefits={benefits}
-      pricing={pricing}
-      ctaText="Reserve a Suite"
+      howItWorks={whyChoosePinkDog}
+      serviceArea={{
+        title: "🌿 Our Facility Features",
+        description: "We combine science-based care, a deep love for animals, and over 23 years of experience to ensure your pet's stay is as enjoyable as possible. Leaving your pet doesn't have to be stressful—with us, it's a positive, engaging experience that supports their physical and emotional well-being."
+      }}
+      ctaText="Reserve Your Pet's Stay"
+      ctaLink="/#checkin-info"
     />
   );
 } 

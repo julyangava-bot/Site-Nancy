@@ -16,16 +16,20 @@ html {
   scroll-behavior: smooth;
   height: 100%;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  min-height: 100%;
+  min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  position: relative;
 }
 
 /* Modern font for headings and navbar */
@@ -52,9 +56,18 @@ h1, h2, h3, h4, h5, h6, .navbar-text, .mobile-nav-item {
 /* Improve scrolling behavior on mobile */
 @media (max-width: 768px) {
   html, body {
-    overscroll-behavior-y: none;
+    overscroll-behavior-y: contain;
     position: relative;
     touch-action: pan-y;
+    height: 100%;
+    min-height: 100vh;
+  }
+  
+  main {
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: visible;
+    min-height: 100vh;
   }
 }
 
@@ -72,3 +85,22 @@ section[id] {
 .aurora-background {
   background: linear-gradient(to bottom, white, #FFF7FB) !important;
 }
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #E73992;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d3337f;
+}
+
