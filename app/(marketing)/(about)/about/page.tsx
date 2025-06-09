@@ -408,7 +408,7 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 className="text-center text-gray-600 mb-8"
               >
-                Get to know our team through these special moments
+                Follow Carina and Nancy&apos;s journey from the early days to building the PinkDog family we know today
               </motion.p>
               
               {/* Founders Images Grid - Clickable */}
