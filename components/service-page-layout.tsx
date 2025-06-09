@@ -36,6 +36,7 @@ interface ServicePageLayoutProps {
   ctaText?: string;
   ctaLink?: string;
   showSecondButton?: boolean;
+  videoUrl?: string;
 }
 
 export function ServicePageLayout({
@@ -53,6 +54,7 @@ export function ServicePageLayout({
   ctaText = "Book Now",
   ctaLink = "/booking",
   showSecondButton = true,
+  videoUrl,
 }: ServicePageLayoutProps) {
   return (
     <main className="bg-white relative min-h-screen">
@@ -193,13 +195,25 @@ export function ServicePageLayout({
               viewport={{ once: true }}
               className="relative"
             >
-              <Image
-                src="/images/pinkdog-happy-pets.jpg"
-                alt="Happy pets at PinkDog"
-                width={600}
-                height={400}
-                className="rounded-2xl shadow-xl"
-              />
+              {videoUrl ? (
+                <div className="relative rounded-2xl overflow-hidden shadow-xl bg-black flex justify-center items-center">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${videoUrl.includes('shorts/') ? videoUrl.split('shorts/')[1] : videoUrl.split('/').pop()}?autoplay=1&mute=1&loop=1&playlist=${videoUrl.includes('shorts/') ? videoUrl.split('shorts/')[1] : videoUrl.split('/').pop()}&controls=0&showinfo=0&rel=0&modestbranding=1`}
+                    title="PinkVan Service Video"
+                    className="w-[280px] sm:w-[360px] h-[500px] sm:h-[640px] rounded-2xl"
+                    allow="autoplay; encrypted-media"
+                    allowFullScreen
+                  />
+                </div>
+              ) : (
+                <Image
+                  src="/images/pinkdog-happy-pets.jpg"
+                  alt="Happy pets at PinkDog"
+                  width={600}
+                  height={400}
+                  className="rounded-2xl shadow-xl"
+                />
+              )}
             </motion.div>
           </div>
         </div>

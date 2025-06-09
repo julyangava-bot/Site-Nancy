@@ -90,6 +90,7 @@ export default function VanServicePage() {
       ctaText="Contact Us for PinkVan Service"
       ctaLink="/#checkin-info"
       showSecondButton={false}
+      videoUrl="https://youtube.com/shorts/cDyqllECsoc"
     />
   );
 } 
