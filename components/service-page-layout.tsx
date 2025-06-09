@@ -80,7 +80,7 @@ export function ServicePageLayout({
                   className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-6 sm:px-8 py-3 sm:py-6 text-base sm:text-lg"
                   asChild
                 >
-                  <Link href={ctaLink}>{ctaText}</Link>
+                  <Link href={ctaLink} target="_blank" rel="noopener noreferrer">{ctaText}</Link>
                 </Button>
                 {showSecondButton && (
                   <Button
