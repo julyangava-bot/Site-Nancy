@@ -657,9 +657,23 @@ export function Gallery() {
         
         {/* Gallery content - with custom rendering */}
         <div className="relative">
-          {renderGridItems(
-            isVideoTab ? getDisplayedVideos() : displayedImages,
-            isVideoTab
+          {selectedCategory === "all" ? (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={randomAllPhotos.map(img => img.id).join('-')}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+              >
+                {renderGridItems(displayedImages, false)}
+              </motion.div>
+            </AnimatePresence>
+          ) : (
+            renderGridItems(
+              isVideoTab ? getDisplayedVideos() : displayedImages,
+              isVideoTab
+            )
           )}
         </div>
         
