@@ -129,7 +129,7 @@ export function Footer() {
                 <IconBrandFacebook size={20} />
               </Link>
               <Link
-                href="https://wa.me/19787724242"
+                href="https://wa.me/19549140128"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-white rounded-full p-2 text-gray-600 hover:text-white hover:bg-[#25d366] transition-all duration-300 shadow-md hover:shadow-lg"
