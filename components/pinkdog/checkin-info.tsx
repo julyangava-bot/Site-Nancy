@@ -66,7 +66,7 @@ export function CheckInInfo() {
   };
 
   return (
-    <section id="checkin-info" className="py-20 bg-[#FDF2F8]">
+    <section id="checkin-info" className="pt-2 bg-[#FDF2F8]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative bg-white rounded-3xl shadow-xl overflow-hidden">
           {/* Decorative elements */}
