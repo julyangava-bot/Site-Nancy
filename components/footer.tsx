@@ -95,7 +95,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="w-full bg-gradient-to-b from-[#FFF9FC] to-white border-t border-gray-100">
+    <footer className="w-full bg-gradient-to-b from-[#FFF9FC] to-white border-t border-gray-100 pb-10 sm:pb-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Main Footer Content */}
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-8 lg:gap-4 mb-12">
@@ -353,7 +353,7 @@ export function Footer() {
                 href="https://petquantic.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors hover:underline"
+                className="text-gray-700 hover:text-[#E73992] text-sm font-medium transition-colors"
               >
                 Powered by PetQuantic
               </Link>
