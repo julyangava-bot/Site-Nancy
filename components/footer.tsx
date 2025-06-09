@@ -344,15 +344,20 @@ export function Footer() {
               ))}
             </div>
             
-            {/* Powered By */}
-            <Link
-              href="https://petquantic.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-500 hover:text-[#E73992] text-sm transition-colors"
-            >
-              Powered by PetQuantic
-            </Link>
+            {/* Powered By Section */}
+            <div className="flex flex-col items-center gap-1 mt-4 md:mt-0 pb-4 md:pb-0">
+              <p className="text-xs text-gray-500">
+                Made with <span className="text-red-500">❤️</span> for pet businesses
+              </p>
+              <Link
+                href="https://petquantic.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors hover:underline"
+              >
+                Powered by PetQuantic
+              </Link>
+            </div>
           </div>
         </div>
       </div>
