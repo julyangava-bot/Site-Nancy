@@ -168,6 +168,35 @@ export const Navbar = () => {
     >
       <DesktopNav visible={visible} navItems={navItems} onNavClick={handleNavClick} />
       <MobileNav visible={visible} navItems={navItems} onNavClick={handleNavClick} />
+      
+      {/* Custom scrollbar styles for mobile menu */}
+      <style jsx global>{`
+        .mobile-menu-scroll::-webkit-scrollbar {
+          width: 4px;
+        }
+        
+        .mobile-menu-scroll::-webkit-scrollbar-track {
+          background: rgba(231, 57, 146, 0.1);
+          border-radius: 10px;
+        }
+        
+        .mobile-menu-scroll::-webkit-scrollbar-thumb {
+          background: rgba(231, 57, 146, 0.3);
+          border-radius: 10px;
+        }
+        
+        .mobile-menu-scroll::-webkit-scrollbar-thumb:hover {
+          background: rgba(231, 57, 146, 0.5);
+        }
+        
+        /* For Firefox */
+        .mobile-menu-scroll {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(231, 57, 146, 0.3) rgba(231, 57, 146, 0.1);
+          -webkit-overflow-scrolling: touch;
+          scroll-behavior: smooth;
+        }
+      `}</style>
     </motion.div>
   );
 };
@@ -479,24 +508,21 @@ const DesktopNav = ({
                   <motion.div
                     initial={{
                       opacity: 0,
-                      height: 0,
                       y: -10,
                     }}
                     animate={{
                       opacity: 1,
-                      height: "auto",
                       y: 0,
                     }}
                     exit={{
                       opacity: 0,
-                      height: 0,
                       y: -10,
                     }}
                     transition={{
                       duration: 0.2,
                       ease: "easeInOut",
                     }}
-                    className="flex rounded-3xl absolute top-16 mt-2 backdrop-blur-xl bg-white/98 left-0 right-0 z-50 flex-col items-center justify-start w-full px-4 py-6 shadow-2xl"
+                    className="flex rounded-3xl absolute top-16 mt-2 backdrop-blur-xl bg-white/98 left-0 right-0 z-50 flex-col items-center justify-start w-full px-4 py-6 shadow-2xl max-h-[calc(100vh-8rem)] overflow-y-auto mobile-menu-scroll"
                   >
                     {navItems.map((navItem, idx) => (
                       <motion.div
@@ -758,17 +784,14 @@ const MobileNav = ({
                 <motion.div
                   initial={{
                     opacity: 0,
-                    height: 0,
                     y: -10,
                   }}
                   animate={{
                     opacity: 1,
-                    height: "auto",
                     y: 0,
                   }}
                   exit={{
                     opacity: 0,
-                    height: 0,
                     y: -10,
                   }}
                   transition={{
@@ -776,8 +799,8 @@ const MobileNav = ({
                     ease: "easeInOut",
                   }}
                   className={cn(
-                    "flex rounded-3xl absolute top-16 mt-2 backdrop-blur-xl bg-white/98 z-50 flex-col items-center justify-start px-4 py-6 shadow-2xl",
-                    "left-0 right-0"
+                    "flex rounded-3xl absolute top-16 mt-2 backdrop-blur-xl bg-white/98 z-50 flex-col items-center justify-start px-4 py-6 shadow-2xl mobile-menu-scroll",
+                    "left-0 right-0 max-h-[calc(100vh-8rem)] overflow-y-auto"
                   )}
                 >
                   {navItems.map((navItem, idx) => (
