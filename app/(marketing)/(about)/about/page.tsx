@@ -125,7 +125,7 @@ export default function AboutPage() {
                     className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-8 py-6 text-lg"
                     asChild
                   >
-                    <Link href="/booking">Book Now</Link>
+                    <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer">Book Now</Link>
                   </Button>
                   <Button
                     variant="outline"
@@ -461,7 +461,7 @@ export default function AboutPage() {
                     className="bg-white text-[#E73992] hover:bg-gray-100 rounded-full px-8 py-6 text-lg font-semibold"
                     asChild
                   >
-                    <Link href="/booking">Book Now</Link>
+                    <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer">Book Now</Link>
                   </Button>
                   <Button
                     size="lg"

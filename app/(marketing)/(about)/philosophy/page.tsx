@@ -66,7 +66,7 @@ export default function PhilosophyPage() {
                   className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-8 py-6 text-lg"
                   asChild
                 >
-                  <Link href="/booking">Book Now</Link>
+                  <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer">Book Now</Link>
                 </Button>
                 <Button
                   variant="outline"
@@ -86,7 +86,7 @@ export default function PhilosophyPage() {
             >
               <div className="relative h-[400px] lg:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
                 <Image
-                  src="/images/gallery/all/image-24.JPG"
+                  src="/images/founders/founders003.jpg"
                   alt="PinkDog Pet Resort Harvard Store Front"
                   fill
                   className="object-cover"
@@ -194,7 +194,7 @@ export default function PhilosophyPage() {
             >
               <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-xl">
                 <Image
-                  src="/images/pinkdog-happy-pets.jpg"
+                  src="/images/gallery/all/image-26.jpg"
                   alt="Happy pets receiving personalized care"
                   fill
                   className="object-cover"
@@ -251,7 +251,7 @@ export default function PhilosophyPage() {
             >
               <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-xl">
                 <Image
-                  src="/images/gallery/all/image-20.JPG"
+                  src="/images/gallery/all/image-9.JPG"
                   alt="Professional grooming with scientific approach"
                   fill
                   className="object-cover"
@@ -385,7 +385,7 @@ export default function PhilosophyPage() {
                 className="bg-white text-[#E73992] hover:bg-gray-100 rounded-full px-8 py-6 text-lg font-semibold"
                 asChild
               >
-                <Link href="/booking">Book Now</Link>
+                <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer">Book Now</Link>
               </Button>
               <Button
                 size="lg"
