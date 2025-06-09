@@ -267,7 +267,7 @@ const DesktopNav = ({
                     className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full"
                     asChild
                   >
-                    <Link href="/login">Book Now</Link>
+                    <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer">Book Now</Link>
                   </Button>
                   
                   <motion.div 
@@ -464,7 +464,7 @@ const DesktopNav = ({
                             className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full"
                             asChild
                           >
-                            <Link href="/login">Book Now</Link>
+                            <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer">Book Now</Link>
                           </Button>
                         </div>
                       </motion.div>
@@ -736,7 +736,7 @@ const MobileNav = ({
                     className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full"
                     asChild
                   >
-                    <Link href="/login">Book Now</Link>
+                    <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer">Book Now</Link>
                   </Button>
                 </div>
                 
@@ -885,7 +885,7 @@ const MobileNav = ({
                       className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full w-full py-6 text-lg font-semibold shadow-lg"
                       asChild
                     >
-                      <Link href="/login" onClick={() => setOpen(false)}>
+                      <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>
                         <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>

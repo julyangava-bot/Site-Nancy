@@ -17,7 +17,7 @@ export function Footer() {
       e.preventDefault();
       handleSectionNavigation(href, isHomePage, router);
     }
-    // For non-section links, let the normal Link navigation happen
+    // For external links and non-section internal links, let the normal Link navigation happen
   };
 
   const quickLinks = [
@@ -37,7 +37,7 @@ export function Footer() {
   const supportLinks = [
     { name: "FAQ", href: "/faq" },
     { name: "Contact Us", href: "#checkin-info" },
-    { name: "Book Now", href: "/booking" },
+    { name: "Book Now", href: "https://booking.appointy.com/en-US/pinkdogresort/bookings/service" },
   ];
 
   const legalLinks = [
@@ -187,6 +187,7 @@ export function Footer() {
                     href={item.href}
                     onClick={(e) => handleLinkClick(e, item.href)}
                     className="text-gray-600 hover:text-[#E73992] transition-colors text-sm block py-1"
+                    {...(item.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                   >
                     {item.name}
                   </Link>

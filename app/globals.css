@@ -104,3 +104,24 @@ section[id] {
   background: #d3337f;
 }
 
+/* Fix for navbar text visibility */
+.navbar-link-text,
+nav a span,
+nav button span {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: inherit !important;
+}
+
+/* Ensure nav links are always visible */
+nav a {
+  display: flex !important;
+  align-items: center !important;
+  color: rgba(0, 0, 0, 0.9) !important;
+}
+
+nav a:hover {
+  color: #E73992 !important;
+}
+
