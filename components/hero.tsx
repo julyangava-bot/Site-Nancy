@@ -152,7 +152,7 @@ export function Hero() {
       <div className="relative z-10 w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Hero content with optimized layout - reduced min-height to bring elements closer */}
-          <div className="relative pt-40 sm:pt-60 md:pt-60 pb-16 sm:pb-20 md:pb-24 min-h-[600px] sm:min-h-[600px] md:min-h-[650px] lg:min-h-[calc(100vh-6rem)] max-h-[750px] xl:max-h-[750px] flex flex-col lg:flex-row items-center justify-center">
+          <div className="relative pt-65 sm:pt-70 md:pt-70 lg:pt-30 pb-16 sm:pb-20 md:pb-24 min-h-[600px] sm:min-h-[600px] md:min-h-[650px] lg:min-h-[calc(100vh-6rem)] max-h-[750px] xl:max-h-[750px] flex flex-col lg:flex-row items-center justify-center">
             <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-4 md:gap-6 lg:gap-8 xl:gap-12">
               {/* Text content */}
               <div className="max-w-xl w-full text-center lg:text-left z-10">
