@@ -472,13 +472,9 @@ export function Gallery() {
       <>
         {/* Regular grid for complete rows */}
         <div className={`grid gap-4 ${getGridLayout()}`}>
-          {items.slice(0, shouldCenter ? lastRowStartIndex : items.length).map((item, index) => (
-            <motion.div
+          {items.slice(0, shouldCenter ? lastRowStartIndex : items.length).map((item) => (
+            <div
               key={item.id}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: index * 0.05 }}
-              viewport={{ once: true }}
               className="relative aspect-[3/4] overflow-hidden rounded-xl shadow-md cursor-pointer group"
               onClick={() => {
                 if (isVideo) {
@@ -535,20 +531,16 @@ export function Gallery() {
                   </div>
                 </>
               )}
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* Centered last row if needed */}
         {shouldCenter && lastRowItemCount > 0 && (
           <div className="flex justify-center gap-4 mt-4">
-            {items.slice(lastRowStartIndex).map((item, index) => (
-              <motion.div
+            {items.slice(lastRowStartIndex).map((item) => (
+              <div
                 key={item.id}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: (lastRowStartIndex + index) * 0.05 }}
-                viewport={{ once: true }}
                 className="relative aspect-[3/4] overflow-hidden rounded-xl shadow-md cursor-pointer group"
                 style={{ width: isMobile ? 'calc(50% - 0.5rem)' : 'calc(25% - 0.75rem)', maxWidth: '300px' }}
                 onClick={() => {
@@ -606,7 +598,7 @@ export function Gallery() {
                     </div>
                   </>
                 )}
-              </motion.div>
+              </div>
             ))}
           </div>
         )}
@@ -619,6 +611,7 @@ export function Gallery() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
@@ -635,6 +628,7 @@ export function Gallery() {
         {/* Category filters */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           viewport={{ once: true }}
@@ -773,6 +767,7 @@ export function Gallery() {
         
         <motion.div
           initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
           viewport={{ once: true }}
