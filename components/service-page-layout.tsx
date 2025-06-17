@@ -3,7 +3,7 @@ import React from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
+import { Check, DollarSign, PawPrint, MessageCircle } from "lucide-react";
 import Link from "next/link";
 
 interface ServicePageLayoutProps {
@@ -37,6 +37,7 @@ interface ServicePageLayoutProps {
   ctaLink?: string;
   showSecondButton?: boolean;
   videoUrl?: string;
+  hideCTA?: boolean;
 }
 
 export function ServicePageLayout({
@@ -55,6 +56,7 @@ export function ServicePageLayout({
   ctaLink = "/booking",
   showSecondButton = true,
   videoUrl,
+  hideCTA = false,
 }: ServicePageLayoutProps) {
   return (
     <main className="bg-white relative min-h-screen">
@@ -105,7 +107,7 @@ export function ServicePageLayout({
                   src={heroImage}
                   alt={`${title} service`}
                   fill
-                  className="object-cover"
+                  className="object-contain"
                   priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
@@ -231,7 +233,10 @@ export function ServicePageLayout({
               className="text-center mb-12"
             >
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                🐾 How It <span className="text-[#E73992]">Works</span>
+                <span className="inline-flex items-center gap-2">
+                  <PawPrint className="w-8 h-8 text-[#E73992]" />
+                  How It <span className="text-[#E73992]">Works</span>
+                </span>
               </h2>
             </motion.div>
             <div className="max-w-3xl mx-auto">
@@ -290,7 +295,10 @@ export function ServicePageLayout({
               className="text-center mb-12"
             >
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                💬 Common <span className="text-[#E73992]">Questions</span>
+                <span className="inline-flex items-center gap-2">
+                  <MessageCircle className="w-8 h-8 text-[#E73992]" />
+                  Common <span className="text-[#E73992]">Questions</span>
+                </span>
               </h2>
             </motion.div>
             <div className="space-y-6">
@@ -318,21 +326,27 @@ export function ServicePageLayout({
 
       {/* Pricing Section (Optional) */}
       {pricing && pricing.length > 0 && (
-        <section className="py-20 bg-gradient-to-b from-[#FFF9FC] to-white">
+        <section className="py-12 sm:py-20 bg-gradient-to-b from-[#FFF9FC] to-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
-              className="text-center mb-12"
+              className="text-center mb-8 sm:mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Our <span className="text-[#E73992]">Pricing</span>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                <span className="inline-flex items-center gap-2">
+                  <DollarSign className="w-8 h-8 text-[#E73992]" />
+                  Our <span className="text-[#E73992]">Pricing</span>
+                </span>
               </h2>
+              <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
+                Flexible options to fit your schedule and budget
+              </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto">
               {pricing.map((plan, index) => (
                 <motion.div
                   key={index}
@@ -340,80 +354,116 @@ export function ServicePageLayout({
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow border border-gray-100"
+                  className="relative bg-white rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-[#FCD1E6] group"
                 >
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                    {plan.title}
-                  </h3>
-                  <div className="mb-6">
-                    <span className="text-4xl font-bold text-[#E73992]">
-                      {plan.price}
-                    </span>
+                  {/* Popular badge for specific plans */}
+                  {(plan.title === "5-Day Pass" && plan.period === "Full Day") && (
+                    <div className="absolute -top-3 right-6 bg-[#E73992] text-white px-4 py-1 rounded-full text-sm font-semibold">
+                      Most Popular
+                    </div>
+                  )}
+                  
+                  <div className="text-center mb-6">
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 group-hover:text-[#E73992] transition-colors">
+                      {plan.title}
+                    </h3>
                     {plan.period && (
-                      <span className="text-gray-600 ml-2">/{plan.period}</span>
+                      <p className="text-sm text-gray-500 mb-4">{plan.period}</p>
                     )}
+                    <div className="flex items-baseline justify-center gap-1">
+                      <span className="text-3xl sm:text-4xl font-bold text-[#E73992]">
+                        {plan.price}
+                      </span>
+                      {plan.period && !plan.title.includes("Pass") && (
+                        <span className="text-gray-600 text-lg">/{plan.period.includes("hour") ? "session" : "day"}</span>
+                      )}
+                    </div>
                   </div>
-                  <ul className="space-y-3 mb-8">
+                  
+                  <div className="space-y-3 mb-6">
                     {plan.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-start gap-2">
-                        <Check className="w-5 h-5 text-[#E73992] flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700">{feature}</span>
-                      </li>
+                      <div key={featureIndex} className="flex items-start gap-3">
+                        <div className="w-5 h-5 rounded-full bg-[#FCD1E6] flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <Check className="w-3 h-3 text-[#E73992]" />
+                        </div>
+                        <span className="text-sm sm:text-base text-gray-700 leading-tight">{feature}</span>
+                      </div>
                     ))}
-                  </ul>
-                  <Button
-                    className="w-full bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full"
-                    asChild
-                  >
-                    <Link href={ctaLink} {...(ctaLink.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>Select Plan</Link>
-                  </Button>
+                  </div>
+                  
+                  {/* Decorative bottom border */}
+                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#E73992] to-[#FF69B4] rounded-b-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </motion.div>
               ))}
             </div>
+            
+            {/* Call to action info */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              viewport={{ once: true }}
+              className="text-center mt-8 sm:mt-12"
+            >
+              <p className="text-gray-600 mb-4">
+                Ready to book? Call us at{" "}
+                <a href="tel:9787724242" className="text-[#E73992] font-semibold hover:underline">
+                  (978) 772-4242
+                </a>{" "}
+                or book online
+              </p>
+              <Link
+                href={ctaLink}
+                {...(ctaLink.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                className="inline-flex items-center justify-center bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-6 sm:px-8 py-3 text-base sm:text-lg font-semibold transition-colors"
+              >
+                Book Now
+              </Link>
+            </motion.div>
           </div>
         </section>
       )}
 
-
-
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-[#E73992] to-[#FF69B4] relative">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
-              Ready to Give Your Pet the Best Care?
-            </h2>
-            <p className="text-base sm:text-xl text-white/90 mb-6 sm:mb-8">
-              {pricingNote || "Book your pet's appointment today and see why PinkDog is the preferred choice for pet parents."}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                size="lg"
-                className="bg-white text-[#E73992] hover:bg-gray-100 rounded-full px-8 py-6 text-lg font-semibold"
-                asChild
-              >
-                <Link href={ctaLink} {...(ctaLink.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{ctaText}</Link>
-              </Button>
-              {showSecondButton && (
+      {!hideCTA && (
+        <section className="py-20 bg-gradient-to-r from-[#E73992] to-[#FF69B4] relative">
+          <div className="absolute inset-0 bg-black/10"></div>
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
+                Ready to Give Your Pet the Best Care?
+              </h2>
+              <p className="text-base sm:text-xl text-white/90 mb-6 sm:mb-8">
+                {pricingNote || "Book your pet's appointment today and see why PinkDog is the preferred choice for pet parents."}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
                   size="lg"
-                  variant="outline"
-                  className="bg-transparent text-white border-white hover:bg-white/10 rounded-full px-8 py-6 text-lg font-semibold"
+                  className="bg-white text-[#E73992] hover:bg-gray-100 rounded-full px-8 py-6 text-lg font-semibold"
                   asChild
                 >
-                  <Link href="/faq">Have Questions?</Link>
+                  <Link href={ctaLink} {...(ctaLink.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{ctaText}</Link>
                 </Button>
-              )}
-            </div>
-          </motion.div>
-        </div>
-      </section>
+                {showSecondButton && (
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="bg-transparent text-white border-white hover:bg-white/10 rounded-full px-8 py-6 text-lg font-semibold"
+                    asChild
+                  >
+                    <Link href="/faq">Have Questions?</Link>
+                  </Button>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        </section>
+      )}
     </main>
   );
 } 
