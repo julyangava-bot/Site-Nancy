@@ -52,7 +52,7 @@ export function Footer() {
       address: "259 Ayer Rd, Harvard, MA 01451",
       hours: {
         weekdays: "Mon-Sat: 8:30 AM - 5:00 PM",
-        sunday: "Sunday: 3:00 PM - 5:00 PM"
+        sunday: "Sunday: 12:00 PM - 4:00 PM"
       },
       phone: "978-772-4242",
       features: ["24/7 Pet Resort", "Pet Hotel", "Daycare", "Grooming"],
