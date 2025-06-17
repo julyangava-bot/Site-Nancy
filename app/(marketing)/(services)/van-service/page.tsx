@@ -87,9 +87,9 @@ export default function VanServicePage() {
       }}
       faqItems={faqItems}
       pricingNote="Van service rate by distance - appointment only. Please contact us by phone for a personalized quote."
-      ctaText="Contact Us for PinkVan Service"
+      ctaText="Book PinkVan"
       ctaLink="/#checkin-info"
-      showSecondButton={false}
+      showSecondButton={true}
       videoUrl="https://youtube.com/shorts/cDyqllECsoc"
     />
   );

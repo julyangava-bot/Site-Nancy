@@ -73,7 +73,7 @@ export default function PetHotelPage() {
         title: "🌿 Our Facility Features",
         description: "We combine science-based care, a deep love for animals, and over 23 years of experience to ensure your pet's stay is as enjoyable as possible. Leaving your pet doesn't have to be stressful—with us, it's a positive, engaging experience that supports their physical and emotional well-being."
       }}
-      ctaText="Reserve Your Pet's Stay"
+      ctaText="Book Pet Hotel"
       ctaLink="/#checkin-info"
     />
   );

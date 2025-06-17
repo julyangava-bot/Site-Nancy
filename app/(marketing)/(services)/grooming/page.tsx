@@ -27,18 +27,18 @@ export default function GroomingPage() {
               <p className="text-lg text-gray-600 mb-8 leading-relaxed">
                 We treat pets like family — because to us, they are. Your dog deserves to be pampered with love and care, and our mission is to return them to you happy, healthy, fresh, and clean.
               </p>
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <a
                   href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-8 py-3 text-lg font-medium transition-colors inline-flex items-center justify-center"
+                  className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-6 sm:px-8 py-3 text-base sm:text-lg font-medium transition-colors inline-flex items-center justify-center whitespace-nowrap"
                 >
                   Book Spa Day
                 </a>
                 <Link
                   href="/#checkin-info"
-                  className="border-2 border-[#E73992] text-[#E73992] hover:bg-[#FFF0F7] rounded-full px-8 py-3 text-lg font-medium transition-colors inline-flex items-center justify-center"
+                  className="border-2 border-[#E73992] text-[#E73992] hover:bg-[#FFF0F7] rounded-full px-6 sm:px-8 py-3 text-base sm:text-lg font-medium transition-colors inline-flex items-center justify-center whitespace-nowrap"
                 >
                   Contact Us
                 </Link>

@@ -400,14 +400,16 @@ export function ServicePageLayout({
               >
                 <Link href={ctaLink} {...(ctaLink.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{ctaText}</Link>
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="bg-transparent text-white border-white hover:bg-white/10 rounded-full px-8 py-6 text-lg font-semibold"
-                asChild
-              >
-                <Link href="/faq">Have Questions?</Link>
-              </Button>
+              {showSecondButton && (
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="bg-transparent text-white border-white hover:bg-white/10 rounded-full px-8 py-6 text-lg font-semibold"
+                  asChild
+                >
+                  <Link href="/faq">Have Questions?</Link>
+                </Button>
+              )}
             </div>
           </motion.div>
         </div>
