@@ -200,6 +200,7 @@ export default function GroomingPage() {
               </div>
               <h3 className="font-semibold text-gray-900 mb-1">Deshedding</h3>
               <p className="text-gray-600 text-sm">Deshedding and undercoat removal</p>
+              <p className="text-gray-500 text-xs mt-1">*Extra service with additional fee</p>
             </motion.div>
             
             <motion.div
@@ -265,11 +266,11 @@ export default function GroomingPage() {
               viewport={{ once: true }}
               className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 md:col-span-2 lg:col-span-3"
             >
-              <div className="w-12 h-12 bg-[#FCD1E6] rounded-xl flex items-center justify-center mb-4 mx-auto">
+              <div className="w-12 h-12 bg-[#FCD1E6] rounded-xl flex items-center justify-center mb-4">
                 <span className="text-2xl">✨</span>
               </div>
-              <h3 className="font-semibold text-gray-900 mb-1 text-center">Spa Upgrades</h3>
-              <p className="text-gray-600 text-sm text-center">Specialty spa upgrades (paw balm, deodorizing, etc.)</p>
+              <h3 className="font-semibold text-gray-900 mb-1">Spa Upgrades</h3>
+              <p className="text-gray-600 text-sm">Specialty spa upgrades (paw balm, deodorizing, etc.)</p>
             </motion.div>
           </div>
           
