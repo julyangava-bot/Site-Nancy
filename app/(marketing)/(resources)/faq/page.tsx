@@ -825,7 +825,7 @@ export default function FAQPage() {
                 className="bg-transparent text-white border-white hover:bg-white/10 rounded-full px-8 py-6 text-lg font-semibold"
                 asChild
               >
-                <Link href="/booking">Book a Service</Link>
+                <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service">Book a Service</Link>
               </Button>
             </div>
           </motion.div>

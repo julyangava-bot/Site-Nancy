@@ -4,7 +4,6 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 // Testimonial data for PinkDog
@@ -71,16 +70,14 @@ export function Testimonials() {
               ))}
             </div>
 
-              <Button
-                asChild
-                className="z-40 bg-gradient-to-r from-pink-400 to-pink-600 text-white px-6 py-2.5 rounded-full hover:opacity-90 transition-all duration-200 shadow-[0_1px_2px_rgba(0,0,0,0.2)]"
+              <Link 
+                href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative z-50 inline-flex items-center justify-center bg-gradient-to-r from-pink-400 to-pink-600 text-white px-6 py-2.5 rounded-full hover:opacity-90 transition-all duration-200 shadow-[0_1px_2px_rgba(0,0,0,0.2)] font-medium"
               >
-                <Link 
-                  href="/booking"
-                >
-                  Try PinkDog Today
-                </Link>
-              </Button>
+                Try PinkDog Today
+              </Link>
             </div>
      
           {/* Right Side - Orbiting Avatars */}
@@ -97,7 +94,7 @@ export function Testimonials() {
               setActiveBubble={setActiveBubble}
             />
           </div>
-          <div className="absolute inset-0 z-10 w-full h-full bg-gradient-to-l from-white via-white/5 to-transparent hidden lg:block" />
+          <div className="absolute inset-0 z-0 w-full h-full bg-gradient-to-l from-white via-white/5 to-transparent hidden lg:block" />
         </div>
       </div>
     </section>

@@ -200,7 +200,7 @@ export function AboutUs() {
               className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-8 py-6 h-auto"
               asChild
             >
-              <Link href="/booking">Reserve Spot</Link>
+              <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer">Reserve Spot</Link>
             </Button>
             <Button
               className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full px-8 py-6 h-auto"

@@ -53,7 +53,7 @@ export function ServicePageLayout({
   faqItems,
   pricingNote,
   ctaText = "Book Now",
-  ctaLink = "/booking",
+  ctaLink = "https://booking.appointy.com/en-US/pinkdogresort/bookings/service",
   showSecondButton = true,
   videoUrl,
   hideCTA = false,
