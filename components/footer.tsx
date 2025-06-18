@@ -22,7 +22,7 @@ export function Footer() {
 
   const quickLinks = [
     { name: "Home", href: "/" },
-    { name: "About", href: "#about-us" },
+    { name: "About", href: "/about" },
     { name: "Philosophy", href: "/philosophy" },
     { name: "Gallery", href: "#gallery" },
     // { name: "Blog", href: "/blog" },
