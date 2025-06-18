@@ -90,6 +90,7 @@ export default function VanServicePage() {
       ctaText="Book PinkVan"
       ctaLink="/#checkin-info"
       showSecondButton={true}
+      secondButtonText="Have Questions?"
       videoUrl="https://youtube.com/shorts/cDyqllECsoc"
     />
   );

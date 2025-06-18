@@ -794,22 +794,7 @@ export default function FAQPage() {
               We&apos;re here to make your dog&apos;s stay safe, fun, and stress-free!
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-              <div className="flex items-center gap-2 text-white">
-                <IconPhone size={20} />
-                <span className="font-medium">978-772-4242</span>
-              </div>
-              <div className="hidden sm:block text-white">•</div>
-              <div className="flex items-center gap-2 text-white">
-                <IconBrandWhatsapp size={20} />
-                <span className="font-medium">954-914-0128</span>
-              </div>
-              <div className="hidden sm:block text-white">•</div>
-              <div className="flex items-center gap-2 text-white">
-                <IconMail size={20} />
-                <span className="font-medium">pinkdogpetresort@gmail.com</span>
-              </div>
-            </div>
+
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
@@ -817,7 +802,7 @@ export default function FAQPage() {
                 className="bg-white text-[#E73992] hover:bg-gray-100 rounded-full px-8 py-6 text-lg font-semibold"
                 asChild
               >
-                <Link href="/contact">Contact Us Now</Link>
+                <Link href="/#checkin-info">Contact Us Now</Link>
               </Button>
               <Button
                 size="lg"
@@ -825,7 +810,7 @@ export default function FAQPage() {
                 className="bg-transparent text-white border-white hover:bg-white/10 rounded-full px-8 py-6 text-lg font-semibold"
                 asChild
               >
-                <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service">Book a Service</Link>
+                <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer">Book a Service</Link>
               </Button>
             </div>
           </motion.div>

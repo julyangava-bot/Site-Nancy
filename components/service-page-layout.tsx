@@ -36,6 +36,7 @@ interface ServicePageLayoutProps {
   ctaText?: string;
   ctaLink?: string;
   showSecondButton?: boolean;
+  secondButtonText?: string;
   videoUrl?: string;
   hideCTA?: boolean;
 }
@@ -55,6 +56,7 @@ export function ServicePageLayout({
   ctaText = "Book Now",
   ctaLink = "https://booking.appointy.com/en-US/pinkdogresort/bookings/service",
   showSecondButton = true,
+  secondButtonText = "Contact Us",
   videoUrl,
   hideCTA = false,
 }: ServicePageLayoutProps) {
@@ -90,7 +92,7 @@ export function ServicePageLayout({
                     className="rounded-full px-6 sm:px-8 py-3 sm:py-6 text-base sm:text-lg border-[#E73992] text-[#E73992] hover:bg-[#FFF0F7]"
                     asChild
                   >
-                    <Link href="/#checkin-info">Contact Us</Link>
+                    <Link href={secondButtonText === "Have Questions?" ? "/faq" : "/#checkin-info"}>{secondButtonText}</Link>
                   </Button>
                 )}
               </div>
@@ -456,7 +458,7 @@ export function ServicePageLayout({
                     className="bg-transparent text-white border-white hover:bg-white/10 rounded-full px-8 py-6 text-lg font-semibold"
                     asChild
                   >
-                    <Link href="/faq">Have Questions?</Link>
+                    <Link href={secondButtonText === "Have Questions?" ? "/faq" : "/#checkin-info"}>{secondButtonText === "Contact Us" ? "Have Questions?" : secondButtonText}</Link>
                   </Button>
                 )}
               </div>

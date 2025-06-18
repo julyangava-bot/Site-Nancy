@@ -75,6 +75,7 @@ export default function PetHotelPage() {
       }}
       ctaText="Book Pet Hotel"
       ctaLink="/#checkin-info"
+      secondButtonText="Have Questions?"
     />
   );
 } 

@@ -506,8 +506,8 @@ export default function DaycarePage() {
                 className="bg-transparent text-white border-2 border-white hover:bg-white/10 rounded-full px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg font-semibold transition-all duration-300"
                 asChild
               >
-                <Link href="tel:9787724242">
-                  Call (978) 772-4242
+                <Link href="/#checkin-info">
+                  Contact Us
                 </Link>
               </Button>
             </div>
