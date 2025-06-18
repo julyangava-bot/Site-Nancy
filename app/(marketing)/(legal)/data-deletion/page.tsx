@@ -3,7 +3,7 @@ import seoData from "@/lib/next-metadata";
 
 export const metadata: Metadata = {
   title: "Data Deletion | " + seoData.title,
-  description: "Learn how to delete your data from the PinkDog Resort app and services.",
+  description: "Learn how to delete your data from the PinkDog Pet Resort app and services.",
   openGraph: {
     images: seoData.openGraph.images,
   },
@@ -32,7 +32,7 @@ export default function DataDeletion() {
                   Click on <strong className="font-medium">&quot;Apps and Websites&quot;</strong>.
                 </li>
                 <li className="text-gray-700">
-                  Find and select <strong className="font-medium">FlowQuantic</strong> or <strong className="font-medium">PinkDog Resort App</strong>.
+                  Find and select <strong className="font-medium">FlowQuantic</strong> or <strong className="font-medium">PinkDog Pet Resort App</strong>.
                 </li>
                 <li className="text-gray-700">
                   Click <strong className="font-medium">&quot;Remove&quot;</strong>.

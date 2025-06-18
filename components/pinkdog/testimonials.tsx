@@ -49,7 +49,7 @@ export function Testimonials() {
             </h2>
 
             <p className="text-gray-700 text-lg max-w-md">
-              At PinkDog Spa, we prioritize quality and care for your pet.
+              At PinkDog Pet Resort, we prioritize quality and care for your pet.
               See what our clients have to say about our services.
             </p>
 
@@ -107,7 +107,7 @@ const PawStarsIcon = ({ className }: { className?: string }) => {
       {/* Paw Icon */}
       <Image
         src="/images/pinkdog_original_no_txt.png"
-        alt="PinkDog Spa Logo"
+        alt="PinkDog Pet Resort Logo"
         className="block"
         width={100}
         height={100}
