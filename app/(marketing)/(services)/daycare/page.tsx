@@ -2,7 +2,7 @@
 
 import React from "react";
 import { ServicePageLayout } from "@/components/service-page-layout";
-import { Heart, Home, Gamepad2, Sparkles, Trees, Car, Hotel, Cat, Dog, Tag, Package, Clock, Scissors, Utensils, Pill, Calendar, Truck, Check, PawPrint } from "lucide-react";
+import { Heart, Home, Activity, Sparkles, Trees, Car, Hotel, Cat, Dog, Tag, Package, Clock, Scissors, Utensils, Pill, Calendar, Truck, Check, PawPrint } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,7 @@ export default function DaycarePage() {
       description: "Climate-controlled, plush bedding, and peaceful rest for dogs and cats."
     },
     {
-      icon: <Gamepad2 className="w-7 h-7" />,
+      icon: <Activity className="w-7 h-7" />,
       title: "Enrichment & Play",
       description: "Group and individual activities tailored by size and temperament."
     },
@@ -47,7 +47,7 @@ export default function DaycarePage() {
     "Mental Stimulation - New experiences keep your dog's mind sharp",
     "Emotional Well-Being - Positive group play lifts mood and reduces stress",
     "Better Behavior at Home - Learning communication develops confidence",
-    "Stronger Immune System - Regular movement and joy support overall health",
+    "Stronger Immune System - Regular movement and joy support overall health. Please let us know about diet restrictions",
     "Large, secure indoor & outdoor play spaces",
     "Climate-controlled environment for year-round comfort",
     "Small group sizes for individualized care",

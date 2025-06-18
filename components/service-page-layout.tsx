@@ -169,7 +169,7 @@ export function ServicePageLayout({
               viewport={{ once: true }}
             >
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6 sm:mb-8">
-                What&apos;s <span className="text-[#E73992]">Included</span>
+                Our <span className="text-[#E73992]">Services</span>
               </h2>
               <div className="space-y-4">
                 {benefits.map((benefit, index) => (

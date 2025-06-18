@@ -12,7 +12,7 @@ const features = [
   "Custom meal plans based on dietary needs",
   "Regular health checks and monitoring",
   "Climate-controlled comfort",
-  "Daily photo and video updates for pet parents",
+  "Photo and video updates available upon request",
 ];
 
 export function AboutUs() {
