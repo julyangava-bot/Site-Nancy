@@ -141,7 +141,7 @@ export function AboutUs() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-6">
               <p className="text-white text-lg font-medium">
-                Our state-of-the-art facility in the heart of the city
+                Your trusted local pet care family in Harvard, MA
               </p>
             </div>
           </motion.div>

@@ -12,18 +12,18 @@ const imageConfig = {
   // Carousel images
   carousel: [
     {
-      src: "/images/carrosel-1.png", 
-      alt: "PinkDog Carousel Image",
-      width: 500,
-      height: 500,
-      className: "p-6 sm:p-8"
-    },
-    {
       src: "/images/pinkdog-mascots.png", 
       alt: "PinkDog Friends",
       width: 500,
       height: 700,
       className: ""
+    },
+    {
+      src: "/images/carrosel-1.png", 
+      alt: "PinkDog Carousel Image",
+      width: 500,
+      height: 500,
+      className: "p-6 sm:p-8"
     },
     {
       src: "/images/carrosel-3.png", 
