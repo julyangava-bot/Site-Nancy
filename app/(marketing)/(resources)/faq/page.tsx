@@ -94,17 +94,14 @@ const faqSections: FAQSection[] = [
                 <p className="font-semibold text-gray-800 mb-3">Regular Business Hours:</p>
                 <div className="space-y-2">
                   <div className="flex justify-between items-center bg-[#FFF9FC] rounded-lg p-3">
-                    <span className="font-medium text-gray-700">Monday–Friday</span>
-                    <span className="text-[#E73992] font-semibold">7:30 AM – 6:00 PM</span>
+                    <span className="font-medium text-gray-700">Monday–Saturday</span>
+                    <span className="text-[#E73992] font-semibold">8:30 AM – 5:00 PM</span>
                   </div>
-                  <div className="flex justify-between items-center bg-[#FFF9FC] rounded-lg p-3">
-                    <span className="font-medium text-gray-700">Saturday</span>
-                    <span className="text-[#E73992] font-semibold">8:00 AM – 5:00 PM</span>
-                  </div>
+                  
                   <div className="flex justify-between items-center bg-[#FFF9FC] rounded-lg p-3">
                     <span className="font-medium text-gray-700">Sunday</span>
                     <div className="text-right">
-                      <span className="text-[#E73992] font-semibold">9:00 AM – 12:00 PM</span>
+                      <span className="text-[#E73992] font-semibold">12:00 PM – 4:00 PM</span>
                       <p className="text-xs text-gray-600">(pick-up only)</p>
                     </div>
                   </div>
@@ -435,8 +432,8 @@ const faqSections: FAQSection[] = [
                 </ul>
               </div>
             </div>
-            <div className="bg-[#E73992] bg-opacity-10 rounded-lg p-3 text-center">
-              <p className="text-[#E73992] font-bold">
+            <div className="bg-[#E73992] rounded-lg p-3 text-center">
+              <p className="text-white font-bold">
                 ✨ All services include a complimentary bandana or bow!
               </p>
             </div>

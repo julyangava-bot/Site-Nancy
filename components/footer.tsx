@@ -85,7 +85,7 @@ export function Footer() {
       name: "Coconut Creek, FL",
       address: "4407 West Boulevard, Coconut Creek, FL 33073",
       hours: {
-        weekdays: "Mon-Sat: 8:30 AM - 6:00 PM",
+        weekdays: "Mon-Sat: 8:30 AM - 5:00 PM",
         sunday: "Sunday: Closed"
       },
       features: ["Grooming", "Spa Services", "Daycare"],
