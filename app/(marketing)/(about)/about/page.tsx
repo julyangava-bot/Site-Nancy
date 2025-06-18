@@ -148,7 +148,8 @@ export default function AboutPage() {
                     src="/images/founders/founders004.jpg"
                     alt="PinkDog Pet Resort Harvard Store Front"
                     fill
-                    className="object-cover"
+                    className="object-cover object-right"
+                    style={{ objectPosition: 'calc(100% + 70px) center' }}
                     priority
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
