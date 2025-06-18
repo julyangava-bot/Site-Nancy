@@ -251,7 +251,7 @@ export default function PhilosophyPage() {
             >
               <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-xl">
                 <Image
-                  src="/images/gallery/all/image-9.JPG"
+                  src="/images/gallery/all/image-9.jpg"
                   alt="Professional grooming with scientific approach"
                   fill
                   className="object-cover"
