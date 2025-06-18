@@ -288,14 +288,27 @@ export default function AboutPage() {
                   viewport={{ once: true }}
                   className="order-2 lg:order-1"
                 >
-                  <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-xl">
-                    <Image
-                      src="/images/gallery/facility/image-41.jpg"
-                      alt="PinkDog Pet Resort Facility"
-                      fill
-                      className="object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                  <div className="relative group">
+                    {/* Pink gradient background card */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#FCD1E6] to-[#FFE4F1] rounded-3xl transform rotate-3 scale-105"></div>
+                    
+                    {/* Main image container */}
+                    <div className="relative bg-white p-2 rounded-3xl shadow-xl transform transition-transform hover:-rotate-1">
+                      <div className="relative h-[480px] rounded-2xl overflow-hidden bg-gradient-to-br from-[#FFF9FC] to-white">
+                        <Image
+                          src="/images/gallery/facility/image-41.jpg"
+                          alt="PinkDog Pet Resort Facility"
+                          fill
+                          className="object-contain p-4"
+                        />
+                      </div>
+                      
+                      {/* Caption */}
+                      <div className="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-sm rounded-xl p-3 shadow-lg">
+                        <p className="text-sm font-semibold text-[#E73992]">Our Harvard Location</p>
+                        <p className="text-xs text-gray-600">Where every pet is treated like family</p>
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
 
