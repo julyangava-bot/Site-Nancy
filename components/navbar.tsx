@@ -235,14 +235,17 @@ const DesktopNav = ({
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Element;
-      if (mobileMenuOpen && !target.closest('.desktop-nav-container')) {
+      // Check if the click is outside both the nav container and the hamburger button
+      if (mobileMenuOpen && !target.closest('.desktop-nav-container') && !target.closest('.hamburger-button')) {
         setMobileMenuOpen(false);
+        setActiveDropdown(null);
       }
     };
     
     const handleEscapeKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && mobileMenuOpen) {
         setMobileMenuOpen(false);
+        setActiveDropdown(null);
       }
     };
     
@@ -346,7 +349,7 @@ const DesktopNav = ({
                     whileHover={{ scale: 1.1 }} 
                     whileTap={{ scale: 0.9 }}
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    className="cursor-pointer"
+                    className="cursor-pointer hamburger-button"
                   >
                     {mobileMenuOpen ? (
                       <IconX className="text-black/90" />
@@ -565,7 +568,7 @@ const DesktopNav = ({
                       duration: 0.2,
                       ease: "easeInOut",
                     }}
-                    className="flex rounded-3xl absolute top-16 mt-2 backdrop-blur-xl bg-white/98 left-0 right-0 z-50 flex-col items-center justify-start w-full px-4 py-6 shadow-2xl max-h-[calc(100vh-8rem)] overflow-y-auto mobile-menu-scroll"
+                    className="desktop-nav-container flex rounded-3xl absolute top-16 mt-2 backdrop-blur-xl bg-white/98 left-0 right-0 z-50 flex-col items-center justify-start w-full px-4 py-6 shadow-2xl max-h-[calc(100vh-8rem)] overflow-y-auto mobile-menu-scroll"
                   >
                     {navItems.map((navItem, idx) => (
                       <motion.div
@@ -583,7 +586,10 @@ const DesktopNav = ({
                         {navItem.hasDropdown ? (
                           <div className="w-full py-3">
                             <button
-                              onClick={() => toggleDropdown(navItem.name)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleDropdown(navItem.name);
+                              }}
                               className="flex w-full items-center justify-between text-black/90 hover:text-[#E73992] transition-colors px-4 py-3 rounded-xl hover:bg-[#FFF0F7]"
                             >
                               <div className="flex items-center gap-4">
@@ -614,7 +620,8 @@ const DesktopNav = ({
                                         key={`desktop-compact-dropdown-${i}`}
                                         href={item.link}
                                         className="block py-3 px-4 text-gray-700 hover:text-[#E73992] hover:bg-[#FFEBF5] rounded-lg transition-all duration-200 font-medium"
-                                        onClick={() => {
+                                        onClick={(e) => {
+                                          e.stopPropagation();
                                           setActiveDropdown(null);
                                           setMobileMenuOpen(false);
                                         }}
