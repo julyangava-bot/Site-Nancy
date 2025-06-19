@@ -6,12 +6,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Check, Heart, Shield, Clock, Award, Users, Sparkles } from "lucide-react";
-import { ServiceSelectionDialog } from "@/components/pinkdog/service-selection-dialog";
+import { useServiceDialog } from "@/context/service-dialog-context";
 
 export default function AboutPage() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [isClient, setIsClient] = useState(false);
-  const [isServiceDialogOpen, setIsServiceDialogOpen] = useState(false);
+  const { openServiceDialog } = useServiceDialog();
 
   // Founders images data
   const foundersImages = [
@@ -125,7 +125,7 @@ export default function AboutPage() {
                 <div className="flex gap-4">
                   <Button
                     className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-8 py-6 text-lg"
-                    onClick={() => setIsServiceDialogOpen(true)}
+                    onClick={openServiceDialog}
                   >
                     Book Now
                   </Button>
@@ -475,7 +475,7 @@ export default function AboutPage() {
                   <Button
                     size="lg"
                     className="bg-white text-[#E73992] hover:bg-gray-100 rounded-full px-8 py-6 text-lg font-semibold"
-                    onClick={() => setIsServiceDialogOpen(true)}
+                    onClick={openServiceDialog}
                   >
                     Book Now
                   </Button>
@@ -554,11 +554,6 @@ export default function AboutPage() {
             )}
           </AnimatePresence>
         )}
-        
-        <ServiceSelectionDialog 
-          isOpen={isServiceDialogOpen} 
-          onClose={() => setIsServiceDialogOpen(false)} 
-        />
       </>
     );
   }

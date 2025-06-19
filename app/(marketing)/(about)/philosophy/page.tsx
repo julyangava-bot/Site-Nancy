@@ -1,15 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Heart, Shield, Users, Award, Sparkles, Brain } from "lucide-react";
-import { ServiceSelectionDialog } from "@/components/pinkdog/service-selection-dialog";
+import { useServiceDialog } from "@/context/service-dialog-context";
 
 export default function PhilosophyPage() {
-  const [isServiceDialogOpen, setIsServiceDialogOpen] = useState(false);
+  const { openServiceDialog } = useServiceDialog();
   // Features for the Philosophy page
   const philosophyValues = [
     {
@@ -67,7 +67,7 @@ export default function PhilosophyPage() {
               <div className="flex gap-4">
                 <Button
                   className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-8 py-6 text-lg"
-                  onClick={() => setIsServiceDialogOpen(true)}
+                  onClick={openServiceDialog}
                 >
                   Book Now
                 </Button>
@@ -386,7 +386,7 @@ export default function PhilosophyPage() {
               <Button
                 size="lg"
                 className="bg-white text-[#E73992] hover:bg-gray-100 rounded-full px-8 py-6 text-lg font-semibold"
-                onClick={() => setIsServiceDialogOpen(true)}
+                onClick={openServiceDialog}
               >
                 Book Now
               </Button>
@@ -403,11 +403,6 @@ export default function PhilosophyPage() {
         </div>
       </section>
       </main>
-      
-      <ServiceSelectionDialog 
-        isOpen={isServiceDialogOpen} 
-        onClose={() => setIsServiceDialogOpen(false)} 
-      />
     </>
   );
 } 

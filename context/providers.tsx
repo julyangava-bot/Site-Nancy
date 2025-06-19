@@ -5,6 +5,7 @@ import {
   ThemeProvider as NextThemesProvider,
   ThemeProviderProps,
 } from "next-themes";
+import { ServiceDialogProvider } from "./service-dialog-context";
 
 // Context for managing modal/form states
 interface ModalContextType {
@@ -41,7 +42,9 @@ export function Providers({ children }: { children: ReactNode }) {
         enableSystem
         disableTransitionOnChange
       >
-        {children}
+        <ServiceDialogProvider>
+          {children}
+        </ServiceDialogProvider>
       </NextThemesProvider>
     </ModalProvider>
   );

@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { X } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
@@ -13,6 +13,19 @@ interface ServiceSelectionDialogProps {
 
 export function ServiceSelectionDialog({ isOpen, onClose }: ServiceSelectionDialogProps) {
   const router = useRouter()
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Detect mobile view
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768) // md breakpoint
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   React.useEffect(() => {
     if (isOpen) {
@@ -68,7 +81,13 @@ export function ServiceSelectionDialog({ isOpen, onClose }: ServiceSelectionDial
       borderColor: "hover:border-[#FF9EC8]",
       iconBg: "from-[#FFF0F7] to-[#FFE9F3]",
       action: () => {
-        router.push("/grooming?booking=true")
+        if (isMobile) {
+          // On mobile, go directly to external booking
+          window.open("https://booking.appointy.com/en-US/pinkdogresort/bookings/service", "_blank")
+        } else {
+          // On desktop, go to grooming page
+          router.push("/grooming?booking=true")
+        }
         onClose()
       }
     },

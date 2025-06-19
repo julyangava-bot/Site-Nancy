@@ -33,7 +33,7 @@ import {
 } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ServiceSelectionDialog } from "@/components/pinkdog/service-selection-dialog";
+import { useServiceDialog } from "@/context/service-dialog-context";
 
 interface FAQItem {
   question: string;
@@ -713,7 +713,7 @@ const faqSections: FAQSection[] = [
 
 export default function FAQPage() {
   const [openIndex, setOpenIndex] = useState<string | null>(null);
-  const [isServiceDialogOpen, setIsServiceDialogOpen] = useState(false);
+  const { openServiceDialog } = useServiceDialog();
 
   const toggleFAQ = (sectionIndex: number, itemIndex: number) => {
     const key = `${sectionIndex}-${itemIndex}`;
@@ -853,7 +853,7 @@ export default function FAQPage() {
                 size="lg"
                 variant="outline"
                 className="bg-transparent text-white border-white hover:bg-white/10 rounded-full px-8 py-6 text-lg font-semibold"
-                onClick={() => setIsServiceDialogOpen(true)}
+                onClick={openServiceDialog}
               >
                 Book a Service
               </Button>
@@ -862,11 +862,6 @@ export default function FAQPage() {
         </div>
       </section>
     </main>
-    
-      <ServiceSelectionDialog 
-        isOpen={isServiceDialogOpen} 
-        onClose={() => setIsServiceDialogOpen(false)} 
-      />
     </>
   );
 }

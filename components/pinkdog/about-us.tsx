@@ -1,10 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { IconBrandInstagram, IconBrandFacebook } from "@tabler/icons-react";
-import { ServiceSelectionDialog } from "@/components/pinkdog/service-selection-dialog";
+import { useServiceDialog } from "@/context/service-dialog-context";
 
 // Features list
 const features = [
@@ -17,7 +17,7 @@ const features = [
 ];
 
 export function AboutUs() {
-  const [isServiceDialogOpen, setIsServiceDialogOpen] = useState(false);
+  const { openServiceDialog } = useServiceDialog();
   return (
     <>
     <section
@@ -201,7 +201,7 @@ export function AboutUs() {
           <div className="flex flex-col sm:flex-row justify-center gap-4 relative z-10">
             <Button
               className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-8 py-6 h-auto"
-              onClick={() => setIsServiceDialogOpen(true)}
+              onClick={openServiceDialog}
             >
               Reserve Spot
             </Button>
@@ -215,11 +215,6 @@ export function AboutUs() {
         </motion.div>
       </div>
     </section>
-    
-    <ServiceSelectionDialog 
-      isOpen={isServiceDialogOpen} 
-      onClose={() => setIsServiceDialogOpen(false)} 
-    />
     </>
   );
 }

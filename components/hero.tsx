@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
-import { ServiceSelectionDialog } from "@/components/pinkdog/service-selection-dialog";
+import { useServiceDialog } from "@/context/service-dialog-context";
 
 // Centralized image configuration object
 const imageConfig = {
@@ -62,7 +62,7 @@ const imageConfig = {
 
 export function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isServiceDialogOpen, setIsServiceDialogOpen] = useState(false);
+  const { openServiceDialog } = useServiceDialog();
 
   // Modified scroll control - no longer locks scrolling
   useEffect(() => {
@@ -192,7 +192,7 @@ export function Hero() {
                 >
                   <Button
                     className="bg-[#E73992] text-white hover:bg-[#d3337f] text-base sm:text-base md:text-lg font-medium px-6 sm:px-6 md:px-8 py-3 sm:py-3 md:py-3.5 h-auto rounded-full shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
-                    onClick={() => setIsServiceDialogOpen(true)}
+                    onClick={openServiceDialog}
                   >
                     Schedule Visit
                   </Button>
@@ -284,11 +284,6 @@ export function Hero() {
       <div className="bg-gradient-to-b from-white to-[#FFF7FB] overflow-hidden">
         {renderContent()}
       </div>
-      
-      <ServiceSelectionDialog 
-        isOpen={isServiceDialogOpen} 
-        onClose={() => setIsServiceDialogOpen(false)} 
-      />
     </>
   );
 }

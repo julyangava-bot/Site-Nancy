@@ -17,7 +17,7 @@ import { handleSectionNavigation, scrollToSection } from "@/lib/navigation";
 import { Users, Heart, HelpCircle } from "lucide-react";
 import { IconBrandInstagram, IconBrandFacebook } from "@tabler/icons-react";
 import { useModal } from "@/context/providers";
-import { ServiceSelectionDialog } from "@/components/pinkdog/service-selection-dialog";
+import { useServiceDialog } from "@/context/service-dialog-context";
 
 interface NavItem {
   name: string;
@@ -40,7 +40,7 @@ export const Navbar = () => {
   const pathname = usePathname();
   const isHomePage = pathname === "/";
   const { isAnyModalOpen } = useModal();
-  const [isServiceDialogOpen, setIsServiceDialogOpen] = useState(false);
+  const { openServiceDialog } = useServiceDialog();
 
   const navItems: NavItem[] = [
     {
@@ -165,13 +165,13 @@ export const Navbar = () => {
         visible={visible} 
         navItems={navItems} 
         onNavClick={handleNavClick} 
-        setIsServiceDialogOpen={setIsServiceDialogOpen}
+        openServiceDialog={openServiceDialog}
       />
       <MobileNav 
         visible={visible} 
         navItems={navItems} 
         onNavClick={handleNavClick} 
-        setIsServiceDialogOpen={setIsServiceDialogOpen}
+        openServiceDialog={openServiceDialog}
       />
       
       {/* Custom scrollbar styles for mobile menu */}
@@ -203,11 +203,6 @@ export const Navbar = () => {
         }
       `}</style>
     </motion.div>
-    
-    <ServiceSelectionDialog 
-      isOpen={isServiceDialogOpen} 
-      onClose={() => setIsServiceDialogOpen(false)} 
-    />
     </>
   );
 };
@@ -216,12 +211,12 @@ const DesktopNav = ({
   navItems, 
   visible, 
   onNavClick,
-  setIsServiceDialogOpen
+  openServiceDialog
 }: {
   navItems: NavItem[]; 
   visible: boolean; 
   onNavClick: (e: React.MouseEvent, item: NavItem) => void;
-  setIsServiceDialogOpen: (open: boolean) => void;
+  openServiceDialog: () => void;
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -353,7 +348,7 @@ const DesktopNav = ({
                 <div className="flex items-center gap-3">
                   <Button
                     className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full"
-                    onClick={() => setIsServiceDialogOpen(true)}
+                    onClick={() => openServiceDialog()}
                   >
                     Book Now
                   </Button>
@@ -500,7 +495,7 @@ const DesktopNav = ({
                         <div className="flex items-center gap-2">
                           <Button
                             className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full"
-                            onClick={() => setIsServiceDialogOpen(true)}
+                            onClick={() => openServiceDialog()}
                           >
                             Book Now
                           </Button>
@@ -682,12 +677,12 @@ const MobileNav = ({
   navItems, 
   visible, 
   onNavClick,
-  setIsServiceDialogOpen
+  openServiceDialog
 }: {
   navItems: NavItem[]; 
   visible: boolean; 
   onNavClick: (e: React.MouseEvent, item: NavItem) => void;
-  setIsServiceDialogOpen: (open: boolean) => void;
+  openServiceDialog: () => void;
 }) => {
   const [open, setOpen] = useState(false);
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
@@ -820,7 +815,7 @@ const MobileNav = ({
                 <div className="hidden sm:block">
                   <Button
                     className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full"
-                    onClick={() => setIsServiceDialogOpen(true)}
+                    onClick={() => openServiceDialog()}
                   >
                     Book Now
                   </Button>
@@ -968,7 +963,7 @@ const MobileNav = ({
                       className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full w-full py-6 text-lg font-semibold shadow-lg"
                       onClick={() => {
                         setOpen(false);
-                        setIsServiceDialogOpen(true);
+                        openServiceDialog();
                       }}
                     >
                       <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

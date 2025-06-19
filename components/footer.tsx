@@ -6,14 +6,13 @@ import { IconBrandInstagram, IconBrandFacebook, IconMapPin, IconClock, IconPhone
 import { motion } from "motion/react";
 import { useRouter, usePathname } from "next/navigation";
 import { handleSectionNavigation, isSectionLink } from "@/lib/navigation";
-import { ServiceSelectionDialog } from "@/components/pinkdog/service-selection-dialog";
-import { useState } from "react";
+import { useServiceDialog } from "@/context/service-dialog-context";
 
 export function Footer() {
   const router = useRouter();
   const pathname = usePathname();
   const isHomePage = pathname === "/";
-  const [isServiceDialogOpen, setIsServiceDialogOpen] = useState(false);
+  const { openServiceDialog } = useServiceDialog();
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (isSectionLink(href)) {
@@ -188,7 +187,7 @@ export function Footer() {
                 <li key={idx}>
                   {item.isDialog ? (
                     <button
-                      onClick={() => setIsServiceDialogOpen(true)}
+                      onClick={() => openServiceDialog()}
                       className="text-gray-600 hover:text-[#E73992] transition-colors text-sm block py-1 text-left w-full"
                     >
                       {item.name}
@@ -374,11 +373,6 @@ export function Footer() {
           </div>
         </div>
       </div>
-      
-      <ServiceSelectionDialog 
-        isOpen={isServiceDialogOpen} 
-        onClose={() => setIsServiceDialogOpen(false)} 
-      />
     </footer>
   );
 }
