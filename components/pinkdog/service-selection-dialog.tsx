@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { X, Scissors, Hotel, Calendar, Truck, Sparkles, PawPrint } from "lucide-react"
+import { X } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
@@ -149,8 +149,8 @@ export function ServiceSelectionDialog({ isOpen, onClose }: ServiceSelectionDial
                         className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0"
                       >
                         <Image
-                          src="/images/PinkDogSpaLogo.png"
-                          alt="PinkDog Spa Logo"
+                          src="/images/pinkdog-logo-3d.png"
+                          alt="PinkDog 3D Logo"
                           fill
                           className="object-contain drop-shadow-lg"
                         />

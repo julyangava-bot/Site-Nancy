@@ -4,7 +4,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import Select from "react-select";
+import Select, { StylesConfig } from "react-select";
 import { format } from "date-fns";
 
 import {
@@ -49,8 +49,10 @@ interface VanBookingFormProps {
 }
 
 // Custom styles for react-select
-const customSelectStyles = {
-  control: (base: any, state: any) => ({
+type SelectOption = { value: string; label: string; };
+
+const customSelectStyles: StylesConfig<SelectOption, false> = {
+  control: (base, state) => ({
     ...base,
     minHeight: '44px',
     backgroundColor: '#F2F2F2',
@@ -63,18 +65,18 @@ const customSelectStyles = {
     },
     fontSize: '16px', // Prevents zoom on iOS
   }),
-  menu: (base: any) => ({
+  menu: (base) => ({
     ...base,
     borderRadius: '12px',
     boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
     overflow: 'hidden',
     zIndex: 999,
   }),
-  menuList: (base: any) => ({
+  menuList: (base) => ({
     ...base,
     padding: 0,
   }),
-  option: (base: any, state: any) => ({
+  option: (base, state) => ({
     ...base,
     backgroundColor: state.isSelected ? '#E73992' : state.isFocused ? '#FFF0F7' : 'white',
     color: state.isSelected ? 'white' : '#374151',
@@ -85,12 +87,12 @@ const customSelectStyles = {
       color: 'white',
     },
   }),
-  singleValue: (base: any) => ({
+  singleValue: (base) => ({
     ...base,
     color: '#374151',
     fontSize: '16px',
   }),
-  placeholder: (base: any) => ({
+  placeholder: (base) => ({
     ...base,
     color: '#9CA3AF',
     fontSize: '16px',
@@ -98,7 +100,7 @@ const customSelectStyles = {
   indicatorSeparator: () => ({
     display: 'none',
   }),
-  dropdownIndicator: (base: any, state: any) => ({
+  dropdownIndicator: (base, state) => ({
     ...base,
     color: state.isFocused ? '#E73992' : '#9CA3AF',
     '&:hover': {
@@ -368,7 +370,7 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
                       name="petNames"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium text-sm">Pet's Name(s) *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Pet&apos;s Name(s) *</FormLabel>
                           <FormControl>
                             <Input 
                               placeholder="e.g., Buddy, Luna" 
@@ -585,7 +587,7 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
                     {submitStatus === 'success' && (
                       <div className="flex items-start gap-3 p-4 bg-green-50 border border-green-200 rounded-xl text-green-800">
                         <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-                        <span className="text-sm">PinkVan request sent successfully! We'll contact you soon to confirm your transportation.</span>
+                        <span className="text-sm">PinkVan request sent successfully! We&apos;ll contact you soon to confirm your transportation.</span>
                       </div>
                     )}
                     

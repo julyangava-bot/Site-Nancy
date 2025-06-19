@@ -19,26 +19,23 @@ export default function GroomingPage() {
     }
   }, [mounted, searchParams]);
   return (
-    <main className="bg-white relative">
-      {/* Hero Section */}
-      <section className="relative pt-36 pb-12 overflow-hidden">
+    <main className="bg-white relative min-h-screen">
+      {/* Custom Hero Section */}
+      <section className="relative pt-30 sm:pt-36 pb-8 sm:pb-12">
         <div className="absolute inset-0 bg-gradient-to-b from-[#FFF0F7] to-white"></div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-1">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                🐾 Pink Grooming & <span className="text-[#E73992]">Spa Services</span>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+                Grooming & <span className="text-[#E73992]">Spa</span>
               </h1>
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                At PinkDog Pet Resort, grooming is more than a service — it&apos;s a relationship. We take the time to get to know your pet so every visit feels like a spa day, not a stressful experience.
-              </p>
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                We treat pets like family — because to us, they are. Your dog deserves to be pampered with love and care, and our mission is to return them to you happy, healthy, fresh, and clean.
+              <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 leading-relaxed">
+                At PinkDog Pet Resort, grooming is more than a service — it&apos;s a relationship. We take the time to get to know your pet so every visit feels like a spa day, not a stressful experience. We treat pets like family — because to us, they are. Your dog deserves to be pampered with love and care, and our mission is to return them to you happy, healthy, fresh, and clean.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <a
@@ -64,16 +61,19 @@ export default function GroomingPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="relative"
             >
-              <div className="relative h-[400px] lg:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
+              <div className="relative h-[300px] sm:h-[400px] lg:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
                 <Image
                   src="/images/services/grooming.jpg"
-                  alt="Pink Grooming & Spa Services"
+                  alt="Grooming & Spa Services"
                   fill
                   className="object-cover"
                   priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
+              {/* Decorative elements */}
+              <div className="absolute -top-6 -right-6 w-24 h-24 bg-[#FCD1E6] rounded-full opacity-50 blur-xl hidden sm:block"></div>
+              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-[#FFEBF5] rounded-full opacity-50 blur-xl hidden sm:block"></div>
             </motion.div>
           </div>
         </div>
@@ -82,19 +82,42 @@ export default function GroomingPage() {
       {/* Why Grooming Matters Section */}
       <section className="py-16 bg-gradient-to-b from-white to-[#FFF9FC]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
+          <motion.h2 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ 
+              duration: 0.6,
+              ease: [0.25, 0.1, 0.25, 1]
+            }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center"
+          >
             ✂️ Why <span className="text-[#E73992]">Grooming Matters</span>
-          </h2>
-          <p className="text-lg text-gray-600 mb-12 text-center max-w-3xl mx-auto">
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ 
+              duration: 0.6,
+              ease: [0.25, 0.1, 0.25, 1],
+              delay: 0.1
+            }}
+            viewport={{ once: true }}
+            className="text-lg text-gray-600 mb-12 text-center max-w-3xl mx-auto"
+          >
             Grooming isn&apos;t just about looking good — it&apos;s about staying healthy. Here&apos;s why grooming every 4–6 weeks is important:
-          </p>
+          </motion.p>
           
           <div className="grid lg:grid-cols-2 gap-12 items-center mb-12">
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
+              initial={{ opacity: 0, x: -50, scale: 0.95 }}
+              whileInView={{ opacity: 1, x: 0, scale: 1 }}
+              transition={{ 
+                duration: 0.7,
+                ease: [0.25, 0.1, 0.25, 1],
+                delay: 0.2
+              }}
+              viewport={{ once: true, margin: "-50px" }}
             >
               <div className="grid gap-6">
                 <div className="flex items-start gap-3">
@@ -125,10 +148,14 @@ export default function GroomingPage() {
             </motion.div>
             
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
+              initial={{ opacity: 0, x: 50, scale: 0.95 }}
+              whileInView={{ opacity: 1, x: 0, scale: 1 }}
+              transition={{ 
+                duration: 0.7,
+                ease: [0.25, 0.1, 0.25, 1],
+                delay: 0.3
+              }}
+              viewport={{ once: true, margin: "-50px" }}
               className="relative"
             >
               <div className="relative rounded-2xl overflow-hidden shadow-xl">
@@ -159,15 +186,44 @@ export default function GroomingPage() {
       {/* First-Time Grooming Section */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
+          <motion.h2 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ 
+              duration: 0.6,
+              ease: [0.25, 0.1, 0.25, 1]
+            }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center"
+          >
             🐾 First-Time Grooming or <span className="text-[#E73992]">Nervous Dogs?</span>
-          </h2>
-          <p className="text-lg text-gray-600 mb-6">
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ 
+              duration: 0.6,
+              ease: [0.25, 0.1, 0.25, 1],
+              delay: 0.1
+            }}
+            viewport={{ once: true }}
+            className="text-lg text-gray-600 mb-6"
+          >
             We recommend introducing your puppy to grooming early in life, ideally as soon as your vet gives the okay. Waiting too long can make grooming feel scary — especially when it comes to nails or ears.
-          </p>
-          <p className="text-lg text-gray-600">
+          </motion.p>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ 
+              duration: 0.6,
+              ease: [0.25, 0.1, 0.25, 1],
+              delay: 0.2
+            }}
+            viewport={{ once: true }}
+            className="text-lg text-gray-600"
+          >
             We offer a special <strong>First Puppy Groom</strong> as well as a <strong>Socialization Day</strong> service — a gentle, low-pressure way to help first-timers, nervous dogs, or rescue pups feel safe and comfortable before their first full groom. These services help set the foundation for a lifetime of relaxed grooming experiences.
-          </p>
+          </motion.p>
         </div>
       </section>
 
@@ -175,10 +231,14 @@ export default function GroomingPage() {
       <section className="py-20 bg-gradient-to-b from-[#FFF9FC] to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ 
+              duration: 0.8, 
+              ease: [0.25, 0.1, 0.25, 1],
+              delay: 0.1
+            }}
+            viewport={{ once: true, margin: "-100px" }}
             className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -188,11 +248,19 @@ export default function GroomingPage() {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto mb-12">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
+              initial={{ opacity: 0, y: 40, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ 
+                duration: 0.6,
+                ease: [0.25, 0.1, 0.25, 1],
+                delay: 0.1
+              }}
+              viewport={{ once: true, margin: "-50px" }}
+              whileHover={{ 
+                scale: 1.05,
+                transition: { duration: 0.2 }
+              }}
+              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow"
             >
               <div className="w-12 h-12 bg-[#FCD1E6] rounded-xl flex items-center justify-center mb-4">
                 <span className="text-2xl">✂️</span>
@@ -202,11 +270,19 @@ export default function GroomingPage() {
             </motion.div>
             
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
+              initial={{ opacity: 0, y: 40, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ 
+                duration: 0.6,
+                ease: [0.25, 0.1, 0.25, 1],
+                delay: 0.2
+              }}
+              viewport={{ once: true, margin: "-50px" }}
+              whileHover={{ 
+                scale: 1.05,
+                transition: { duration: 0.2 }
+              }}
+              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow"
             >
               <div className="w-12 h-12 bg-[#FCD1E6] rounded-xl flex items-center justify-center mb-4">
                 <span className="text-2xl">🌟</span>
@@ -217,11 +293,19 @@ export default function GroomingPage() {
             </motion.div>
             
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
+              initial={{ opacity: 0, y: 40, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ 
+                duration: 0.6,
+                ease: [0.25, 0.1, 0.25, 1],
+                delay: 0.3
+              }}
+              viewport={{ once: true, margin: "-50px" }}
+              whileHover={{ 
+                scale: 1.05,
+                transition: { duration: 0.2 }
+              }}
+              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow"
             >
               <div className="w-12 h-12 bg-[#FCD1E6] rounded-xl flex items-center justify-center mb-4">
                 <span className="text-2xl">🛁</span>
@@ -231,11 +315,19 @@ export default function GroomingPage() {
             </motion.div>
             
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
+              initial={{ opacity: 0, y: 40, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ 
+                duration: 0.6,
+                ease: [0.25, 0.1, 0.25, 1],
+                delay: 0.4
+              }}
+              viewport={{ once: true, margin: "-50px" }}
+              whileHover={{ 
+                scale: 1.05,
+                transition: { duration: 0.2 }
+              }}
+              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow"
             >
               <div className="w-12 h-12 bg-[#FCD1E6] rounded-xl flex items-center justify-center mb-4">
                 <span className="text-2xl">💅</span>
@@ -245,11 +337,19 @@ export default function GroomingPage() {
             </motion.div>
             
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
+              initial={{ opacity: 0, y: 40, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ 
+                duration: 0.6,
+                ease: [0.25, 0.1, 0.25, 1],
+                delay: 0.5
+              }}
+              viewport={{ once: true, margin: "-50px" }}
+              whileHover={{ 
+                scale: 1.05,
+                transition: { duration: 0.2 }
+              }}
+              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow"
             >
               <div className="w-12 h-12 bg-[#FCD1E6] rounded-xl flex items-center justify-center mb-4">
                 <span className="text-2xl">🐾</span>
@@ -259,11 +359,19 @@ export default function GroomingPage() {
             </motion.div>
             
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
+              initial={{ opacity: 0, y: 40, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ 
+                duration: 0.6,
+                ease: [0.25, 0.1, 0.25, 1],
+                delay: 0.6
+              }}
+              viewport={{ once: true, margin: "-50px" }}
+              whileHover={{ 
+                scale: 1.05,
+                transition: { duration: 0.2 }
+              }}
+              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow"
             >
               <div className="w-12 h-12 bg-[#FCD1E6] rounded-xl flex items-center justify-center mb-4">
                 <span className="text-2xl">👂</span>
@@ -273,11 +381,19 @@ export default function GroomingPage() {
             </motion.div>
             
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.7 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 md:col-span-2 lg:col-span-3"
+              initial={{ opacity: 0, y: 40, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ 
+                duration: 0.6,
+                ease: [0.25, 0.1, 0.25, 1],
+                delay: 0.7
+              }}
+              viewport={{ once: true, margin: "-50px" }}
+              whileHover={{ 
+                scale: 1.02,
+                transition: { duration: 0.2 }
+              }}
+              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow md:col-span-2 lg:col-span-3"
             >
               <div className="w-12 h-12 bg-[#FCD1E6] rounded-xl flex items-center justify-center mb-4">
                 <span className="text-2xl">✨</span>
@@ -288,9 +404,13 @@ export default function GroomingPage() {
           </div>
           
           <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.8 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ 
+              duration: 0.6, 
+              delay: 0.8,
+              ease: [0.25, 0.1, 0.25, 1]
+            }}
             viewport={{ once: true }}
             className="text-center text-gray-600 max-w-3xl mx-auto"
           >
@@ -302,10 +422,29 @@ export default function GroomingPage() {
       {/* Spa Policies Section */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
+          <motion.h2 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ 
+              duration: 0.6,
+              ease: [0.25, 0.1, 0.25, 1]
+            }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center"
+          >
             📋 Spa <span className="text-[#E73992]">Policies</span>
-          </h2>
-          <div className="bg-[#FFF0F7] rounded-2xl p-8 shadow-lg">
+          </motion.h2>
+          <motion.div 
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ 
+              duration: 0.6,
+              ease: [0.25, 0.1, 0.25, 1],
+              delay: 0.1
+            }}
+            viewport={{ once: true }}
+            className="bg-[#FFF0F7] rounded-2xl p-8 shadow-lg"
+          >
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <span className="text-[#E73992] text-xl">•</span>
@@ -324,7 +463,7 @@ export default function GroomingPage() {
                 <p className="text-gray-700">Grooming refund requests must be submitted within 48 hours of service and are subject to review</p>
               </li>
             </ul>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -332,12 +471,31 @@ export default function GroomingPage() {
       <section className="py-20 bg-gradient-to-r from-[#E73992] to-[#FF69B4] relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-1">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+          <motion.h2 
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ 
+              duration: 0.6,
+              ease: [0.25, 0.1, 0.25, 1]
+            }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-4xl font-bold text-white mb-4"
+          >
             Ready to Pamper Your Pet?
-          </h2>
-          <p className="text-xl text-white/90 mb-8">
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ 
+              duration: 0.6,
+              ease: [0.25, 0.1, 0.25, 1],
+              delay: 0.1
+            }}
+            viewport={{ once: true }}
+            className="text-xl text-white/90 mb-8"
+          >
             Book your pet&apos;s spa day today and see why PinkDog is the preferred choice for pet grooming.
-          </p>
+          </motion.p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               target="_blank"

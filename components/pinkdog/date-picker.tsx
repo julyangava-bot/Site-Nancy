@@ -67,8 +67,10 @@ export function DatePicker({ selected, onSelect, disabled, placeholderText = "Se
                 showOutsideDays={false}
                 fixedWeeks
                 components={{
-                  IconLeft: () => <ChevronLeft className="w-5 h-5" />,
-                  IconRight: () => <ChevronRight className="w-5 h-5" />,
+                  Chevron: ({ orientation }) => 
+                    orientation === "left" ? 
+                      <ChevronLeft className="w-5 h-5" /> : 
+                      <ChevronRight className="w-5 h-5" />
                 }}
               />
             </div>

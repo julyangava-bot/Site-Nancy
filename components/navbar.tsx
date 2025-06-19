@@ -179,14 +179,12 @@ export const Navbar = () => {
         visible={visible} 
         navItems={navItems} 
         onNavClick={handleNavClick} 
-        isServiceDialogOpen={isServiceDialogOpen}
         setIsServiceDialogOpen={setIsServiceDialogOpen}
       />
       <MobileNav 
         visible={visible} 
         navItems={navItems} 
         onNavClick={handleNavClick} 
-        isServiceDialogOpen={isServiceDialogOpen}
         setIsServiceDialogOpen={setIsServiceDialogOpen}
       />
       
@@ -231,13 +229,11 @@ const DesktopNav = ({
   navItems, 
   visible, 
   onNavClick,
-  isServiceDialogOpen,
   setIsServiceDialogOpen
 }: {
   navItems: NavItem[]; 
   visible: boolean; 
   onNavClick: (e: React.MouseEvent, item: NavItem) => void;
-  isServiceDialogOpen: boolean;
   setIsServiceDialogOpen: (open: boolean) => void;
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -749,13 +745,11 @@ const MobileNav = ({
   navItems, 
   visible, 
   onNavClick,
-  isServiceDialogOpen,
   setIsServiceDialogOpen
 }: {
   navItems: NavItem[]; 
   visible: boolean; 
   onNavClick: (e: React.MouseEvent, item: NavItem) => void;
-  isServiceDialogOpen: boolean;
   setIsServiceDialogOpen: (open: boolean) => void;
 }) => {
   const [open, setOpen] = useState(false);

@@ -170,10 +170,10 @@ export default function DaycarePage() {
       <section className="py-12 sm:py-20 bg-gradient-to-b from-white to-[#FFF9FC]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true, margin: "-100px" }}
             className="text-center mb-8 sm:mb-12"
           >
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -214,10 +214,15 @@ export default function DaycarePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-6xl mx-auto">
               {/* Bronze Package */}
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                viewport={{ once: true }}
+                initial={{ opacity: 0, y: 40, scale: 0.9 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ 
+                  duration: 0.6,
+                  ease: [0.25, 0.1, 0.25, 1],
+                  delay: 0.1
+                }}
+                viewport={{ once: true, margin: "-50px" }}
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
                 className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-[#FCD1E6] group"
               >
                 <div className="text-center mb-4">
@@ -239,10 +244,15 @@ export default function DaycarePage() {
 
               {/* Silver Package */}
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                viewport={{ once: true }}
+                initial={{ opacity: 0, y: 40, scale: 0.9 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ 
+                  duration: 0.6,
+                  ease: [0.25, 0.1, 0.25, 1],
+                  delay: 0.2
+                }}
+                viewport={{ once: true, margin: "-50px" }}
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
                 className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-[#FCD1E6] group"
               >
                 <div className="text-center mb-4">
@@ -268,10 +278,15 @@ export default function DaycarePage() {
 
               {/* Gold Package */}
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                viewport={{ once: true }}
+                initial={{ opacity: 0, y: 40, scale: 0.9 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ 
+                  duration: 0.6,
+                  ease: [0.25, 0.1, 0.25, 1],
+                  delay: 0.3
+                }}
+                viewport={{ once: true, margin: "-50px" }}
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
                 className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-[#FCD1E6] group"
               >
                 <div className="absolute -top-3 right-4 bg-[#E73992] text-white px-3 py-1 rounded-full text-xs font-semibold">
@@ -300,10 +315,15 @@ export default function DaycarePage() {
 
               {/* Platinum Package */}
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                viewport={{ once: true }}
+                initial={{ opacity: 0, y: 40, scale: 0.9 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ 
+                  duration: 0.6,
+                  ease: [0.25, 0.1, 0.25, 1],
+                  delay: 0.4
+                }}
+                viewport={{ once: true, margin: "-50px" }}
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
                 className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-[#FCD1E6] group"
               >
                 <div className="text-center mb-4">
@@ -357,10 +377,15 @@ export default function DaycarePage() {
             
             <div className="max-w-sm mx-auto">
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                viewport={{ once: true }}
+                initial={{ opacity: 0, y: 40, scale: 0.9 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ 
+                  duration: 0.6,
+                  ease: [0.25, 0.1, 0.25, 1],
+                  delay: 0.2
+                }}
+                viewport={{ once: true, margin: "-50px" }}
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
                 className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-[#FCD1E6] group"
               >
                 <div className="text-center mb-4">
@@ -393,10 +418,13 @@ export default function DaycarePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 max-w-6xl mx-auto">
             {/* Discounts */}
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
+              initial={{ opacity: 0, x: -50, scale: 0.95 }}
+              whileInView={{ opacity: 1, x: 0, scale: 1 }}
+              transition={{ 
+                duration: 0.8,
+                ease: "easeOut"
+              }}
+              viewport={{ once: true, margin: "-100px" }}
               className="relative bg-gradient-to-br from-[#FFF0F7] to-[#FFF9FC] rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group overflow-hidden"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#E73992] rounded-full opacity-5 -mr-16 -mt-16"></div>
@@ -436,10 +464,14 @@ export default function DaycarePage() {
 
             {/* Additional Charges */}
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
+              initial={{ opacity: 0, x: 50, scale: 0.95 }}
+              whileInView={{ opacity: 1, x: 0, scale: 1 }}
+              transition={{ 
+                duration: 0.8,
+                ease: "easeOut",
+                delay: 0.2
+              }}
+              viewport={{ once: true, margin: "-100px" }}
               className="relative bg-gradient-to-br from-[#FFF9FC] to-white rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group border border-[#FCD1E6] overflow-hidden"
             >
               <div className="absolute bottom-0 left-0 w-40 h-40 bg-[#FF69B4] rounded-full opacity-5 -ml-20 -mb-20"></div>
@@ -490,10 +522,13 @@ export default function DaycarePage() {
         
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-0">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ 
+              duration: 0.8,
+              ease: "easeOut"
+            }}
+            viewport={{ once: true, margin: "-100px" }}
           >
             <PawPrint className="w-12 h-12 text-white/80 mx-auto mb-4" />
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">

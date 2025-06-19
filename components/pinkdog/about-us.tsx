@@ -132,7 +132,7 @@ export function AboutUs() {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
-            className="relative rounded-2xl overflow-hidden shadow-xl h-[400px] lg:h-auto"
+            className="relative rounded-2xl overflow-hidden shadow-xl"
           >
             <video
               src="/images/pingdog-animate.mp4"
@@ -140,9 +140,9 @@ export function AboutUs() {
               loop
               muted
               playsInline
-              className="object-cover w-full h-full absolute inset-0"
+              className="object-contain w-full h-full"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-6">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-6 pointer-events-none">
               <p className="text-white text-lg font-medium">
                 Your trusted local pet care family in Harvard, MA
               </p>
@@ -209,7 +209,7 @@ export function AboutUs() {
               className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full px-8 py-6 h-auto"
               asChild
             >
-              <Link href="/contact">Contact Us</Link>
+              <Link href="/#checkin-info">Contact Us</Link>
             </Button>
           </div>
         </motion.div>
