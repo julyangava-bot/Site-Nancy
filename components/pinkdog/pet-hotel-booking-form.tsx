@@ -196,7 +196,7 @@ export function PetHotelBookingForm({ children, variant = 'default' }: PetHotelB
             onClick={() => setIsOpen(false)}
           />
           
-          <div className="relative w-full max-w-md mx-4 mt-4 mb-8 bg-white rounded-2xl shadow-2xl max-h-[calc(100vh-60px)] flex flex-col">
+          <div className="relative w-full max-w-md mx-4 mt-2 mb-2 bg-white rounded-2xl shadow-2xl h-[calc(100vh-40px)] flex flex-col">
             {/* Close button */}
             <button
               onClick={() => setIsOpen(false)}
@@ -472,12 +472,12 @@ export function PetHotelBookingForm({ children, variant = 'default' }: PetHotelB
             </div>
 
             {/* Fixed button area */}
-            <div className="p-6 pt-4 border-t border-gray-100 flex-shrink-0">
+            <div className="p-4 pt-3 pb-6 border-t border-gray-100 flex-shrink-0 bg-white">
               <Button
                 type="submit"
                 onClick={form.handleSubmit(handleSubmit)}
                 disabled={isLoading}
-                className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 text-lg rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
               >
                 {isLoading ? (
                   <>
