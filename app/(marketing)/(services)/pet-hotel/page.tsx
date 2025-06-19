@@ -1,13 +1,23 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { PetHotelBookingForm } from "@/components/pinkdog/pet-hotel-booking-form";
 import { Clock, Heart, Users, Cat, Home, Activity } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 export default function PetHotelPage() {
+  const searchParams = useSearchParams();
+  const [showBookingForm, setShowBookingForm] = useState(false);
+
+  useEffect(() => {
+    const booking = searchParams.get('booking');
+    if (booking === 'true') {
+      setShowBookingForm(true);
+    }
+  }, [searchParams]);
   const features = [
     {
       icon: <Home className="w-7 h-7" />,
@@ -71,7 +81,7 @@ export default function PetHotelPage() {
       <section className="relative pt-30 sm:pt-36 pb-8 sm:pb-12">
         <div className="absolute inset-0 bg-gradient-to-b from-[#FFF0F7] to-white"></div>
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-1">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -284,7 +294,7 @@ export default function PetHotelPage() {
                 Book your pet&apos;s hotel stay today and see why PinkDog is the preferred choice for pet parents.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <PetHotelBookingForm variant="cta">
+                <PetHotelBookingForm variant="cta" initialOpen={showBookingForm}>
                   Book Pet Hotel
                 </PetHotelBookingForm>
                 <Link

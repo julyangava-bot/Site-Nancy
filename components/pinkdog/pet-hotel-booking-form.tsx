@@ -4,6 +4,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import Select from "react-select";
+import { format } from "date-fns";
 
 import {
   Form,
@@ -15,18 +17,19 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Heart, Mail, Loader2, CheckCircle, XCircle } from "lucide-react";
+import { Hotel, Mail, Loader2, CheckCircle, XCircle } from "lucide-react";
 import { useModal } from "@/context/providers";
+import { DatePicker } from "./date-picker";
 
 const petHotelFormSchema = z.object({
   ownerName: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
   phone: z.string().min(10, "Please enter a valid phone number"),
   petType: z.enum(["dog", "cat", "both"], {
-    required_error: "Please select your pet type",
+    required_error: "Please select pet type",
   }),
-  breeds: z.string().min(1, "Please enter your pet's breed(s)"),
   numberOfPets: z.string().min(1, "Please enter number of pets"),
+  breeds: z.string().min(1, "Please enter breed(s)"),
   checkInDate: z.string().min(1, "Please select check-in date"),
   checkInTime: z.string().min(1, "Please select check-in time"),
   checkOutDate: z.string().min(1, "Please select check-out date"),
@@ -39,10 +42,70 @@ type PetHotelFormValues = z.infer<typeof petHotelFormSchema>;
 interface PetHotelBookingFormProps {
   children: React.ReactNode;
   variant?: 'default' | 'cta';
+  initialOpen?: boolean;
 }
 
-export function PetHotelBookingForm({ children, variant = 'default' }: PetHotelBookingFormProps) {
-  const [isOpen, setIsOpen] = React.useState(false);
+// Custom styles for react-select
+const customSelectStyles = {
+  control: (base: any, state: any) => ({
+    ...base,
+    minHeight: '44px',
+    backgroundColor: '#F2F2F2',
+    borderColor: state.isFocused ? '#E73992' : '#E5E5E5',
+    borderWidth: '0.5px',
+    borderRadius: '12px',
+    boxShadow: state.isFocused ? '0 0 0 1px #E73992' : 'none',
+    '&:hover': {
+      borderColor: '#E73992',
+    },
+    fontSize: '16px', // Prevents zoom on iOS
+  }),
+  menu: (base: any) => ({
+    ...base,
+    borderRadius: '12px',
+    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+    overflow: 'hidden',
+    zIndex: 999,
+  }),
+  menuList: (base: any) => ({
+    ...base,
+    padding: 0,
+  }),
+  option: (base: any, state: any) => ({
+    ...base,
+    backgroundColor: state.isSelected ? '#E73992' : state.isFocused ? '#FFF0F7' : 'white',
+    color: state.isSelected ? 'white' : '#374151',
+    padding: '12px 16px',
+    fontSize: '16px',
+    '&:active': {
+      backgroundColor: '#E73992',
+      color: 'white',
+    },
+  }),
+  singleValue: (base: any) => ({
+    ...base,
+    color: '#374151',
+    fontSize: '16px',
+  }),
+  placeholder: (base: any) => ({
+    ...base,
+    color: '#9CA3AF',
+    fontSize: '16px',
+  }),
+  indicatorSeparator: () => ({
+    display: 'none',
+  }),
+  dropdownIndicator: (base: any, state: any) => ({
+    ...base,
+    color: state.isFocused ? '#E73992' : '#9CA3AF',
+    '&:hover': {
+      color: '#E73992',
+    },
+  }),
+};
+
+export function PetHotelBookingForm({ children, variant = 'default', initialOpen = false }: PetHotelBookingFormProps) {
+  const [isOpen, setIsOpen] = React.useState(initialOpen);
   const [isLoading, setIsLoading] = React.useState(false);
   const [submitStatus, setSubmitStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = React.useState('');
@@ -100,8 +163,8 @@ export function PetHotelBookingForm({ children, variant = 'default' }: PetHotelB
       email: "",
       phone: "",
       petType: undefined,
-      breeds: "",
       numberOfPets: "",
+      breeds: "",
       checkInDate: "",
       checkInTime: "",
       checkOutDate: "",
@@ -124,6 +187,7 @@ export function PetHotelBookingForm({ children, variant = 'default' }: PetHotelB
         body: JSON.stringify({
           ...values,
           clientEmail: values.email,
+          serviceType: 'pethotel',
         }),
       });
 
@@ -155,6 +219,13 @@ export function PetHotelBookingForm({ children, variant = 'default' }: PetHotelB
     onSubmit(values);
   };
 
+  // Update isOpen when initialOpen prop changes
+  React.useEffect(() => {
+    if (initialOpen) {
+      setIsOpen(true);
+    }
+  }, [initialOpen]);
+
   // Control body scroll when modal is open and reset states when closed
   React.useEffect(() => {
     if (isOpen) {
@@ -175,6 +246,7 @@ export function PetHotelBookingForm({ children, variant = 'default' }: PetHotelB
     };
   }, [isOpen, setIsAnyModalOpen]);
 
+
   return (
     <>
       <button
@@ -190,7 +262,7 @@ export function PetHotelBookingForm({ children, variant = 'default' }: PetHotelB
 
       {/* Custom Modal with mobile-first fullscreen design */}
       {isOpen && (
-        <div className="fixed inset-0 z-[9999] bg-white md:bg-black md:bg-opacity-50 md:backdrop-blur-sm md:flex md:items-start md:justify-center">
+        <div className="fixed inset-0 z-50 bg-white md:bg-black md:bg-opacity-50 md:backdrop-blur-sm md:flex md:items-start md:justify-center">
           {/* Desktop backdrop */}
           <div 
             className="hidden md:block fixed inset-0" 
@@ -198,220 +270,72 @@ export function PetHotelBookingForm({ children, variant = 'default' }: PetHotelB
           />
           
           {/* Mobile: fullscreen, Desktop: modal */}
-          <div className="h-full w-full md:relative md:w-full md:max-w-md md:mx-4 md:mt-2 md:mb-2 md:h-[calc(100vh-40px)] bg-white md:rounded-2xl md:shadow-2xl flex flex-col">
-            {/* Close button */}
-            <button
-              onClick={() => setIsOpen(false)}
-              className="absolute top-4 right-4 z-10 p-2 text-gray-400 hover:text-gray-600 transition-colors bg-white md:bg-transparent rounded-full md:rounded-none shadow-md md:shadow-none"
-            >
-              <svg className="w-6 h-6 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+          <div className="h-full w-full md:relative md:w-full md:max-w-lg md:mx-4 md:mt-8 md:mb-8 md:h-[calc(100vh-64px)] bg-white md:rounded-2xl md:shadow-2xl flex flex-col">
+            {/* Header - Fixed */}
+            <div className="sticky top-0 bg-white z-10 border-b border-gray-100">
+              {/* Close button */}
+              <button
+                onClick={() => setIsOpen(false)}
+                className="absolute top-4 right-4 z-20 p-2 text-gray-400 hover:text-gray-600 transition-colors bg-white rounded-full shadow-md"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
 
-            {/* Header */}
-            <div className="p-4 md:p-6 pb-4 border-b border-gray-100 flex-shrink-0 pt-16 md:pt-6">
-              <div className="text-center">
-                <div className="flex items-center justify-center mb-4">
-                  <Heart className="w-8 h-8 text-[#E73992] mr-2" />
-                  <h2 className="text-xl md:text-2xl font-bold text-gray-900">Pet Hotel Booking</h2>
+              <div className="p-6 pt-4">
+                <div className="text-center">
+                  <div className="flex items-center justify-center mb-3">
+                    <Hotel className="w-8 h-8 text-[#E73992] mr-2" />
+                    <h2 className="text-2xl font-bold text-gray-900">Pet Hotel Booking</h2>
+                  </div>
+                  <p className="text-gray-600 text-sm px-4">
+                    Reserve your pet's stay at our comfortable and caring hotel.
+                  </p>
                 </div>
-                <p className="text-gray-600 text-sm">
-                  Let us know about your furry friend&apos;s stay! We&apos;ll get back to you as soon as possible.
-                </p>
               </div>
             </div>
 
             {/* Scrollable content */}
-            <div className="flex-1 overflow-y-auto min-h-0">
-              <div className="p-4 md:p-6 pb-20 md:pb-6">
+            <div className="flex-1 overflow-y-auto overscroll-contain">
+              <div className="p-6">
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+                  <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
                     <FormField
                       control={form.control}
                       name="ownerName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Your Name *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Your Name *</FormLabel>
                           <FormControl>
                             <Input 
                               placeholder="Enter your full name" 
                               {...field} 
-                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                              className="h-11 text-base border-gray-200 bg-[#F2F2F2] rounded-xl focus:border-[#E73992] focus:ring-[#E73992] placeholder:text-gray-400"
+                              style={{ fontSize: '16px' }} // Prevent zoom on iOS
                             />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-xs" />
                         </FormItem>
                       )}
                     />
-
-                    <FormField
-                      control={form.control}
-                      name="petType"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">What kind of pet(s)? *</FormLabel>
-                          <FormControl>
-                            <select 
-                              {...field} 
-                              className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                            >
-                              <option value="">Select pet type</option>
-                              <option value="dog">Dog</option>
-                              <option value="cat">Cat</option>
-                              <option value="both">Both Dogs and Cats</option>
-                            </select>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="breeds"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Breed(s) *</FormLabel>
-                          <FormControl>
-                            <Input 
-                              placeholder="e.g., Golden Retriever, Maine Coon" 
-                              {...field} 
-                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="numberOfPets"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">How many pets will be staying? *</FormLabel>
-                          <FormControl>
-                            <Input 
-                              placeholder="e.g., 1, 2, 3" 
-                              {...field} 
-                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="checkInDate"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-gray-700 font-medium">Check-in Date *</FormLabel>
-                            <FormControl>
-                              <Input 
-                                type="date" 
-                                {...field} 
-                                className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="checkOutDate"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-gray-700 font-medium">Check-out Date *</FormLabel>
-                            <FormControl>
-                              <Input 
-                                type="date" 
-                                {...field} 
-                                className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="checkInTime"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-gray-700 font-medium">Check-in Time *</FormLabel>
-                            <FormControl>
-                              <select 
-                                {...field} 
-                                className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                              >
-                                <option value="">Select time</option>
-                                {generateTimeOptions(form.watch('checkInDate')).map(option => (
-                                  <option key={option.value} value={option.value}>
-                                    {option.label}
-                                  </option>
-                                ))}
-                              </select>
-                            </FormControl>
-                            <FormMessage />
-                            <p className="text-xs text-gray-500 mt-1">
-                              Mon-Sat: 8:30 AM - 5:00 PM | Sun: 12:00 PM - 4:00 PM
-                            </p>
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="checkOutTime"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-gray-700 font-medium">Check-out Time *</FormLabel>
-                            <FormControl>
-                              <select 
-                                {...field} 
-                                className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                              >
-                                <option value="">Select time</option>
-                                {generateTimeOptions(form.watch('checkOutDate')).map(option => (
-                                  <option key={option.value} value={option.value}>
-                                    {option.label}
-                                  </option>
-                                ))}
-                              </select>
-                            </FormControl>
-                            <FormMessage />
-                            <p className="text-xs text-gray-500 mt-1">
-                              Mon-Sat: 8:30 AM - 5:00 PM | Sun: 12:00 PM - 4:00 PM
-                            </p>
-                          </FormItem>
-                        )}
-                      />
-                    </div>
 
                     <FormField
                       control={form.control}
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Email Address *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Email Address *</FormLabel>
                           <FormControl>
                             <Input 
                               type="email"
                               placeholder="your.email@example.com" 
                               {...field} 
-                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                              className="h-11 text-base border-gray-200 bg-[#F2F2F2] rounded-xl focus:border-[#E73992] focus:ring-[#E73992] placeholder:text-gray-400"
+                              style={{ fontSize: '16px' }}
                             />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-xs" />
                         </FormItem>
                       )}
                     />
@@ -421,65 +345,266 @@ export function PetHotelBookingForm({ children, variant = 'default' }: PetHotelB
                       name="phone"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Phone Number *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Phone Number *</FormLabel>
                           <FormControl>
                             <Input 
                               type="tel"
                               placeholder="(555) 123-4567" 
                               {...field} 
-                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                              className="h-11 text-base border-gray-200 bg-[#F2F2F2] rounded-xl focus:border-[#E73992] focus:ring-[#E73992] placeholder:text-gray-400"
+                              style={{ fontSize: '16px' }}
                             />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-xs" />
                         </FormItem>
                       )}
                     />
 
                     <FormField
                       control={form.control}
+                      name="petType"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Pet Type *</FormLabel>
+                          <FormControl>
+                            <Select
+                              value={field.value ? { 
+                                value: field.value, 
+                                label: field.value === 'dog' ? 'Dog' : field.value === 'cat' ? 'Cat' : 'Both' 
+                              } : null}
+                              onChange={(option) => field.onChange(option?.value)}
+                              options={[
+                                { value: 'dog', label: 'Dog' },
+                                { value: 'cat', label: 'Cat' },
+                                { value: 'both', label: 'Both' }
+                              ]}
+                              placeholder="Select pet type"
+                              styles={customSelectStyles}
+                              className="react-select-container"
+                              classNamePrefix="react-select"
+                              isClearable={false}
+                              isSearchable={false}
+                            />
+                          </FormControl>
+                          <FormMessage className="text-xs" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="numberOfPets"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Number of Pets *</FormLabel>
+                          <FormControl>
+                            <Select
+                              value={field.value ? { value: field.value, label: field.value } : null}
+                              onChange={(option) => field.onChange(option?.value)}
+                              options={[
+                                { value: '1', label: '1' },
+                                { value: '2', label: '2' },
+                                { value: '3', label: '3' },
+                                { value: '4', label: '4' },
+                                { value: '5+', label: '5 or more' }
+                              ]}
+                              placeholder="Select number of pets"
+                              styles={customSelectStyles}
+                              className="react-select-container"
+                              classNamePrefix="react-select"
+                              isClearable={false}
+                              isSearchable={false}
+                            />
+                          </FormControl>
+                          <FormMessage className="text-xs" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="breeds"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Breed(s) *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="e.g., Golden Retriever, Tabby Cat" 
+                              {...field} 
+                              className="h-11 text-base border-gray-200 bg-[#F2F2F2] rounded-xl focus:border-[#E73992] focus:ring-[#E73992] placeholder:text-gray-400"
+                              style={{ fontSize: '16px' }}
+                            />
+                          </FormControl>
+                          <FormMessage className="text-xs" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      <FormField
+                        control={form.control}
+                        name="checkInDate"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-700 font-medium text-sm">Check-in Date *</FormLabel>
+                            <FormControl>
+                              <DatePicker
+                                selected={field.value}
+                                onSelect={(date) => {
+                                  if (date) {
+                                    field.onChange(format(date, 'yyyy-MM-dd'));
+                                  }
+                                }}
+                                disabled={(date) => {
+                                  const today = new Date();
+                                  today.setHours(0, 0, 0, 0);
+                                  return date < today;
+                                }}
+                                placeholderText="Select check-in date"
+                              />
+                            </FormControl>
+                            <FormMessage className="text-xs" />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="checkInTime"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-700 font-medium text-sm">Check-in Time *</FormLabel>
+                            <FormControl>
+                              <Select
+                                value={field.value ? generateTimeOptions(form.watch('checkInDate')).find(opt => opt.value === field.value) : null}
+                                onChange={(option) => field.onChange(option?.value)}
+                                options={generateTimeOptions(form.watch('checkInDate'))}
+                                placeholder="Select time"
+                                styles={customSelectStyles}
+                                className="react-select-container"
+                                classNamePrefix="react-select"
+                                isClearable={false}
+                                isSearchable={false}
+                                isDisabled={!form.watch('checkInDate')}
+                              />
+                            </FormControl>
+                            <FormMessage className="text-xs" />
+                            <p className="text-xs text-gray-500 mt-1">
+                              Mon-Sat: 8:30 AM - 5:00 PM
+                            </p>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      <FormField
+                        control={form.control}
+                        name="checkOutDate"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-700 font-medium text-sm">Check-out Date *</FormLabel>
+                            <FormControl>
+                              <DatePicker
+                                selected={field.value}
+                                onSelect={(date) => {
+                                  if (date) {
+                                    field.onChange(format(date, 'yyyy-MM-dd'));
+                                  }
+                                }}
+                                disabled={(date) => {
+                                  const today = new Date();
+                                  today.setHours(0, 0, 0, 0);
+                                  const checkInDate = form.watch('checkInDate');
+                                  const minDate = checkInDate ? new Date(checkInDate) : today;
+                                  return date < minDate;
+                                }}
+                                placeholderText="Select check-out date"
+                              />
+                            </FormControl>
+                            <FormMessage className="text-xs" />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="checkOutTime"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-700 font-medium text-sm">Check-out Time *</FormLabel>
+                            <FormControl>
+                              <Select
+                                value={field.value ? generateTimeOptions(form.watch('checkOutDate')).find(opt => opt.value === field.value) : null}
+                                onChange={(option) => field.onChange(option?.value)}
+                                options={generateTimeOptions(form.watch('checkOutDate'))}
+                                placeholder="Select time"
+                                styles={customSelectStyles}
+                                className="react-select-container"
+                                classNamePrefix="react-select"
+                                isClearable={false}
+                                isSearchable={false}
+                                isDisabled={!form.watch('checkOutDate')}
+                              />
+                            </FormControl>
+                            <FormMessage className="text-xs" />
+                            <p className="text-xs text-gray-500 mt-1">
+                              Sun: 12:00 PM - 4:00 PM
+                            </p>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <FormField
+                      control={form.control}
                       name="specialNotes"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Special notes about care or personality (optional)</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Special Instructions (optional)</FormLabel>
                           <FormControl>
                             <textarea 
-                              placeholder="Tell us anything special we should know about your pet's care or personality..."
+                              placeholder="Medications, feeding instructions, or special care needs..."
                               {...field} 
-                              className="flex min-h-[80px] w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-2 text-base shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm resize-none"
-                              rows={3}
+                              className="flex min-h-[100px] w-full rounded-xl border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-2 text-base shadow-sm transition-colors placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 resize-none"
+                              style={{ fontSize: '16px' }}
+                              rows={4}
                             />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-xs" />
                         </FormItem>
                       )}
                     />
 
                     {/* Status Messages */}
                     {submitStatus === 'success' && (
-                      <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg text-green-800">
-                        <CheckCircle className="w-5 h-5" />
-                        <span>Booking request sent successfully! We&apos;ll contact you soon.</span>
+                      <div className="flex items-start gap-3 p-4 bg-green-50 border border-green-200 rounded-xl text-green-800">
+                        <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                        <span className="text-sm">Booking request sent successfully! We'll contact you shortly to confirm your reservation.</span>
                       </div>
                     )}
                     
                     {submitStatus === 'error' && (
-                      <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-800">
-                        <XCircle className="w-5 h-5" />
-                        <span>{errorMessage || 'Failed to send booking request. Please try again.'}</span>
+                      <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-xl text-red-800">
+                        <XCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                        <span className="text-sm">{errorMessage || 'Failed to send booking request. Please try again.'}</span>
                       </div>
                     )}
+
+                    {/* Add padding at bottom for mobile fixed button */}
+                    <div className="h-20 md:hidden" />
                   </form>
                 </Form>
               </div>
             </div>
 
-            {/* Fixed button area - Always visible on mobile */}
-            <div className="fixed md:relative bottom-0 left-0 right-0 md:bottom-auto md:left-auto md:right-auto p-4 md:pt-3 md:pb-6 border-t border-gray-100 flex-shrink-0 bg-white shadow-lg md:shadow-none">
+            {/* Fixed button area - Always visible */}
+            <div className="sticky bottom-0 p-6 pt-4 border-t border-gray-100 bg-white">
               <Button
                 type="submit"
                 onClick={form.handleSubmit(handleSubmit)}
                 disabled={isLoading}
-                className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 text-lg rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 text-lg rounded-full transition-all duration-300 hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
               >
                 {isLoading ? (
                   <>
@@ -499,4 +624,4 @@ export function PetHotelBookingForm({ children, variant = 'default' }: PetHotelB
       )}
     </>
   );
-} 
+}

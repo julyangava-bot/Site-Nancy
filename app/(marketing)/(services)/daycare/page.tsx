@@ -1,13 +1,23 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ServicePageLayout } from "@/components/service-page-layout";
 import { DaycareBookingForm } from "@/components/pinkdog/daycare-booking-form";
 import { Heart, Home, Activity, Sparkles, Trees, Car, Hotel, Cat, Dog, Tag, Package, Clock, Scissors, Utensils, Pill, Calendar, Truck, Check, PawPrint } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 export default function DaycarePage() {
+  const searchParams = useSearchParams();
+  const [showBookingForm, setShowBookingForm] = useState(false);
+
+  useEffect(() => {
+    const booking = searchParams.get('booking');
+    if (booking === 'true') {
+      setShowBookingForm(true);
+    }
+  }, [searchParams]);
   const features = [
     {
       icon: <Home className="w-7 h-7" />,
@@ -148,7 +158,7 @@ export default function DaycarePage() {
           description: "Our experienced and caring staff supervises all play sessions to ensure safety, encourage appropriate behavior, and provide lots of love and attention throughout the day. Whether your pup is high-energy or prefers gentle play, we tailor group activities based on temperament and size to ensure every dog feels comfortable and included."
         }}
         customCTA={
-          <DaycareBookingForm>
+          <DaycareBookingForm initialOpen={showBookingForm}>
             Book Daycare
           </DaycareBookingForm>
         }
@@ -390,11 +400,11 @@ export default function DaycarePage() {
               className="relative bg-gradient-to-br from-[#FFF0F7] to-[#FFF9FC] rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group overflow-hidden"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#E73992] rounded-full opacity-5 -mr-16 -mt-16"></div>
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 text-center flex items-center justify-center gap-2 relative z-10">
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 text-center flex items-center justify-center gap-2 relative z-0">
                 <Tag className="w-6 h-6 text-[#E73992]" />
                 <span className="text-[#E73992]">Special Discounts</span>
               </h3>
-              <ul className="space-y-4 relative z-10">
+              <ul className="space-y-4 relative z-0">
                 <li className="flex items-start gap-3 bg-white rounded-xl p-3 shadow-sm">
                   <Dog className="w-5 h-5 text-[#E73992] flex-shrink-0 mt-0.5" />
                   <p className="text-sm sm:text-base text-gray-700">
@@ -433,11 +443,11 @@ export default function DaycarePage() {
               className="relative bg-gradient-to-br from-[#FFF9FC] to-white rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 group border border-[#FCD1E6] overflow-hidden"
             >
               <div className="absolute bottom-0 left-0 w-40 h-40 bg-[#FF69B4] rounded-full opacity-5 -ml-20 -mb-20"></div>
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 text-center flex items-center justify-center gap-2 relative z-10">
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 text-center flex items-center justify-center gap-2 relative z-0">
                 <Package className="w-6 h-6 text-[#E73992]" />
                 <span className="text-[#E73992]">Additional Services</span>
               </h3>
-              <ul className="space-y-4 relative z-10">
+              <ul className="space-y-4 relative z-0">
                 <li className="flex items-start gap-3 bg-[#FFF0F7] rounded-xl p-3">
                   <Utensils className="w-5 h-5 text-[#E73992] flex-shrink-0 mt-0.5" />
                   <div className="text-sm sm:text-base text-gray-700">
@@ -478,7 +488,7 @@ export default function DaycarePage() {
         <div className="absolute top-0 left-0 w-72 h-72 bg-white rounded-full opacity-5 -ml-36 -mt-36"></div>
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full opacity-5 -mr-48 -mb-48"></div>
         
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-0">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}

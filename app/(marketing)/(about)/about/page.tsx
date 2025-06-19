@@ -6,10 +6,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Check, Heart, Shield, Clock, Award, Users, Sparkles } from "lucide-react";
+import { ServiceSelectionDialog } from "@/components/pinkdog/service-selection-dialog";
 
 export default function AboutPage() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [isClient, setIsClient] = useState(false);
+  const [isServiceDialogOpen, setIsServiceDialogOpen] = useState(false);
 
   // Founders images data
   const foundersImages = [
@@ -107,7 +109,7 @@ export default function AboutPage() {
         <section className="relative pt-38 pb-12 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-[#FFF0F7] to-white"></div>
           
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-1">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
@@ -123,9 +125,9 @@ export default function AboutPage() {
                 <div className="flex gap-4">
                   <Button
                     className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-8 py-6 text-lg"
-                    asChild
+                    onClick={() => setIsServiceDialogOpen(true)}
                   >
-                    <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer">Book Now</Link>
+                    Book Now
                   </Button>
                   <Button
                     variant="outline"
@@ -455,7 +457,7 @@ export default function AboutPage() {
           {/* CTA Section - Following service page layout pattern */}
           <section className="py-20 bg-gradient-to-r from-[#E73992] to-[#FF69B4] relative overflow-hidden">
             <div className="absolute inset-0 bg-black/10"></div>
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-1">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -473,9 +475,9 @@ export default function AboutPage() {
                   <Button
                     size="lg"
                     className="bg-white text-[#E73992] hover:bg-gray-100 rounded-full px-8 py-6 text-lg font-semibold"
-                    asChild
+                    onClick={() => setIsServiceDialogOpen(true)}
                   >
-                    <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer">Book Now</Link>
+                    Book Now
                   </Button>
                   <Button
                     size="lg"
@@ -512,7 +514,7 @@ export default function AboutPage() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                  className="relative max-w-4xl w-full max-h-[90vh] z-10"
+                  className="relative max-w-4xl w-full max-h-[90vh] z-1"
                   onClick={e => e.stopPropagation()}
                 >
                   {/* Close button */}
@@ -552,6 +554,11 @@ export default function AboutPage() {
             )}
           </AnimatePresence>
         )}
+        
+        <ServiceSelectionDialog 
+          isOpen={isServiceDialogOpen} 
+          onClose={() => setIsServiceDialogOpen(false)} 
+        />
       </>
     );
   }

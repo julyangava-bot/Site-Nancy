@@ -1,0 +1,156 @@
+/* Custom styles for react-day-picker */
+.rdp {
+  --rdp-cell-size: 44px;
+  --rdp-caption-font-size: 18px;
+  --rdp-accent-color: #E73992;
+  --rdp-accent-color-dark: #d3337f;
+  --rdp-background-color: #FFF0F7;
+  --rdp-outline: 2px solid var(--rdp-accent-color);
+  --rdp-outline-selected: 3px solid var(--rdp-accent-color);
+  --rdp-selected-color: #fff;
+}
+
+/* Month navigation */
+.rdp-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.rdp-caption_label {
+  font-size: var(--rdp-caption-font-size);
+  font-weight: 600;
+  color: #111827;
+}
+
+.rdp-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rdp-nav_button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 8px;
+  color: #6B7280;
+  background-color: transparent;
+  transition: all 0.2s;
+}
+
+.rdp-nav_button:hover:not([disabled]) {
+  background-color: var(--rdp-background-color);
+  color: var(--rdp-accent-color);
+}
+
+.rdp-nav_button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Day grid */
+.rdp-table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+  margin: 0;
+}
+
+.rdp-head_cell {
+  font-weight: 500;
+  font-size: 14px;
+  color: #6B7280;
+  padding: 0;
+  text-align: center;
+  height: 40px;
+  width: var(--rdp-cell-size);
+  vertical-align: middle;
+}
+
+.rdp-tbody {
+  border: 0;
+}
+
+.rdp-cell {
+  text-align: center;
+  padding: 0;
+  position: relative;
+}
+
+.rdp-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--rdp-cell-size);
+  height: var(--rdp-cell-size);
+  padding: 0;
+  font-size: 16px;
+  border-radius: 8px;
+  color: #111827;
+  background-color: transparent;
+  transition: all 0.2s;
+  font-weight: 400;
+}
+
+.rdp-button:hover:not([disabled]):not(.rdp-day_selected) {
+  background-color: var(--rdp-background-color);
+  color: var(--rdp-accent-color);
+}
+
+.rdp-button:focus-visible {
+  outline: var(--rdp-outline);
+  outline-offset: 2px;
+}
+
+/* Selected day */
+.rdp-day_selected,
+.rdp-day_selected:focus-visible,
+.rdp-day_selected:hover {
+  color: var(--rdp-selected-color);
+  background-color: var(--rdp-accent-color);
+  font-weight: 600;
+}
+
+.rdp-day_selected:hover {
+  background-color: var(--rdp-accent-color-dark);
+}
+
+/* Today */
+.rdp-day_today:not(.rdp-day_selected) {
+  font-weight: 600;
+  color: var(--rdp-accent-color);
+}
+
+/* Outside month days */
+.rdp-day_outside {
+  color: #D1D5DB;
+}
+
+/* Disabled days */
+.rdp-button:disabled {
+  color: #9CA3AF;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+  .rdp {
+    --rdp-cell-size: 48px;
+  }
+  
+  .rdp-caption {
+    margin-bottom: 1.5rem;
+  }
+  
+  .rdp-nav_button {
+    width: 44px;
+    height: 44px;
+  }
+}

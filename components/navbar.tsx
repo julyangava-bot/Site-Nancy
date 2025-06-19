@@ -17,6 +17,7 @@ import { handleSectionNavigation, scrollToSection } from "@/lib/navigation";
 import { Users, Heart, HelpCircle, BookOpen } from "lucide-react";
 import { IconBrandInstagram, IconBrandFacebook } from "@tabler/icons-react";
 import { useModal } from "@/context/providers";
+import { ServiceSelectionDialog } from "@/components/pinkdog/service-selection-dialog";
 
 interface NavItem {
   name: string;
@@ -39,6 +40,7 @@ export const Navbar = () => {
   const pathname = usePathname();
   const isHomePage = pathname === "/";
   const { isAnyModalOpen } = useModal();
+  const [isServiceDialogOpen, setIsServiceDialogOpen] = useState(false);
 
   const navItems: NavItem[] = [
     {
@@ -173,8 +175,20 @@ export const Navbar = () => {
       transition={{ duration: 0.3 }}
       className="w-full fixed top-4 sm:top-2 inset-x-0 z-50"
     >
-      <DesktopNav visible={visible} navItems={navItems} onNavClick={handleNavClick} />
-      <MobileNav visible={visible} navItems={navItems} onNavClick={handleNavClick} />
+      <DesktopNav 
+        visible={visible} 
+        navItems={navItems} 
+        onNavClick={handleNavClick} 
+        isServiceDialogOpen={isServiceDialogOpen}
+        setIsServiceDialogOpen={setIsServiceDialogOpen}
+      />
+      <MobileNav 
+        visible={visible} 
+        navItems={navItems} 
+        onNavClick={handleNavClick} 
+        isServiceDialogOpen={isServiceDialogOpen}
+        setIsServiceDialogOpen={setIsServiceDialogOpen}
+      />
       
       {/* Custom scrollbar styles for mobile menu */}
       <style jsx global>{`
@@ -204,6 +218,11 @@ export const Navbar = () => {
           scroll-behavior: smooth;
         }
       `}</style>
+      
+      <ServiceSelectionDialog 
+        isOpen={isServiceDialogOpen} 
+        onClose={() => setIsServiceDialogOpen(false)} 
+      />
     </motion.div>
   );
 };
@@ -211,11 +230,15 @@ export const Navbar = () => {
 const DesktopNav = ({ 
   navItems, 
   visible, 
-  onNavClick 
+  onNavClick,
+  isServiceDialogOpen,
+  setIsServiceDialogOpen
 }: {
   navItems: NavItem[]; 
   visible: boolean; 
   onNavClick: (e: React.MouseEvent, item: NavItem) => void;
+  isServiceDialogOpen: boolean;
+  setIsServiceDialogOpen: (open: boolean) => void;
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -347,9 +370,9 @@ const DesktopNav = ({
                 <div className="flex items-center gap-3">
                   <Button
                     className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full"
-                    asChild
+                    onClick={() => setIsServiceDialogOpen(true)}
                   >
-                    <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer">Book Now</Link>
+                    Book Now
                   </Button>
                   
                   <motion.div 
@@ -544,9 +567,9 @@ const DesktopNav = ({
                         <div className="flex items-center gap-2">
                           <Button
                             className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full"
-                            asChild
+                            onClick={() => setIsServiceDialogOpen(true)}
                           >
-                            <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer">Book Now</Link>
+                            Book Now
                           </Button>
                         </div>
                       </motion.div>
@@ -725,11 +748,15 @@ const DesktopNav = ({
 const MobileNav = ({ 
   navItems, 
   visible, 
-  onNavClick 
+  onNavClick,
+  isServiceDialogOpen,
+  setIsServiceDialogOpen
 }: {
   navItems: NavItem[]; 
   visible: boolean; 
   onNavClick: (e: React.MouseEvent, item: NavItem) => void;
+  isServiceDialogOpen: boolean;
+  setIsServiceDialogOpen: (open: boolean) => void;
 }) => {
   const [open, setOpen] = useState(false);
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
@@ -862,9 +889,9 @@ const MobileNav = ({
                 <div className="hidden sm:block">
                   <Button
                     className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full"
-                    asChild
+                    onClick={() => setIsServiceDialogOpen(true)}
                   >
-                    <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer">Book Now</Link>
+                    Book Now
                   </Button>
                 </div>
                 
@@ -1008,14 +1035,15 @@ const MobileNav = ({
                   <div className="flex flex-col w-full gap-3 mt-6 px-4 sm:hidden">
                     <Button
                       className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full w-full py-6 text-lg font-semibold shadow-lg"
-                      asChild
+                      onClick={() => {
+                        setOpen(false);
+                        setIsServiceDialogOpen(true);
+                      }}
                     >
-                      <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        Book Now
-                      </Link>
+                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      Book Now
                     </Button>
                   </div>
 

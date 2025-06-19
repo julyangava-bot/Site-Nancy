@@ -1,9 +1,10 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { IconBrandInstagram, IconBrandFacebook } from "@tabler/icons-react";
+import { ServiceSelectionDialog } from "@/components/pinkdog/service-selection-dialog";
 
 // Features list
 const features = [
@@ -16,7 +17,9 @@ const features = [
 ];
 
 export function AboutUs() {
+  const [isServiceDialogOpen, setIsServiceDialogOpen] = useState(false);
   return (
+    <>
     <section
       id="about-us"
       className="py-20 bg-[#FDF2F8] relative overflow-hidden"
@@ -198,9 +201,9 @@ export function AboutUs() {
           <div className="flex flex-col sm:flex-row justify-center gap-4 relative z-10">
             <Button
               className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-8 py-6 h-auto"
-              asChild
+              onClick={() => setIsServiceDialogOpen(true)}
             >
-              <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer">Reserve Spot</Link>
+              Reserve Spot
             </Button>
             <Button
               className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] rounded-full px-8 py-6 h-auto"
@@ -212,5 +215,11 @@ export function AboutUs() {
         </motion.div>
       </div>
     </section>
+    
+    <ServiceSelectionDialog 
+      isOpen={isServiceDialogOpen} 
+      onClose={() => setIsServiceDialogOpen(false)} 
+    />
+    </>
   );
 }

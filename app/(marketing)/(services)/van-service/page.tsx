@@ -1,9 +1,21 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { ServicePageLayout } from "@/components/service-page-layout";
 import { VanBookingForm } from "@/components/pinkdog/van-booking-form";
 import { Car, Clock, MapPin, MessageCircle, Calendar, Heart } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 export default function VanServicePage() {
+  const searchParams = useSearchParams();
+  const [showBookingForm, setShowBookingForm] = useState(false);
+
+  useEffect(() => {
+    const booking = searchParams.get('booking');
+    if (booking === 'true') {
+      setShowBookingForm(true);
+    }
+  }, [searchParams]);
   const features = [
     {
       icon: <Calendar className="w-7 h-7" />,
@@ -88,8 +100,8 @@ export default function VanServicePage() {
       }}
       faqItems={faqItems}
       pricingNote="Van service rate by distance - appointment only. Please contact us by phone for a personalized quote."
-              customCTA={<VanBookingForm>Book PinkVan</VanBookingForm>}
-        customCTAButton={<VanBookingForm variant="cta">Book PinkVan</VanBookingForm>}
+              customCTA={<VanBookingForm initialOpen={showBookingForm}>Book PinkVan</VanBookingForm>}
+        customCTAButton={<VanBookingForm variant="cta" initialOpen={showBookingForm}>Book PinkVan</VanBookingForm>}
         showSecondButton={true}
         secondButtonText="Have Questions?"
         videoUrl="https://youtube.com/shorts/cDyqllECsoc"

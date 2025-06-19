@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
+import { ServiceSelectionDialog } from "@/components/pinkdog/service-selection-dialog";
 
 // Centralized image configuration object
 const imageConfig = {
@@ -61,6 +62,7 @@ const imageConfig = {
 
 export function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isServiceDialogOpen, setIsServiceDialogOpen] = useState(false);
 
   // Modified scroll control - no longer locks scrolling
   useEffect(() => {
@@ -190,9 +192,9 @@ export function Hero() {
                 >
                   <Button
                     className="bg-[#E73992] text-white hover:bg-[#d3337f] text-base sm:text-base md:text-lg font-medium px-6 sm:px-6 md:px-8 py-3 sm:py-3 md:py-3.5 h-auto rounded-full shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
-                    asChild
+                    onClick={() => setIsServiceDialogOpen(true)}
                   >
-                    <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer">Schedule Visit</Link>
+                    Schedule Visit
                   </Button>
                   <Button
                     className="bg-white text-[#E73992] border-2 border-[#E73992] hover:bg-[#FCD1E6] hover:text-[#E73992] hover:border-[#E73992] text-base sm:text-base md:text-lg font-medium px-6 sm:px-6 md:px-8 py-3 sm:py-3 md:py-3.5 h-auto rounded-full shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 hover:-translate-y-0.5"
@@ -278,8 +280,15 @@ export function Hero() {
   };
 
   return (
-    <div className="bg-gradient-to-b from-white to-[#FFF7FB] overflow-hidden">
-      {renderContent()}
-    </div>
+    <>
+      <div className="bg-gradient-to-b from-white to-[#FFF7FB] overflow-hidden">
+        {renderContent()}
+      </div>
+      
+      <ServiceSelectionDialog 
+        isOpen={isServiceDialogOpen} 
+        onClose={() => setIsServiceDialogOpen(false)} 
+      />
+    </>
   );
 }

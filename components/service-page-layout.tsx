@@ -70,7 +70,7 @@ export function ServicePageLayout({
       <section className="relative pt-30 sm:pt-36 pb-8 sm:pb-12">
         <div className="absolute inset-0 bg-gradient-to-b from-[#FFF0F7] to-white"></div>
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}

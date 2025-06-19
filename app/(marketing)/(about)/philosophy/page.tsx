@@ -1,13 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Heart, Shield, Users, Award, Sparkles, Brain } from "lucide-react";
+import { ServiceSelectionDialog } from "@/components/pinkdog/service-selection-dialog";
 
 export default function PhilosophyPage() {
+  const [isServiceDialogOpen, setIsServiceDialogOpen] = useState(false);
   // Features for the Philosophy page
   const philosophyValues = [
     {
@@ -43,12 +45,13 @@ export default function PhilosophyPage() {
   ];
 
   return (
-    <main className="bg-white" id="philosophy">
-      {/* Hero Section */}
-      <section className="relative pt-36 pb-12 overflow-hidden">
+    <>
+      <main className="bg-white" id="philosophy">
+        {/* Hero Section */}
+        <section className="relative pt-36 pb-12 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#FFF0F7] to-white"></div>
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-1">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -64,9 +67,9 @@ export default function PhilosophyPage() {
               <div className="flex gap-4">
                 <Button
                   className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-8 py-6 text-lg"
-                  asChild
+                  onClick={() => setIsServiceDialogOpen(true)}
                 >
-                  <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer">Book Now</Link>
+                  Book Now
                 </Button>
                 <Button
                   variant="outline"
@@ -366,7 +369,7 @@ export default function PhilosophyPage() {
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-[#E73992] to-[#FF69B4] relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-1">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -383,9 +386,9 @@ export default function PhilosophyPage() {
               <Button
                 size="lg"
                 className="bg-white text-[#E73992] hover:bg-gray-100 rounded-full px-8 py-6 text-lg font-semibold"
-                asChild
+                onClick={() => setIsServiceDialogOpen(true)}
               >
-                <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer">Book Now</Link>
+                Book Now
               </Button>
               <Button
                 size="lg"
@@ -399,6 +402,12 @@ export default function PhilosophyPage() {
           </motion.div>
         </div>
       </section>
-    </main>
+      </main>
+      
+      <ServiceSelectionDialog 
+        isOpen={isServiceDialogOpen} 
+        onClose={() => setIsServiceDialogOpen(false)} 
+      />
+    </>
   );
 } 

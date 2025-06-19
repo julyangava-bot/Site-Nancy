@@ -4,6 +4,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import Select from "react-select";
+import { format } from "date-fns";
 
 import {
   Form,
@@ -15,8 +17,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Heart, Mail, Loader2, CheckCircle, XCircle } from "lucide-react";
+import { Car, Mail, Loader2, CheckCircle, XCircle } from "lucide-react";
 import { useModal } from "@/context/providers";
+import { DatePicker } from "./date-picker";
 
 const vanFormSchema = z.object({
   ownerName: z.string().min(2, "Name must be at least 2 characters"),
@@ -42,10 +45,70 @@ type VanFormValues = z.infer<typeof vanFormSchema>;
 interface VanBookingFormProps {
   children: React.ReactNode;
   variant?: 'default' | 'cta';
+  initialOpen?: boolean;
 }
 
-export function VanBookingForm({ children, variant = 'default' }: VanBookingFormProps) {
-  const [isOpen, setIsOpen] = React.useState(false);
+// Custom styles for react-select
+const customSelectStyles = {
+  control: (base: any, state: any) => ({
+    ...base,
+    minHeight: '44px',
+    backgroundColor: '#F2F2F2',
+    borderColor: state.isFocused ? '#E73992' : '#E5E5E5',
+    borderWidth: '0.5px',
+    borderRadius: '12px',
+    boxShadow: state.isFocused ? '0 0 0 1px #E73992' : 'none',
+    '&:hover': {
+      borderColor: '#E73992',
+    },
+    fontSize: '16px', // Prevents zoom on iOS
+  }),
+  menu: (base: any) => ({
+    ...base,
+    borderRadius: '12px',
+    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+    overflow: 'hidden',
+    zIndex: 999,
+  }),
+  menuList: (base: any) => ({
+    ...base,
+    padding: 0,
+  }),
+  option: (base: any, state: any) => ({
+    ...base,
+    backgroundColor: state.isSelected ? '#E73992' : state.isFocused ? '#FFF0F7' : 'white',
+    color: state.isSelected ? 'white' : '#374151',
+    padding: '12px 16px',
+    fontSize: '16px',
+    '&:active': {
+      backgroundColor: '#E73992',
+      color: 'white',
+    },
+  }),
+  singleValue: (base: any) => ({
+    ...base,
+    color: '#374151',
+    fontSize: '16px',
+  }),
+  placeholder: (base: any) => ({
+    ...base,
+    color: '#9CA3AF',
+    fontSize: '16px',
+  }),
+  indicatorSeparator: () => ({
+    display: 'none',
+  }),
+  dropdownIndicator: (base: any, state: any) => ({
+    ...base,
+    color: state.isFocused ? '#E73992' : '#9CA3AF',
+    '&:hover': {
+      color: '#E73992',
+    },
+  }),
+};
+
+export function VanBookingForm({ children, variant = 'default', initialOpen = false }: VanBookingFormProps) {
+  const [isOpen, setIsOpen] = React.useState(initialOpen);
   const [isLoading, setIsLoading] = React.useState(false);
   const [submitStatus, setSubmitStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = React.useState('');
@@ -59,8 +122,6 @@ export function VanBookingForm({ children, variant = 'default' }: VanBookingForm
     const dateParts = date.split('-');
     const selectedDate = new Date(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]));
     const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, etc.
-    
-
     
     const options = [];
     
@@ -161,6 +222,13 @@ export function VanBookingForm({ children, variant = 'default' }: VanBookingForm
     onSubmit(values);
   };
 
+  // Update isOpen when initialOpen prop changes
+  React.useEffect(() => {
+    if (initialOpen) {
+      setIsOpen(true);
+    }
+  }, [initialOpen]);
+
   // Control body scroll when modal is open and reset states when closed
   React.useEffect(() => {
     if (isOpen) {
@@ -181,6 +249,7 @@ export function VanBookingForm({ children, variant = 'default' }: VanBookingForm
     };
   }, [isOpen, setIsAnyModalOpen]);
 
+
   return (
     <>
       <button
@@ -196,7 +265,7 @@ export function VanBookingForm({ children, variant = 'default' }: VanBookingForm
 
       {/* Custom Modal with mobile-first fullscreen design */}
       {isOpen && (
-        <div className="fixed inset-0 z-[9999] bg-white md:bg-black md:bg-opacity-50 md:backdrop-blur-sm md:flex md:items-start md:justify-center">
+        <div className="fixed inset-0 z-50 bg-white md:bg-black md:bg-opacity-50 md:backdrop-blur-sm md:flex md:items-start md:justify-center">
           {/* Desktop backdrop */}
           <div 
             className="hidden md:block fixed inset-0" 
@@ -204,49 +273,92 @@ export function VanBookingForm({ children, variant = 'default' }: VanBookingForm
           />
           
           {/* Mobile: fullscreen, Desktop: modal */}
-          <div className="h-full w-full md:relative md:w-full md:max-w-md md:mx-4 md:mt-2 md:mb-2 md:h-[calc(100vh-40px)] bg-white md:rounded-2xl md:shadow-2xl flex flex-col">
-            {/* Close button */}
-            <button
-              onClick={() => setIsOpen(false)}
-              className="absolute top-4 right-4 z-10 p-2 text-gray-400 hover:text-gray-600 transition-colors bg-white md:bg-transparent rounded-full md:rounded-none shadow-md md:shadow-none"
-            >
-              <svg className="w-6 h-6 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+          <div className="h-full w-full md:relative md:w-full md:max-w-lg md:mx-4 md:mt-8 md:mb-8 md:h-[calc(100vh-64px)] bg-white md:rounded-2xl md:shadow-2xl flex flex-col">
+            {/* Header - Fixed */}
+            <div className="sticky top-0 bg-white z-10 border-b border-gray-100">
+              {/* Close button */}
+              <button
+                onClick={() => setIsOpen(false)}
+                className="absolute top-4 right-4 z-20 p-2 text-gray-400 hover:text-gray-600 transition-colors bg-white rounded-full shadow-md"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
 
-            {/* Header */}
-            <div className="p-4 md:p-6 pb-4 border-b border-gray-100 flex-shrink-0 pt-16 md:pt-6">
-              <div className="text-center">
-                <div className="flex items-center justify-center mb-4">
-                  <Heart className="w-8 h-8 text-[#E73992] mr-2" />
-                  <h2 className="text-xl md:text-2xl font-bold text-gray-900">🚐 PinkVan Request</h2>
+              <div className="p-6 pt-4">
+                <div className="text-center">
+                  <div className="flex items-center justify-center mb-3">
+                    <Car className="w-8 h-8 text-[#E73992] mr-2" />
+                    <h2 className="text-2xl font-bold text-gray-900">PinkVan Request</h2>
+                  </div>
+                  <p className="text-gray-600 text-sm px-4">
+                    Need a lift for your pup? Our PinkVan offers safe and convenient transportation!
+                  </p>
                 </div>
-                <p className="text-gray-600 text-sm">
-                  Need a lift for your pup? Our PinkVan offers safe and convenient transportation! Please fill out the info below to request service.
-                </p>
               </div>
             </div>
 
             {/* Scrollable content */}
-            <div className="flex-1 overflow-y-auto min-h-0">
-              <div className="p-4 md:p-6 pb-32 md:pb-6">
+            <div className="flex-1 overflow-y-auto overscroll-contain">
+              <div className="p-6">
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+                  <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
                     <FormField
                       control={form.control}
                       name="ownerName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Your Name *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Your Name *</FormLabel>
                           <FormControl>
                             <Input 
                               placeholder="Enter your full name" 
                               {...field} 
-                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                              className="h-11 text-base border-gray-200 bg-[#F2F2F2] rounded-xl focus:border-[#E73992] focus:ring-[#E73992] placeholder:text-gray-400"
+                              style={{ fontSize: '16px' }} // Prevent zoom on iOS
                             />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-xs" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Email Address *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="email"
+                              placeholder="your.email@example.com" 
+                              {...field} 
+                              className="h-11 text-base border-gray-200 bg-[#F2F2F2] rounded-xl focus:border-[#E73992] focus:ring-[#E73992] placeholder:text-gray-400"
+                              style={{ fontSize: '16px' }}
+                            />
+                          </FormControl>
+                          <FormMessage className="text-xs" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Phone Number *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="tel"
+                              placeholder="(555) 123-4567" 
+                              {...field} 
+                              className="h-11 text-base border-gray-200 bg-[#F2F2F2] rounded-xl focus:border-[#E73992] focus:ring-[#E73992] placeholder:text-gray-400"
+                              style={{ fontSize: '16px' }}
+                            />
+                          </FormControl>
+                          <FormMessage className="text-xs" />
                         </FormItem>
                       )}
                     />
@@ -256,15 +368,16 @@ export function VanBookingForm({ children, variant = 'default' }: VanBookingForm
                       name="petNames"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Pet&apos;s Name(s) *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Pet's Name(s) *</FormLabel>
                           <FormControl>
                             <Input 
                               placeholder="e.g., Buddy, Luna" 
                               {...field} 
-                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                              className="h-11 text-base border-gray-200 bg-[#F2F2F2] rounded-xl focus:border-[#E73992] focus:ring-[#E73992] placeholder:text-gray-400"
+                              style={{ fontSize: '16px' }}
                             />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-xs" />
                         </FormItem>
                       )}
                     />
@@ -274,15 +387,16 @@ export function VanBookingForm({ children, variant = 'default' }: VanBookingForm
                       name="breedAndSize"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Breed & Size *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Breed & Size *</FormLabel>
                           <FormControl>
                             <Input 
                               placeholder="e.g., Golden Retriever, Large" 
                               {...field} 
-                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                              className="h-11 text-base border-gray-200 bg-[#F2F2F2] rounded-xl focus:border-[#E73992] focus:ring-[#E73992] placeholder:text-gray-400"
+                              style={{ fontSize: '16px' }}
                             />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-xs" />
                         </FormItem>
                       )}
                     />
@@ -292,19 +406,30 @@ export function VanBookingForm({ children, variant = 'default' }: VanBookingForm
                       name="serviceNeeded"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Pick-Up, Drop-Off, or Both? *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Pick-Up, Drop-Off, or Both? *</FormLabel>
                           <FormControl>
-                            <select 
-                              {...field} 
-                              className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                            >
-                              <option value="">Select service needed</option>
-                              <option value="pickup">Pick-Up Only</option>
-                              <option value="dropoff">Drop-Off Only</option>
-                              <option value="both">Both Pick-Up & Drop-Off</option>
-                            </select>
+                            <Select
+                              value={field.value ? { 
+                                value: field.value, 
+                                label: field.value === 'pickup' ? 'Pick-Up Only' : 
+                                       field.value === 'dropoff' ? 'Drop-Off Only' : 
+                                       'Both Pick-Up & Drop-Off' 
+                              } : null}
+                              onChange={(option) => field.onChange(option?.value)}
+                              options={[
+                                { value: 'pickup', label: 'Pick-Up Only' },
+                                { value: 'dropoff', label: 'Drop-Off Only' },
+                                { value: 'both', label: 'Both Pick-Up & Drop-Off' }
+                              ]}
+                              placeholder="Select service needed"
+                              styles={customSelectStyles}
+                              className="react-select-container"
+                              classNamePrefix="react-select"
+                              isClearable={false}
+                              isSearchable={false}
+                            />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-xs" />
                         </FormItem>
                       )}
                     />
@@ -314,15 +439,16 @@ export function VanBookingForm({ children, variant = 'default' }: VanBookingForm
                       name="address"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Address for Pick-Up/Drop-Off *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Address for Pick-Up/Drop-Off *</FormLabel>
                           <FormControl>
                             <Input 
                               placeholder="Full address including city and zip code" 
                               {...field} 
-                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                              className="h-11 text-base border-gray-200 bg-[#F2F2F2] rounded-xl focus:border-[#E73992] focus:ring-[#E73992] placeholder:text-gray-400"
+                              style={{ fontSize: '16px' }}
                             />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-xs" />
                         </FormItem>
                       )}
                     />
@@ -332,15 +458,24 @@ export function VanBookingForm({ children, variant = 'default' }: VanBookingForm
                       name="desiredDate"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Desired Date *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Desired Date *</FormLabel>
                           <FormControl>
-                            <Input 
-                              type="date" 
-                              {...field} 
-                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                            <DatePicker
+                              selected={field.value}
+                              onSelect={(date) => {
+                                if (date) {
+                                  field.onChange(format(date, 'yyyy-MM-dd'));
+                                }
+                              }}
+                              disabled={(date) => {
+                                const today = new Date();
+                                today.setHours(0, 0, 0, 0);
+                                return date < today;
+                              }}
+                              placeholderText="Select service date"
                             />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-xs" />
                         </FormItem>
                       )}
                     />
@@ -350,23 +485,24 @@ export function VanBookingForm({ children, variant = 'default' }: VanBookingForm
                       name="timeWindow"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Time Window *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Time Window *</FormLabel>
                           <FormControl>
-                            <select 
-                              {...field} 
-                              className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                            >
-                              <option value="">Select time window</option>
-                              {generateTimeOptions(form.watch('desiredDate')).map(option => (
-                                <option key={option.value} value={option.value}>
-                                  {option.label}
-                                </option>
-                              ))}
-                            </select>
+                            <Select
+                              value={field.value ? generateTimeOptions(form.watch('desiredDate')).find(opt => opt.value === field.value) : null}
+                              onChange={(option) => field.onChange(option?.value)}
+                              options={generateTimeOptions(form.watch('desiredDate'))}
+                              placeholder="Select time window"
+                              styles={customSelectStyles}
+                              className="react-select-container"
+                              classNamePrefix="react-select"
+                              isClearable={false}
+                              isSearchable={false}
+                              isDisabled={!form.watch('desiredDate')}
+                            />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-xs" />
                           <p className="text-xs text-gray-500 mt-1">
-                            Mon-Sat: 8:00 AM - 10:00 AM (Morning Pickup) | 3:00 PM - 5:00 PM (Afternoon Drop-off) | Sun: 12:00 PM - 4:00 PM
+                            Mon-Sat: Morning Pickup (8-10 AM) | Afternoon Drop-off (3-5 PM)
                           </p>
                         </FormItem>
                       )}
@@ -377,20 +513,29 @@ export function VanBookingForm({ children, variant = 'default' }: VanBookingForm
                       name="requestedService"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Service Type *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Service Type *</FormLabel>
                           <FormControl>
-                            <select 
-                              {...field} 
-                              className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                            >
-                              <option value="">Select service type</option>
-                              <option value="grooming">Grooming</option>
-                              <option value="daycare">Daycare</option>
-                              <option value="boarding">Boarding</option>
-                              <option value="other">Other</option>
-                            </select>
+                            <Select
+                              value={field.value ? { 
+                                value: field.value, 
+                                label: field.value.charAt(0).toUpperCase() + field.value.slice(1) 
+                              } : null}
+                              onChange={(option) => field.onChange(option?.value)}
+                              options={[
+                                { value: 'grooming', label: 'Grooming' },
+                                { value: 'daycare', label: 'Daycare' },
+                                { value: 'boarding', label: 'Boarding' },
+                                { value: 'other', label: 'Other' }
+                              ]}
+                              placeholder="Select service type"
+                              styles={customSelectStyles}
+                              className="react-select-container"
+                              classNamePrefix="react-select"
+                              isClearable={false}
+                              isSearchable={false}
+                            />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-xs" />
                         </FormItem>
                       )}
                     />
@@ -401,15 +546,16 @@ export function VanBookingForm({ children, variant = 'default' }: VanBookingForm
                         name="otherServiceType"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-gray-700 font-medium">Please specify other service</FormLabel>
+                            <FormLabel className="text-gray-700 font-medium text-sm">Please specify other service</FormLabel>
                             <FormControl>
                               <Input 
                                 placeholder="Describe the service needed" 
                                 {...field} 
-                                className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                                className="h-11 text-base border-gray-200 bg-[#F2F2F2] rounded-xl focus:border-[#E73992] focus:ring-[#E73992] placeholder:text-gray-400"
+                                style={{ fontSize: '16px' }}
                               />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage className="text-xs" />
                           </FormItem>
                         )}
                       />
@@ -417,90 +563,56 @@ export function VanBookingForm({ children, variant = 'default' }: VanBookingForm
 
                     <FormField
                       control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Email Address *</FormLabel>
-                          <FormControl>
-                            <Input 
-                              type="email"
-                              placeholder="your.email@example.com" 
-                              {...field} 
-                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="phone"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Phone Number *</FormLabel>
-                          <FormControl>
-                            <Input 
-                              type="tel"
-                              placeholder="(555) 123-4567" 
-                              {...field} 
-                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
                       name="specialInstructions"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Special Instructions (optional)</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Special Instructions (optional)</FormLabel>
                           <FormControl>
                             <textarea 
                               placeholder="Gate code, preferred door, pet handling notes, etc..."
                               {...field} 
-                              className="flex min-h-[80px] w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-2 text-base shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm resize-none"
-                              rows={3}
+                              className="flex min-h-[100px] w-full rounded-xl border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-2 text-base shadow-sm transition-colors placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 resize-none"
+                              style={{ fontSize: '16px' }}
+                              rows={4}
                             />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-xs" />
                         </FormItem>
                       )}
                     />
 
                     {/* Status Messages */}
                     {submitStatus === 'success' && (
-                      <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg text-green-800">
-                        <CheckCircle className="w-5 h-5" />
-                        <span>PinkVan request sent successfully! We&apos;ll contact you soon to confirm your transportation.</span>
+                      <div className="flex items-start gap-3 p-4 bg-green-50 border border-green-200 rounded-xl text-green-800">
+                        <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                        <span className="text-sm">PinkVan request sent successfully! We'll contact you soon to confirm your transportation.</span>
                       </div>
                     )}
                     
                     {submitStatus === 'error' && (
-                      <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-800">
-                        <XCircle className="w-5 h-5" />
-                        <span>{errorMessage || 'Failed to send PinkVan request. Please try again.'}</span>
+                      <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-xl text-red-800">
+                        <XCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                        <span className="text-sm">{errorMessage || 'Failed to send PinkVan request. Please try again.'}</span>
                       </div>
                     )}
+
+                    {/* Add padding at bottom for mobile fixed button */}
+                    <div className="h-32 md:hidden" />
                   </form>
                 </Form>
               </div>
             </div>
 
-            {/* Fixed button area - Always visible on mobile */}
-            <div className="fixed md:relative bottom-0 left-0 right-0 md:bottom-auto md:left-auto md:right-auto p-4 md:pt-3 md:pb-6 border-t border-gray-100 flex-shrink-0 bg-white shadow-lg md:shadow-none">
+            {/* Fixed button area - Always visible */}
+            <div className="sticky bottom-0 p-6 pt-4 border-t border-gray-100 bg-white">
               <p className="text-xs text-gray-500 mb-3 text-center">
-                🦴 Note: PinkVan rides must be scheduled and confirmed in advance. An additional fee applies based on distance — we&apos;ll let you know the total when confirming your request.
+                Note: PinkVan rides must be scheduled in advance. Additional fee applies based on distance.
               </p>
               <Button
                 type="submit"
                 onClick={form.handleSubmit(handleSubmit)}
                 disabled={isLoading}
-                className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 text-lg rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 text-lg rounded-full transition-all duration-300 hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
               >
                 {isLoading ? (
                   <>
@@ -520,4 +632,4 @@ export function VanBookingForm({ children, variant = 'default' }: VanBookingForm
       )}
     </>
   );
-} 
+}

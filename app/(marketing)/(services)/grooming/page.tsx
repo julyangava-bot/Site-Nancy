@@ -1,17 +1,30 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 export default function GroomingPage() {
+  const searchParams = useSearchParams();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted && searchParams.get('booking') === 'true') {
+      window.open("https://booking.appointy.com/en-US/pinkdogresort/bookings/service", "_blank", "noopener,noreferrer");
+    }
+  }, [mounted, searchParams]);
   return (
     <main className="bg-white relative">
       {/* Hero Section */}
       <section className="relative pt-36 pb-12 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#FFF0F7] to-white"></div>
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-1">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -318,7 +331,7 @@ export default function GroomingPage() {
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-[#E73992] to-[#FF69B4] relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-1">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Ready to Pamper Your Pet?
           </h2>

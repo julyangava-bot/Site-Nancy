@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { IconPlus, IconPhone, IconMail, IconBrandWhatsapp, IconClock, IconMapPin, IconCalendarEvent, IconPaw } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { ServiceSelectionDialog } from "@/components/pinkdog/service-selection-dialog";
 
 interface FAQItem {
   question: string;
@@ -670,6 +671,7 @@ const faqSections: FAQSection[] = [
 
 export default function FAQPage() {
   const [openIndex, setOpenIndex] = useState<string | null>(null);
+  const [isServiceDialogOpen, setIsServiceDialogOpen] = useState(false);
 
   const toggleFAQ = (sectionIndex: number, itemIndex: number) => {
     const key = `${sectionIndex}-${itemIndex}`;
@@ -677,6 +679,7 @@ export default function FAQPage() {
   };
 
   return (
+    <>
     <main className="bg-white relative">
       {/* Hero Section */}
       <section className="relative pt-32 pb-12 overflow-hidden bg-gradient-to-b from-[#FFF0F7] to-white">
@@ -780,7 +783,7 @@ export default function FAQPage() {
       {/* Contact CTA */}
       <section className="py-20 bg-gradient-to-r from-[#E73992] to-[#FF69B4] relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-1">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -808,14 +811,20 @@ export default function FAQPage() {
                 size="lg"
                 variant="outline"
                 className="bg-transparent text-white border-white hover:bg-white/10 rounded-full px-8 py-6 text-lg font-semibold"
-                asChild
+                onClick={() => setIsServiceDialogOpen(true)}
               >
-                <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer">Book a Service</Link>
+                Book a Service
               </Button>
             </div>
           </motion.div>
         </div>
       </section>
     </main>
+    
+      <ServiceSelectionDialog 
+        isOpen={isServiceDialogOpen} 
+        onClose={() => setIsServiceDialogOpen(false)} 
+      />
+    </>
   );
 }

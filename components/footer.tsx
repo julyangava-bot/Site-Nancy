@@ -6,11 +6,14 @@ import { IconBrandInstagram, IconBrandFacebook, IconMapPin, IconClock, IconPhone
 import { motion } from "motion/react";
 import { useRouter, usePathname } from "next/navigation";
 import { handleSectionNavigation, isSectionLink } from "@/lib/navigation";
+import { ServiceSelectionDialog } from "@/components/pinkdog/service-selection-dialog";
+import { useState } from "react";
 
 export function Footer() {
   const router = useRouter();
   const pathname = usePathname();
   const isHomePage = pathname === "/";
+  const [isServiceDialogOpen, setIsServiceDialogOpen] = useState(false);
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (isSectionLink(href)) {
@@ -38,7 +41,7 @@ export function Footer() {
   const supportLinks = [
     { name: "FAQ", href: "/faq" },
     { name: "Contact Us", href: "#checkin-info" },
-    { name: "Book Now", href: "https://booking.appointy.com/en-US/pinkdogresort/bookings/service" },
+    { name: "Book Now", href: "#book-now", isDialog: true },
   ];
 
   const legalLinks = [
@@ -102,7 +105,7 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-8 lg:gap-4 mb-12">
           {/* Company Info - Spans 2 columns on mobile and large screens */}
           <div className="col-span-2 lg:col-span-2 text-center md:text-left">
-            <div className="mb-6 flex justify-center md:justify-start">
+            <div className="mb-6 flex justify-center md:justify-start" >
               <Logo />
             </div>
             <p className="text-gray-600 text-sm mb-6 max-w-xs mx-auto md:mx-0">
@@ -183,14 +186,23 @@ export function Footer() {
             <ul className="space-y-2">
               {supportLinks.map((item, idx) => (
                 <li key={idx}>
-                  <Link
-                    href={item.href}
-                    onClick={(e) => handleLinkClick(e, item.href)}
-                    className="text-gray-600 hover:text-[#E73992] transition-colors text-sm block py-1"
-                    {...(item.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                  >
-                    {item.name}
-                  </Link>
+                  {item.isDialog ? (
+                    <button
+                      onClick={() => setIsServiceDialogOpen(true)}
+                      className="text-gray-600 hover:text-[#E73992] transition-colors text-sm block py-1 text-left w-full"
+                    >
+                      {item.name}
+                    </button>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      onClick={(e) => handleLinkClick(e, item.href)}
+                      className="text-gray-600 hover:text-[#E73992] transition-colors text-sm block py-1"
+                      {...(item.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    >
+                      {item.name}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
@@ -227,7 +239,7 @@ export function Footer() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 viewport={{ once: true }}
-                className={`group relative bg-white rounded-2xl hover:shadow-lg transition-all duration-300 border ${
+                className={`group bg-white rounded-2xl hover:shadow-lg transition-all duration-300 border ${
                   location.isPrimary 
                     ? 'border-[#E73992] bg-gradient-to-br from-[#FFF9FC] to-white p-5' 
                     : 'border-gray-100 hover:border-[#FCD1E6] p-4 sm:p-5'
@@ -362,6 +374,11 @@ export function Footer() {
           </div>
         </div>
       </div>
+      
+      <ServiceSelectionDialog 
+        isOpen={isServiceDialogOpen} 
+        onClose={() => setIsServiceDialogOpen(false)} 
+      />
     </footer>
   );
 }
