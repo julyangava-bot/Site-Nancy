@@ -238,7 +238,7 @@ export function Footer() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 viewport={{ once: true }}
-                className={`group bg-white rounded-2xl hover:shadow-lg transition-all duration-300 border ${
+                className={`relative group bg-white rounded-2xl hover:shadow-lg transition-all duration-300 border ${
                   location.isPrimary 
                     ? 'border-[#E73992] bg-gradient-to-br from-[#FFF9FC] to-white p-5' 
                     : 'border-gray-100 hover:border-[#FCD1E6] p-4 sm:p-5'
