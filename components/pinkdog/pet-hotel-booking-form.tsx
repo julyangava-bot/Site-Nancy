@@ -158,10 +158,10 @@ export function PetHotelBookingForm({ children, variant = 'default' }: PetHotelB
   // Control body scroll when modal is open and reset states when closed
   React.useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.classList.add('overflow-hidden');
       setIsAnyModalOpen(true);
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.classList.remove('overflow-hidden');
       setIsAnyModalOpen(false);
       // Reset states when modal closes
       setSubmitStatus('idle');
@@ -170,7 +170,7 @@ export function PetHotelBookingForm({ children, variant = 'default' }: PetHotelB
     }
 
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.classList.remove('overflow-hidden');
       setIsAnyModalOpen(false);
     };
   }, [isOpen, setIsAnyModalOpen]);
@@ -188,33 +188,35 @@ export function PetHotelBookingForm({ children, variant = 'default' }: PetHotelB
         {children}
       </button>
 
-      {/* Custom Modal with proper scroll and positioning */}
+      {/* Custom Modal with mobile-first fullscreen design */}
       {isOpen && (
-        <div className="fixed inset-0 z-[9999] flex items-start justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[9999] bg-white md:bg-black md:bg-opacity-50 md:backdrop-blur-sm md:flex md:items-start md:justify-center">
+          {/* Desktop backdrop */}
           <div 
-            className="fixed inset-0" 
+            className="hidden md:block fixed inset-0" 
             onClick={() => setIsOpen(false)}
           />
           
-          <div className="relative w-full max-w-md mx-4 mt-2 mb-2 bg-white rounded-2xl shadow-2xl h-[calc(100vh-40px)] flex flex-col">
+          {/* Mobile: fullscreen, Desktop: modal */}
+          <div className="h-full w-full md:relative md:w-full md:max-w-md md:mx-4 md:mt-2 md:mb-2 md:h-[calc(100vh-40px)] bg-white md:rounded-2xl md:shadow-2xl flex flex-col">
             {/* Close button */}
             <button
               onClick={() => setIsOpen(false)}
-              className="absolute top-4 right-4 z-10 p-2 text-gray-400 hover:text-gray-600 transition-colors"
+              className="absolute top-4 right-4 z-10 p-2 text-gray-400 hover:text-gray-600 transition-colors bg-white md:bg-transparent rounded-full md:rounded-none shadow-md md:shadow-none"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
 
             {/* Header */}
-            <div className="p-6 pb-4 border-b border-gray-100 flex-shrink-0">
+            <div className="p-4 md:p-6 pb-4 border-b border-gray-100 flex-shrink-0 pt-16 md:pt-6">
               <div className="text-center">
                 <div className="flex items-center justify-center mb-4">
                   <Heart className="w-8 h-8 text-[#E73992] mr-2" />
-                  <h2 className="text-2xl font-bold text-gray-900">Pet Hotel Booking</h2>
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900">Pet Hotel Booking</h2>
                 </div>
-                <p className="text-gray-600">
+                <p className="text-gray-600 text-sm">
                   Let us know about your furry friend&apos;s stay! We&apos;ll get back to you as soon as possible.
                 </p>
               </div>
@@ -222,7 +224,7 @@ export function PetHotelBookingForm({ children, variant = 'default' }: PetHotelB
 
             {/* Scrollable content */}
             <div className="flex-1 overflow-y-auto min-h-0">
-              <div className="p-6">
+              <div className="p-4 md:p-6 pb-20 md:pb-6">
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
                     <FormField
@@ -471,8 +473,8 @@ export function PetHotelBookingForm({ children, variant = 'default' }: PetHotelB
               </div>
             </div>
 
-            {/* Fixed button area */}
-            <div className="p-4 pt-3 pb-6 border-t border-gray-100 flex-shrink-0 bg-white">
+            {/* Fixed button area - Always visible on mobile */}
+            <div className="fixed md:relative bottom-0 left-0 right-0 md:bottom-auto md:left-auto md:right-auto p-4 md:pt-3 md:pb-6 border-t border-gray-100 flex-shrink-0 bg-white shadow-lg md:shadow-none">
               <Button
                 type="submit"
                 onClick={form.handleSubmit(handleSubmit)}
