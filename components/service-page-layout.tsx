@@ -39,6 +39,8 @@ interface ServicePageLayoutProps {
   secondButtonText?: string;
   videoUrl?: string;
   hideCTA?: boolean;
+  customCTA?: React.ReactNode; // Nova prop para formulário customizado
+  customCTAButton?: React.ReactNode; // Para botão customizado na seção CTA final
 }
 
 export function ServicePageLayout({
@@ -59,6 +61,8 @@ export function ServicePageLayout({
   secondButtonText = "Contact Us",
   videoUrl,
   hideCTA = false,
+  customCTA,
+  customCTAButton,
 }: ServicePageLayoutProps) {
   return (
     <main className="bg-white relative min-h-screen">
@@ -80,20 +84,39 @@ export function ServicePageLayout({
                 {description}
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button
-                  className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-6 sm:px-8 py-3 sm:py-6 text-base sm:text-lg"
-                  asChild
-                >
-                  <Link href={ctaLink} {...(ctaLink.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{ctaText}</Link>
-                </Button>
-                {showSecondButton && (
-                  <Button
-                    variant="outline"
-                    className="rounded-full px-6 sm:px-8 py-3 sm:py-6 text-base sm:text-lg border-[#E73992] text-[#E73992] hover:bg-[#FFF0F7]"
-                    asChild
-                  >
-                    <Link href={secondButtonText === "Have Questions?" ? "/faq" : "/#checkin-info"}>{secondButtonText}</Link>
-                  </Button>
+                {customCTA ? (
+                  // Use custom CTA (like booking form) when provided
+                  <>
+                    {customCTA}
+                    {showSecondButton && (
+                      <Button
+                        variant="outline"
+                        className="rounded-full px-6 sm:px-8 py-3 sm:py-6 text-base sm:text-lg border-[#E73992] text-[#E73992] hover:bg-[#FFF0F7]"
+                        asChild
+                      >
+                        <Link href={secondButtonText === "Have Questions?" ? "/faq" : "/#checkin-info"}>{secondButtonText}</Link>
+                      </Button>
+                    )}
+                  </>
+                ) : (
+                  // Use default buttons when no custom CTA
+                  <>
+                    <Button
+                      className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-6 sm:px-8 py-3 sm:py-6 text-base sm:text-lg"
+                      asChild
+                    >
+                      <Link href={ctaLink} {...(ctaLink.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{ctaText}</Link>
+                    </Button>
+                    {showSecondButton && (
+                      <Button
+                        variant="outline"
+                        className="rounded-full px-6 sm:px-8 py-3 sm:py-6 text-base sm:text-lg border-[#E73992] text-[#E73992] hover:bg-[#FFF0F7]"
+                        asChild
+                      >
+                        <Link href={secondButtonText === "Have Questions?" ? "/faq" : "/#checkin-info"}>{secondButtonText}</Link>
+                      </Button>
+                    )}
+                  </>
                 )}
               </div>
             </motion.div>
@@ -399,29 +422,7 @@ export function ServicePageLayout({
               ))}
             </div>
             
-            {/* Call to action info */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              viewport={{ once: true }}
-              className="text-center mt-8 sm:mt-12"
-            >
-              <p className="text-gray-600 mb-4">
-                Ready to book? Call us at{" "}
-                <a href="tel:9787724242" className="text-[#E73992] font-semibold hover:underline">
-                  (978) 772-4242
-                </a>{" "}
-                or book online
-              </p>
-              <Link
-                href={ctaLink}
-                {...(ctaLink.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                className="inline-flex items-center justify-center bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-6 sm:px-8 py-3 text-base sm:text-lg font-semibold transition-colors"
-              >
-                Book Now
-              </Link>
-            </motion.div>
+
           </div>
         </section>
       )}
@@ -444,13 +445,17 @@ export function ServicePageLayout({
                 {pricingNote || "Book your pet's appointment today and see why PinkDog is the preferred choice for pet parents."}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  size="lg"
-                  className="bg-white text-[#E73992] hover:bg-gray-100 rounded-full px-8 py-6 text-lg font-semibold"
-                  asChild
-                >
-                  <Link href={ctaLink} {...(ctaLink.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{ctaText}</Link>
-                </Button>
+                {customCTAButton ? (
+                  customCTAButton
+                ) : (
+                  <Button
+                    size="lg"
+                    className="bg-white text-[#E73992] hover:bg-gray-100 rounded-full px-8 py-6 text-lg font-semibold"
+                    asChild
+                  >
+                    <Link href={ctaLink} {...(ctaLink.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{ctaText}</Link>
+                  </Button>
+                )}
                 {showSecondButton && (
                   <Button
                     size="lg"

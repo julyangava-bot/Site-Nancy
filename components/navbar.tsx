@@ -16,6 +16,7 @@ import { Logo } from "./logo";
 import { handleSectionNavigation, scrollToSection } from "@/lib/navigation";
 import { Users, Heart, HelpCircle, BookOpen } from "lucide-react";
 import { IconBrandInstagram, IconBrandFacebook } from "@tabler/icons-react";
+import { useModal } from "@/context/providers";
 
 interface NavItem {
   name: string;
@@ -37,6 +38,7 @@ export const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const isHomePage = pathname === "/";
+  const { isAnyModalOpen } = useModal();
 
   const navItems: NavItem[] = [
     {
@@ -157,6 +159,11 @@ export const Navbar = () => {
     }
     // For non-section links like blog, let the normal navigation happen
   }, [isHomePage, router]);
+
+  // Hide navbar when any modal is open
+  if (isAnyModalOpen) {
+    return null;
+  }
 
   return (
     <motion.div

@@ -81,7 +81,7 @@ export const Logo = ({ className }: { className?: string }) => {
     <Link
       href="/"
       className={cn(
-        "font-normal flex gap-2 justify-center items-center text-sm text-black px-2 py-1 shrink-0 relative z-20",
+        "font-normal flex gap-2 justify-center items-center text-sm text-black px-2 py-1 shrink-0 relative z-9",
         className
       )}
     >

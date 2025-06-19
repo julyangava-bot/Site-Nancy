@@ -1,0 +1,109 @@
+=<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PinkVan Service Request</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; line-height: 1.6; color: #333333; background-color: #f5f5f5;">
+  <div style="max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+    <div style="background: linear-gradient(135deg, #FFE4E1 0%, #FFF0F5 100%); padding: 40px 30px; text-align: center;">
+      <img src="https://pinkdog-website.vercel.app/images/navbar-logo.png" alt="PinkDog Pet Resort" style="max-width: 180px; height: auto; margin-bottom: 20px;">
+      <div style="font-size: 48px; margin-bottom: 15px;">🚐</div>
+      <h1 style="font-size: 32px; color: #333333; margin: 0 0 10px 0;">PinkVan Service Requested!</h1>
+      <p style="color: #666666; margin: 0;">Your transportation request has been received</p>
+    </div>
+    
+    <div style="padding: 40px 30px; background-color: #ffffff;">
+      <p style="color: #333333;">Dear {{ $('Booking - PinkDogResort-Web').item.json.body.clientName }},</p>
+      
+      <p style="color: #333333;">Thank you for requesting <strong style="color: #D1477A;">PinkVan transportation service</strong> from PinkDog Pet Resort - Harvard. We've received your request and will contact you shortly to confirm availability and provide a quote based on your location.</p>
+      
+      <div style="background-color: #FFF0F5; padding: 25px; border-radius: 8px; margin: 30px 0; border: 1px solid #FFE4E1;">
+        <h3 style="color: #333333; margin-top: 0;">🚐 Transportation Request Summary:</h3>
+        <p style="margin: 10px 0;">
+          <span style="display: inline-block; padding: 5px 15px; background-color: #D1477A; color: white; border-radius: 20px; font-size: 14px; font-weight: bold;">PINKVAN SERVICE</span>
+        </p>
+        
+        <p style="margin: 5px 0; color: #333333;"><strong>Pet(s):</strong> {{ $('Booking - PinkDogResort-Web').item.json.body.petName }} ({{ $('Booking - PinkDogResort-Web').item.json.body.petBreed }})</p>
+        <p style="margin: 5px 0; color: #333333;"><strong>Size:</strong> {{ $('Booking - PinkDogResort-Web').item.json.body.petSize }}</p>
+        <p style="margin: 5px 0; color: #333333;"><strong>Service Type:</strong> {{ $('Booking - PinkDogResort-Web').item.json.body.serviceNeeded === 'both' ? 'Pick-up & Drop-off' : $('Booking - PinkDogResort-Web').item.json.body.serviceNeeded === 'pickup' ? 'Pick-up Only' : 'Drop-off Only' }}</p>
+        <p style="margin: 5px 0; color: #333333;"><strong>For:</strong> {{ $('Booking - PinkDogResort-Web').item.json.body.serviceType.charAt(0).toUpperCase() + $('Booking - PinkDogResort-Web').item.json.body.serviceType.slice(1) }} service</p>
+        
+        <div style="background-color: #FFFBCC; padding: 10px; border-radius: 5px; margin: 5px 0; border: 1px solid #FFD700;">
+          <strong>📍 Address:</strong> {{ $('Booking - PinkDogResort-Web').item.json.body.address }}
+        </div>
+        
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #FFE4E1;">
+          <p style="margin: 5px 0; color: #333333;">
+            <strong>Date:</strong> 
+            <span style="background-color: #f8f9fa; padding: 3px 8px; border-radius: 4px; font-family: monospace; color: #333333;">{{ $('Booking - PinkDogResort-Web').item.json.body.checkIn.split(' ')[0].split('-')[1] + '-' + $('Booking - PinkDogResort-Web').item.json.body.checkIn.split(' ')[0].split('-')[2] + '-' + $('Booking - PinkDogResort-Web').item.json.body.checkIn.split(' ')[0].split('-')[0] }}</span>
+          </p>
+          <p style="margin: 5px 0; color: #333333;">
+            <strong>Pick-up Time:</strong> 
+            <span style="background-color: #f8f9fa; padding: 3px 8px; border-radius: 4px; font-family: monospace; color: #333333;">{{ $('Booking - PinkDogResort-Web').item.json.body.checkIn.split(' ').slice(1).join(' ') }}</span>
+          </p>
+          {{ $('Booking - PinkDogResort-Web').item.json.body.serviceNeeded === 'both' || $('Booking - PinkDogResort-Web').item.json.body.serviceNeeded === 'dropoff' ? '<p style="margin: 5px 0; color: #333333;"><strong>Drop-off Time:</strong> <span style="background-color: #f8f9fa; padding: 3px 8px; border-radius: 4px; font-family: monospace; color: #333333;">' + $('Booking - PinkDogResort-Web').item.json.body.checkOut.split(' ').slice(1).join(' ') + '</span></p>' : '' }}
+        </div>
+        
+        {{ $('Booking - PinkDogResort-Web').item.json.body.observations ? '<div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #FFE4E1;"><p style="margin: 5px 0; color: #333333;"><strong>Special Instructions:</strong> ' + $('Booking - PinkDogResort-Web').item.json.body.observations + '</p></div>' : '' }}
+      </div>
+      
+      <div style="background-color: #FFF9F9; padding: 15px; border-radius: 8px; border-left: 4px solid #D1477A; margin: 15px 0;">
+        <p style="margin: 0 0 10px 0; color: #333333;"><strong>🦴 Important Notes:</strong></p>
+        <ul style="margin: 0; padding-left: 20px; color: #333333;">
+          <li>PinkVan rides must be scheduled and confirmed in advance</li>
+          <li>An additional fee applies based on distance - we'll provide a quote when confirming</li>
+          <li>We'll contact you within 24 hours to confirm availability and pricing</li>
+        </ul>
+      </div>
+      
+      <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 30px 0;">
+        <h3 style="color: #333333; margin-top: 0;">⏰ What Happens Next?</h3>
+        <p style="margin: 0; color: #333333;">Our team will contact you within <strong>24 hours</strong> to:</p>
+        <ul style="margin: 10px 0 0 20px; padding-left: 20px; color: #333333;">
+          <li>Confirm van availability for your requested time</li>
+          <li>Provide a transportation fee quote based on your location</li>
+          <li>Finalize all pick-up/drop-off details</li>
+        </ul>
+      </div>
+      
+      <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; text-align: center; margin: 30px 0;">
+        <p style="margin: 0 0 15px 0; font-weight: bold; color: #333333;">Questions? We're here to help!</p>
+        <p style="margin: 5px 0; color: #333333;">📞 <a href="tel:+19787724242" style="color: #D1477A; text-decoration: none;">(978) 772-4242</a></p>
+        <p style="margin: 5px 0; color: #333333;">💬 <a href="sms:954-914-0128" style="color: #D1477A; text-decoration: none;">(954) 914-0128</a> (Text/WhatsApp)</p>
+        <p style="margin: 15px 0 5px 0; color: #333333;">📍 <strong>Visit Us:</strong></p>
+        <p style="margin: 5px 0; color: #333333;">259 Ayer Rd, Harvard, MA 01451</p>
+        <div style="font-size: 13px; color: #666666; line-height: 1.5;">
+          Mon-Sat: 8:30 AM - 5:00 PM<br>
+          Sunday: 12:00 PM - 4:00 PM
+        </div>
+        <a href="mailto:pinkdogpetresort@gmail.com" style="display: inline-block; padding: 14px 30px; background-color: #D1477A; color: white; text-decoration: none; border-radius: 25px; margin-top: 20px;">✉️ Email Us</a>
+      </div>
+      
+      <p style="text-align: center; color: #666666; margin-top: 40px;">
+        Thank you for choosing PinkDog Pet Resort — comfort, care, and convenience, delivered! 💗🐶<br><br>
+        Warm regards,<br>
+        <strong style="color: #D1477A;">The PinkDog Pet Resort Team</strong>
+      </p>
+    </div>
+    
+    <div style="background-color: #f5f5f5; padding: 30px; text-align: center; color: #999999; font-size: 12px;">
+      <img src="https://pinkdog-website.vercel.app/images/navbar-logo.png" alt="PinkDog" style="max-width: 100px; margin-bottom: 10px;"><br>
+      <strong>PinkDog Pet Resort - Harvard</strong><br>
+      Where Pets Stay in Style! 🏠❤️<br>
+      259 Ayer Rd, Harvard, MA 01451 • (978) 772-4242<br>
+      <a href="mailto:pinkdogpetresort@gmail.com" style="color: #D1477A;">pinkdogpetresort@gmail.com</a>
+      
+      <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
+        Made with ❤️ for pet businesses<br>
+        <strong>Powered by <a href="https://petquantic.com/" style="color: #D1477A; text-decoration: none;">PetQuantic</a></strong>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
+
+
+

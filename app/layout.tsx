@@ -3,6 +3,7 @@ import { Inter, Urbanist } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { SchemaMarkup } from "@/components/schema-markup";
+import { Providers } from "@/context/providers";
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -83,7 +84,9 @@ export default function RootLayout({
         <SchemaMarkup />
       </head>
       <body className={cn("antialiased", inter.className, urbanist.variable)} suppressHydrationWarning>
-        {children}
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );

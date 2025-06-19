@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* Variáveis CSS para cores */
+    :root {
+      /* Light mode colors */
+      --bg-primary: #ffffff;
+      --bg-secondary: #f5f5f5;
+      --bg-tertiary: #f9f9f9;
+      --bg-accent: #f8f9fa;
+      --text-primary: #333333;
+      --text-secondary: #666666;
+      --text-muted: #999999;
+      --border-color: #e0e0e0;
+      --pink-light: #FFF0F5;
+      --pink-medium: #FFE4E1;
+      --pink-dark: #D1477A;
+      --pink-border: #FFB6C1;
+    }
+
+    /* Dark mode overrides */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-primary: #1a1a1a;
+        --bg-secondary: #2d2d2d;
+        --bg-tertiary: #363636;
+        --bg-accent: #404040;
+        --text-primary: #e0e0e0;
+        --text-secondary: #b0b0b0;
+        --text-muted: #808080;
+        --border-color: #4a4a4a;
+        --pink-light: #3d1f2f;
+        --pink-medium: #4a2438;
+        --pink-dark: #ff6fa8;
+        --pink-border: #d44a7a;
+      }
+    }
+
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: var(--text-primary); margin: 0; padding: 0; background: var(--bg-secondary); }
+    .container { max-width: 600px; margin: 20px auto; background: var(--bg-primary); border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .header { background: linear-gradient(135deg, var(--pink-medium) 0%, var(--pink-light) 100%); padding: 40px 30px; text-align: center; }
+    .logo { max-width: 180px; height: auto; margin-bottom: 20px; }
+    .content { padding: 40px 30px; }
+    .thank-you { font-size: 32px; color: var(--text-primary); margin: 0 0 10px 0; }
+    .summary-box { background: var(--pink-light); padding: 25px; border-radius: 8px; margin: 30px 0; border: 1px solid var(--pink-medium); }
+    .button { display: inline-block; padding: 14px 30px; background: var(--pink-dark); color: white; text-decoration: none; border-radius: 25px; margin-top: 20px; }
+    .contact-box { background: var(--bg-tertiary); padding: 20px; border-radius: 8px; text-align: center; margin: 30px 0; }
+    .footer { background: var(--bg-secondary); padding: 30px; text-align: center; color: var(--text-muted); font-size: 12px; }
+    .hours { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+    .service-badge { display: inline-block; padding: 5px 15px; background: var(--pink-dark); color: white; border-radius: 20px; font-size: 14px; font-weight: bold; }
+    .powered-by { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-color); }
+    .datetime { background: var(--bg-accent); padding: 3px 8px; border-radius: 4px; font-family: monospace; color: var(--text-primary); }
+    
+    /* Links */
+    a { color: var(--pink-dark); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    
+    /* Strong text */
+    strong { color: var(--text-primary); }
+    
+    /* Logo dark mode adjustment */
+    @media (prefers-color-scheme: dark) {
+      .logo { filter: brightness(0.9); }
+      .service-badge { font-weight: 600; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="https://pinkdog-website.vercel.app/images/navbar-logo.png" alt="PinkDog Pet Resort" class="logo">
+      <h1 class="thank-you">Thank You! 🐾</h1>
+      <p style="color: var(--text-secondary); margin: 0;">Your {{ $('Booking - PinkDogResort-Web').item.json.body.services.includes('Daycare') ? 'Daycare' : 'Pet Hotel' }} booking request has been received</p>
+    </div>
+    
+    <div class="content">
+      <p>Dear {{ $('Booking - PinkDogResort-Web').item.json.body.clientName }},</p>
+      
+      <p>Thank you for choosing <strong style="color: var(--pink-dark);">PinkDog Pet Resort - Harvard</strong> for {{ $('Booking - PinkDogResort-Web').item.json.body.petName }}'s {{ $('Booking - PinkDogResort-Web').item.json.body.services.includes('Daycare') ? 'daycare visit' : 'hotel stay' }}. We've received your booking request and we're excited to meet {{ $('Booking - PinkDogResort-Web').item.json.body.petName }}!</p>
+      
+      <div class="summary-box">
+        <h3 style="color: var(--text-primary); margin-top: 0;">📋 Your Booking Summary:</h3>
+        <p style="margin: 10px 0;">
+          <span class="service-badge">{{ $('Booking - PinkDogResort-Web').item.json.body.services.includes('Daycare') ? 'DAYCARE' : 'PET HOTEL' }}</span>
+        </p>
+        <p style="margin: 5px 0;"><strong>Pet:</strong> {{ $('Booking - PinkDogResort-Web').item.json.body.petName }} ({{ $('Booking - PinkDogResort-Web').item.json.body.petBreed }})</p>
+        
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--pink-medium);">
+          {{ $('Booking - PinkDogResort-Web').item.json.body.services.includes('Daycare') ? 
+            '<p style="margin: 5px 0;"><strong>Date:</strong> <span class="datetime">' + $('Booking - PinkDogResort-Web').item.json.body.checkIn.split(' ')[0].split('-')[1] + '-' + $('Booking - PinkDogResort-Web').item.json.body.checkIn.split(' ')[0].split('-')[2] + '-' + $('Booking - PinkDogResort-Web').item.json.body.checkIn.split(' ')[0].split('-')[0] + '</span></p>' +
+            '<p style="margin: 5px 0;"><strong>Drop-off:</strong> <span class="datetime">' + $('Booking - PinkDogResort-Web').item.json.body.checkIn.split(' ')[1] + '</span></p>' +
+            '<p style="margin: 5px 0;"><strong>Pick-up:</strong> <span class="datetime">' + $('Booking - PinkDogResort-Web').item.json.body.checkOut.split(' ')[1] + '</span></p>'
+            :
+            '<p style="margin: 5px 0;"><strong>Check-in:</strong> <span class="datetime">' + $('Booking - PinkDogResort-Web').item.json.body.checkIn + '</span></p>' +
+            '<p style="margin: 5px 0;"><strong>Check-out:</strong> <span class="datetime">' + $('Booking - PinkDogResort-Web').item.json.body.checkOut + '</span></p>'
+          }}
+        </div>
+      </div>
+      
+      <div style="background: var(--bg-accent); padding: 20px; border-radius: 8px; margin: 30px 0;">
+        <h3 style="color: var(--text-primary); margin-top: 0;">⏰ What Happens Next?</h3>
+        <p style="margin: 0; color: var(--text-primary);">Our team will contact you within <strong>24 hours</strong> to confirm availability and finalize your {{ $('Booking - PinkDogResort-Web').item.json.body.services.includes('Daycare') ? 'daycare visit' : 'pet hotel reservation' }}.</p>
+      </div>
+      
+      <div class="contact-box">
+        <p style="margin: 0 0 15px 0; font-weight: bold; color: var(--text-primary);">Questions? We're here to help!</p>
+        <p style="margin: 5px 0; color: var(--text-primary);">📞 <a href="tel:+19787724242" style="color: var(--pink-dark); text-decoration: none;">(978) 772-4242</a></p>
+        <p style="margin: 5px 0; color: var(--text-primary);">💬 <a href="sms:954-914-0128" style="color: var(--pink-dark); text-decoration: none;">(954) 914-0128</a> (Text/WhatsApp)</p>
+        <p style="margin: 15px 0 5px 0; color: var(--text-primary);">📍 <strong>Visit Us:</strong></p>
+        <p style="margin: 5px 0; color: var(--text-primary);">259 Ayer Rd, Harvard, MA 01451</p>
+        <div class="hours">
+          Mon-Sat: 8:30 AM - 5:00 PM<br>
+          Sunday: 12:00 PM - 4:00 PM
+        </div>
+        <a href="mailto:pinkdogpetresort@gmail.com" class="button">✉️ Email Us</a>
+      </div>
+      
+      <p style="text-align: center; color: var(--text-secondary); margin-top: 40px;">
+        Warm regards,<br>
+        <strong style="color: var(--pink-dark);">The PinkDog Pet Resort Team</strong>
+      </p>
+    </div>
+    
+    <div class="footer">
+      <img src="https://pinkdog-website.vercel.app/images/navbar-logo.png" alt="PinkDog" style="max-width: 100px; margin-bottom: 10px;"><br>
+      <strong>PinkDog Pet Resort - Harvard</strong><br>
+      Where Pets Stay in Style! 🏠❤️<br>
+      259 Ayer Rd, Harvard, MA 01451 • (978) 772-4242<br>
+      <a href="mailto:pinkdogpetresort@gmail.com" style="color: var(--pink-dark);">pinkdogpetresort@gmail.com</a>
+      
+      <div class="powered-by">
+        Made with ❤️ for pet businesses<br>
+        <strong>Powered by <a href="https://petquantic.com/" style="color: var(--pink-dark); text-decoration: none;">PetQuantic</a></strong>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

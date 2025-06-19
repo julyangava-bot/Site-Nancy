@@ -2,10 +2,10 @@
 
 import React from "react";
 import { ServicePageLayout } from "@/components/service-page-layout";
+import { DaycareBookingForm } from "@/components/pinkdog/daycare-booking-form";
 import { Heart, Home, Activity, Sparkles, Trees, Car, Hotel, Cat, Dog, Tag, Package, Clock, Scissors, Utensils, Pill, Calendar, Truck, Check, PawPrint } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 export default function DaycarePage() {
   const features = [
@@ -147,8 +147,12 @@ export default function DaycarePage() {
           title: "✨ Designed for Joy & Peace of Mind",
           description: "Our experienced and caring staff supervises all play sessions to ensure safety, encourage appropriate behavior, and provide lots of love and attention throughout the day. Whether your pup is high-energy or prefers gentle play, we tailor group activities based on temperament and size to ensure every dog feels comfortable and included."
         }}
-        ctaText="Book Daycare"
-        ctaLink="https://booking.appointy.com/en-US/pinkdogresort/bookings/service"
+        customCTA={
+          <DaycareBookingForm>
+            Book Daycare
+          </DaycareBookingForm>
+        }
+        secondButtonText="Have Questions?"
         hideCTA={true}
       />
 
@@ -491,25 +495,15 @@ export default function DaycarePage() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                size="lg"
-                className="bg-white text-[#E73992] hover:bg-gray-100 rounded-full px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-                asChild
+              <DaycareBookingForm variant="cta">
+                Book Daycare
+              </DaycareBookingForm>
+              <Link
+                href="/#checkin-info"
+                className="inline-flex items-center justify-center bg-transparent text-white border-2 border-white hover:bg-white/10 rounded-full px-8 py-4 text-lg font-semibold transition-colors"
               >
-                <Link href="https://booking.appointy.com/en-US/pinkdogresort/bookings/service" target="_blank" rel="noopener noreferrer">
-                  Book Now
-                </Link>
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="bg-transparent text-white border-2 border-white hover:bg-white/10 rounded-full px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg font-semibold transition-all duration-300"
-                asChild
-              >
-                <Link href="/#checkin-info">
-                  Contact Us
-                </Link>
-              </Button>
+                Contact Us
+              </Link>
             </div>
             
           </motion.div>

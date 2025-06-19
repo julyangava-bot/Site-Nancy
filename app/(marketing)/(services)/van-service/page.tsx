@@ -1,5 +1,6 @@
 import React from "react";
 import { ServicePageLayout } from "@/components/service-page-layout";
+import { VanBookingForm } from "@/components/pinkdog/van-booking-form";
 import { Car, Clock, MapPin, MessageCircle, Calendar, Heart } from "lucide-react";
 
 export default function VanServicePage() {
@@ -87,11 +88,13 @@ export default function VanServicePage() {
       }}
       faqItems={faqItems}
       pricingNote="Van service rate by distance - appointment only. Please contact us by phone for a personalized quote."
-      ctaText="Book PinkVan"
-      ctaLink="/#checkin-info"
-      showSecondButton={true}
-      secondButtonText="Have Questions?"
-      videoUrl="https://youtube.com/shorts/cDyqllECsoc"
+              customCTA={<VanBookingForm>Book PinkVan</VanBookingForm>}
+        customCTAButton={<VanBookingForm variant="cta">Book PinkVan</VanBookingForm>}
+        showSecondButton={true}
+        secondButtonText="Have Questions?"
+        videoUrl="https://youtube.com/shorts/cDyqllECsoc"
+        ctaText="Request PinkVan Service"
+        ctaLink="/"
     />
   );
 } 
