@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { SchemaMarkup } from "@/components/schema-markup";
 import { Providers } from "@/context/providers";
+import { Analytics } from "@vercel/analytics/next"
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -84,6 +85,7 @@ export default function RootLayout({
         <SchemaMarkup />
       </head>
       <body className={cn("antialiased", inter.className, urbanist.variable)} suppressHydrationWarning>
+        <Analytics />
         <Providers>
           {children}
         </Providers>
