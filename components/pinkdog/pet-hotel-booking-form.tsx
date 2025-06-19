@@ -188,15 +188,15 @@ export function PetHotelBookingForm({ children, variant = 'default' }: PetHotelB
         {children}
       </button>
 
-             {/* Custom Modal with proper scroll and positioning */}
-       {isOpen && (
-         <div className="fixed inset-0 z-[9999] flex items-start justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-           <div 
-             className="fixed inset-0" 
-             onClick={() => setIsOpen(false)}
-           />
-           
-           <div className="relative w-full max-w-md mx-4 mt-16 sm:mt-20 mb-8 bg-white rounded-2xl shadow-2xl max-h-[calc(100vh-100px)] sm:max-h-[calc(100vh-120px)] overflow-hidden">
+      {/* Custom Modal with proper scroll and positioning */}
+      {isOpen && (
+        <div className="fixed inset-0 z-[9999] flex items-start justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+          <div 
+            className="fixed inset-0" 
+            onClick={() => setIsOpen(false)}
+          />
+          
+          <div className="relative w-full max-w-md mx-4 mt-4 mb-8 bg-white rounded-2xl shadow-2xl max-h-[calc(100vh-60px)] flex flex-col">
             {/* Close button */}
             <button
               onClick={() => setIsOpen(false)}
@@ -207,9 +207,9 @@ export function PetHotelBookingForm({ children, variant = 'default' }: PetHotelB
               </svg>
             </button>
 
-                         {/* Scrollable content */}
-             <div className="overflow-y-auto max-h-[calc(100vh-100px)] sm:max-h-[calc(100vh-120px)] p-6">
-              <div className="text-center mb-6">
+            {/* Header */}
+            <div className="p-6 pb-4 border-b border-gray-100 flex-shrink-0">
+              <div className="text-center">
                 <div className="flex items-center justify-center mb-4">
                   <Heart className="w-8 h-8 text-[#E73992] mr-2" />
                   <h2 className="text-2xl font-bold text-gray-900">Pet Hotel Booking</h2>
@@ -218,95 +218,22 @@ export function PetHotelBookingForm({ children, variant = 'default' }: PetHotelB
                   Let us know about your furry friend&apos;s stay! We&apos;ll get back to you as soon as possible.
                 </p>
               </div>
+            </div>
 
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="ownerName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Your Name *</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Enter your full name" 
-                            {...field} 
-                            className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="petType"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">What kind of pet(s)? *</FormLabel>
-                        <FormControl>
-                          <select 
-                            {...field} 
-                            className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                          >
-                            <option value="">Select pet type</option>
-                            <option value="dog">Dog</option>
-                            <option value="cat">Cat</option>
-                            <option value="both">Both Dogs and Cats</option>
-                          </select>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="breeds"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Breed(s) *</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="e.g., Golden Retriever, Maine Coon" 
-                            {...field} 
-                            className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="numberOfPets"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">How many pets will be staying? *</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="e.g., 1, 2, 3" 
-                            {...field} 
-                            className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Scrollable content */}
+            <div className="flex-1 overflow-y-auto min-h-0">
+              <div className="p-6">
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
                     <FormField
                       control={form.control}
-                      name="checkInDate"
+                      name="ownerName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Check-in Date *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium">Your Name *</FormLabel>
                           <FormControl>
                             <Input 
-                              type="date" 
+                              placeholder="Enter your full name" 
                               {...field} 
                               className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
                             />
@@ -318,13 +245,35 @@ export function PetHotelBookingForm({ children, variant = 'default' }: PetHotelB
 
                     <FormField
                       control={form.control}
-                      name="checkOutDate"
+                      name="petType"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Check-out Date *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium">What kind of pet(s)? *</FormLabel>
+                          <FormControl>
+                            <select 
+                              {...field} 
+                              className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                            >
+                              <option value="">Select pet type</option>
+                              <option value="dog">Dog</option>
+                              <option value="cat">Cat</option>
+                              <option value="both">Both Dogs and Cats</option>
+                            </select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="breeds"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Breed(s) *</FormLabel>
                           <FormControl>
                             <Input 
-                              type="date" 
+                              placeholder="e.g., Golden Retriever, Maine Coon" 
                               {...field} 
                               className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
                             />
@@ -333,157 +282,215 @@ export function PetHotelBookingForm({ children, variant = 'default' }: PetHotelB
                         </FormItem>
                       )}
                     />
-                  </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormField
                       control={form.control}
-                      name="checkInTime"
+                      name="numberOfPets"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Check-in Time *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium">How many pets will be staying? *</FormLabel>
                           <FormControl>
-                            <select 
+                            <Input 
+                              placeholder="e.g., 1, 2, 3" 
                               {...field} 
-                              className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                            >
-                              <option value="">Select time</option>
-                              {generateTimeOptions(form.watch('checkInDate')).map(option => (
-                                <option key={option.value} value={option.value}>
-                                  {option.label}
-                                </option>
-                              ))}
-                            </select>
+                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                            />
                           </FormControl>
                           <FormMessage />
-                          <p className="text-xs text-gray-500 mt-1">
-                            Mon-Sat: 8:30 AM - 5:00 PM | Sun: 12:00 PM - 4:00 PM
-                          </p>
+                        </FormItem>
+                      )}
+                    />
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="checkInDate"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-700 font-medium">Check-in Date *</FormLabel>
+                            <FormControl>
+                              <Input 
+                                type="date" 
+                                {...field} 
+                                className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="checkOutDate"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-700 font-medium">Check-out Date *</FormLabel>
+                            <FormControl>
+                              <Input 
+                                type="date" 
+                                {...field} 
+                                className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="checkInTime"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-700 font-medium">Check-in Time *</FormLabel>
+                            <FormControl>
+                              <select 
+                                {...field} 
+                                className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                              >
+                                <option value="">Select time</option>
+                                {generateTimeOptions(form.watch('checkInDate')).map(option => (
+                                  <option key={option.value} value={option.value}>
+                                    {option.label}
+                                  </option>
+                                ))}
+                              </select>
+                            </FormControl>
+                            <FormMessage />
+                            <p className="text-xs text-gray-500 mt-1">
+                              Mon-Sat: 8:30 AM - 5:00 PM | Sun: 12:00 PM - 4:00 PM
+                            </p>
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="checkOutTime"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-700 font-medium">Check-out Time *</FormLabel>
+                            <FormControl>
+                              <select 
+                                {...field} 
+                                className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                              >
+                                <option value="">Select time</option>
+                                {generateTimeOptions(form.watch('checkOutDate')).map(option => (
+                                  <option key={option.value} value={option.value}>
+                                    {option.label}
+                                  </option>
+                                ))}
+                              </select>
+                            </FormControl>
+                            <FormMessage />
+                            <p className="text-xs text-gray-500 mt-1">
+                              Mon-Sat: 8:30 AM - 5:00 PM | Sun: 12:00 PM - 4:00 PM
+                            </p>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Email Address *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="email"
+                              placeholder="your.email@example.com" 
+                              {...field} 
+                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                            />
+                          </FormControl>
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
 
                     <FormField
                       control={form.control}
-                      name="checkOutTime"
+                      name="phone"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Check-out Time *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium">Phone Number *</FormLabel>
                           <FormControl>
-                            <select 
+                            <Input 
+                              type="tel"
+                              placeholder="(555) 123-4567" 
                               {...field} 
-                              className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                            >
-                              <option value="">Select time</option>
-                              {generateTimeOptions(form.watch('checkOutDate')).map(option => (
-                                <option key={option.value} value={option.value}>
-                                  {option.label}
-                                </option>
-                              ))}
-                            </select>
+                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                            />
                           </FormControl>
                           <FormMessage />
-                          <p className="text-xs text-gray-500 mt-1">
-                            Mon-Sat: 8:30 AM - 5:00 PM | Sun: 12:00 PM - 4:00 PM
-                          </p>
                         </FormItem>
                       )}
                     />
-                  </div>
 
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Email Address *</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="email"
-                            placeholder="your.email@example.com" 
-                            {...field} 
-                            className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="phone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Phone Number *</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="tel"
-                            placeholder="(555) 123-4567" 
-                            {...field} 
-                            className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="specialNotes"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Special notes about care or personality (optional)</FormLabel>
-                        <FormControl>
-                          <textarea 
-                            placeholder="Tell us anything special we should know about your pet's care or personality..."
-                            {...field} 
-                            className="flex min-h-[80px] w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-2 text-base shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm resize-none"
-                            rows={3}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  {/* Status Messages */}
-                  {submitStatus === 'success' && (
-                    <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg text-green-800">
-                      <CheckCircle className="w-5 h-5" />
-                      <span>Booking request sent successfully! We&apos;ll contact you soon.</span>
-                    </div>
-                  )}
-                  
-                  {submitStatus === 'error' && (
-                    <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-800">
-                      <XCircle className="w-5 h-5" />
-                      <span>{errorMessage || 'Failed to send booking request. Please try again.'}</span>
-                    </div>
-                  )}
-
-                  <div className="pt-4 border-t border-gray-100">
-                    <Button
-                      type="submit"
-                      disabled={isLoading}
-                      className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-                    >
-                      {isLoading ? (
-                        <>
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                          Sending...
-                        </>
-                      ) : (
-                        <>
-                          <Mail className="w-5 h-5" />
-                          Send Booking Request
-                        </>
+                    <FormField
+                      control={form.control}
+                      name="specialNotes"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Special notes about care or personality (optional)</FormLabel>
+                          <FormControl>
+                            <textarea 
+                              placeholder="Tell us anything special we should know about your pet's care or personality..."
+                              {...field} 
+                              className="flex min-h-[80px] w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-2 text-base shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm resize-none"
+                              rows={3}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
                       )}
-                    </Button>
-                  </div>
-                </form>
-              </Form>
+                    />
+
+                    {/* Status Messages */}
+                    {submitStatus === 'success' && (
+                      <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg text-green-800">
+                        <CheckCircle className="w-5 h-5" />
+                        <span>Booking request sent successfully! We&apos;ll contact you soon.</span>
+                      </div>
+                    )}
+                    
+                    {submitStatus === 'error' && (
+                      <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-800">
+                        <XCircle className="w-5 h-5" />
+                        <span>{errorMessage || 'Failed to send booking request. Please try again.'}</span>
+                      </div>
+                    )}
+                  </form>
+                </Form>
+              </div>
+            </div>
+
+            {/* Fixed button area */}
+            <div className="p-6 pt-4 border-t border-gray-100 flex-shrink-0">
+              <Button
+                type="submit"
+                onClick={form.handleSubmit(handleSubmit)}
+                disabled={isLoading}
+                className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <Mail className="w-5 h-5" />
+                    Send Booking Request
+                  </>
+                )}
+              </Button>
             </div>
           </div>
         </div>

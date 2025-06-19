@@ -202,7 +202,7 @@ export function VanBookingForm({ children, variant = 'default' }: VanBookingForm
             onClick={() => setIsOpen(false)}
           />
           
-          <div className="relative w-full max-w-md mx-4 mt-16 sm:mt-20 mb-8 bg-white rounded-2xl shadow-2xl max-h-[calc(100vh-100px)] sm:max-h-[calc(100vh-120px)] overflow-hidden">
+          <div className="relative w-full max-w-md mx-4 mt-4 mb-8 bg-white rounded-2xl shadow-2xl max-h-[calc(100vh-60px)] flex flex-col">
             {/* Close button */}
             <button
               onClick={() => setIsOpen(false)}
@@ -213,9 +213,9 @@ export function VanBookingForm({ children, variant = 'default' }: VanBookingForm
               </svg>
             </button>
 
-            {/* Scrollable content */}
-            <div className="overflow-y-auto max-h-[calc(100vh-100px)] sm:max-h-[calc(100vh-120px)] p-6">
-              <div className="text-center mb-6">
+            {/* Header */}
+            <div className="p-6 pb-4 border-b border-gray-100 flex-shrink-0">
+              <div className="text-center">
                 <div className="flex items-center justify-center mb-4">
                   <Heart className="w-8 h-8 text-[#E73992] mr-2" />
                   <h2 className="text-2xl font-bold text-gray-900">🚐 PinkVan Request</h2>
@@ -224,181 +224,22 @@ export function VanBookingForm({ children, variant = 'default' }: VanBookingForm
                   Need a lift for your pup? Our PinkVan offers safe and convenient transportation! Please fill out the info below to request service.
                 </p>
               </div>
+            </div>
 
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="ownerName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Your Name *</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Enter your full name" 
-                            {...field} 
-                            className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="petNames"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Pet&apos;s Name(s) *</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="e.g., Buddy, Luna" 
-                            {...field} 
-                            className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="breedAndSize"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Breed & Size *</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="e.g., Golden Retriever, Large" 
-                            {...field} 
-                            className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="serviceNeeded"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Pick-Up, Drop-Off, or Both? *</FormLabel>
-                        <FormControl>
-                          <select 
-                            {...field} 
-                            className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                          >
-                            <option value="">Select service needed</option>
-                            <option value="pickup">Pick-Up Only</option>
-                            <option value="dropoff">Drop-Off Only</option>
-                            <option value="both">Both Pick-Up & Drop-Off</option>
-                          </select>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="address"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Address for Pick-Up/Drop-Off *</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Full address including city and zip code" 
-                            {...field} 
-                            className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="desiredDate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Desired Date *</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="date" 
-                            {...field} 
-                            className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="timeWindow"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Time Window *</FormLabel>
-                        <FormControl>
-                          <select 
-                            {...field} 
-                            className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                          >
-                            <option value="">Select time window</option>
-                            {generateTimeOptions(form.watch('desiredDate')).map(option => (
-                              <option key={option.value} value={option.value}>
-                                {option.label}
-                              </option>
-                            ))}
-                          </select>
-                        </FormControl>
-                        <FormMessage />
-                        <p className="text-xs text-gray-500 mt-1">
-                          Mon-Sat: 8:00 AM - 10:00 AM (Morning Pickup) | 3:00 PM - 5:00 PM (Afternoon Drop-off) | Sun: 12:00 PM - 4:00 PM
-                        </p>
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="requestedService"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Service Type *</FormLabel>
-                        <FormControl>
-                          <select 
-                            {...field} 
-                            className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                          >
-                            <option value="">Select service type</option>
-                            <option value="grooming">Grooming</option>
-                            <option value="daycare">Daycare</option>
-                            <option value="boarding">Boarding</option>
-                            <option value="other">Other</option>
-                          </select>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  {watchRequestedService === 'other' && (
+            {/* Scrollable content */}
+            <div className="flex-1 overflow-y-auto min-h-0">
+              <div className="p-6">
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
                     <FormField
                       control={form.control}
-                      name="otherServiceType"
+                      name="ownerName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Please specify other service</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium">Your Name *</FormLabel>
                           <FormControl>
                             <Input 
-                              placeholder="Describe the service needed" 
+                              placeholder="Enter your full name" 
                               {...field} 
                               className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
                             />
@@ -407,104 +248,270 @@ export function VanBookingForm({ children, variant = 'default' }: VanBookingForm
                         </FormItem>
                       )}
                     />
-                  )}
 
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Email Address *</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="email"
-                            placeholder="your.email@example.com" 
-                            {...field} 
-                            className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="phone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Phone Number *</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="tel"
-                            placeholder="(555) 123-4567" 
-                            {...field} 
-                            className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="specialInstructions"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Special Instructions (optional)</FormLabel>
-                        <FormControl>
-                          <textarea 
-                            placeholder="Gate code, preferred door, pet handling notes, etc..."
-                            {...field} 
-                            className="flex min-h-[80px] w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-2 text-base shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm resize-none"
-                            rows={3}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  {/* Status Messages */}
-                  {submitStatus === 'success' && (
-                    <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg text-green-800">
-                      <CheckCircle className="w-5 h-5" />
-                      <span>PinkVan request sent successfully! We&apos;ll contact you soon to confirm your transportation.</span>
-                    </div>
-                  )}
-                  
-                  {submitStatus === 'error' && (
-                    <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-800">
-                      <XCircle className="w-5 h-5" />
-                      <span>{errorMessage || 'Failed to send PinkVan request. Please try again.'}</span>
-                    </div>
-                  )}
-
-                  <div className="pt-4 border-t border-gray-100">
-                    <p className="text-xs text-gray-500 mb-3 text-center">
-                      🦴 Note: PinkVan rides must be scheduled and confirmed in advance. An additional fee applies based on distance — we&apos;ll let you know the total when confirming your request.
-                    </p>
-                    <Button
-                      type="submit"
-                      disabled={isLoading}
-                      className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-                    >
-                      {isLoading ? (
-                        <>
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                          Sending...
-                        </>
-                      ) : (
-                        <>
-                          <Mail className="w-5 h-5" />
-                          Send PinkVan Request
-                        </>
+                    <FormField
+                      control={form.control}
+                      name="petNames"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Pet&apos;s Name(s) *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="e.g., Buddy, Luna" 
+                              {...field} 
+                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
                       )}
-                    </Button>
-                  </div>
-                </form>
-              </Form>
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="breedAndSize"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Breed & Size *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="e.g., Golden Retriever, Large" 
+                              {...field} 
+                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="serviceNeeded"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Pick-Up, Drop-Off, or Both? *</FormLabel>
+                          <FormControl>
+                            <select 
+                              {...field} 
+                              className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                            >
+                              <option value="">Select service needed</option>
+                              <option value="pickup">Pick-Up Only</option>
+                              <option value="dropoff">Drop-Off Only</option>
+                              <option value="both">Both Pick-Up & Drop-Off</option>
+                            </select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="address"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Address for Pick-Up/Drop-Off *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="Full address including city and zip code" 
+                              {...field} 
+                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="desiredDate"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Desired Date *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="date" 
+                              {...field} 
+                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="timeWindow"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Time Window *</FormLabel>
+                          <FormControl>
+                            <select 
+                              {...field} 
+                              className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                            >
+                              <option value="">Select time window</option>
+                              {generateTimeOptions(form.watch('desiredDate')).map(option => (
+                                <option key={option.value} value={option.value}>
+                                  {option.label}
+                                </option>
+                              ))}
+                            </select>
+                          </FormControl>
+                          <FormMessage />
+                          <p className="text-xs text-gray-500 mt-1">
+                            Mon-Sat: 8:00 AM - 10:00 AM (Morning Pickup) | 3:00 PM - 5:00 PM (Afternoon Drop-off) | Sun: 12:00 PM - 4:00 PM
+                          </p>
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="requestedService"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Service Type *</FormLabel>
+                          <FormControl>
+                            <select 
+                              {...field} 
+                              className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                            >
+                              <option value="">Select service type</option>
+                              <option value="grooming">Grooming</option>
+                              <option value="daycare">Daycare</option>
+                              <option value="boarding">Boarding</option>
+                              <option value="other">Other</option>
+                            </select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    {watchRequestedService === 'other' && (
+                      <FormField
+                        control={form.control}
+                        name="otherServiceType"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-700 font-medium">Please specify other service</FormLabel>
+                            <FormControl>
+                              <Input 
+                                placeholder="Describe the service needed" 
+                                {...field} 
+                                className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )}
+
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Email Address *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="email"
+                              placeholder="your.email@example.com" 
+                              {...field} 
+                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Phone Number *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="tel"
+                              placeholder="(555) 123-4567" 
+                              {...field} 
+                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="specialInstructions"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Special Instructions (optional)</FormLabel>
+                          <FormControl>
+                            <textarea 
+                              placeholder="Gate code, preferred door, pet handling notes, etc..."
+                              {...field} 
+                              className="flex min-h-[80px] w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-2 text-base shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm resize-none"
+                              rows={3}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    {/* Status Messages */}
+                    {submitStatus === 'success' && (
+                      <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg text-green-800">
+                        <CheckCircle className="w-5 h-5" />
+                        <span>PinkVan request sent successfully! We&apos;ll contact you soon to confirm your transportation.</span>
+                      </div>
+                    )}
+                    
+                    {submitStatus === 'error' && (
+                      <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-800">
+                        <XCircle className="w-5 h-5" />
+                        <span>{errorMessage || 'Failed to send PinkVan request. Please try again.'}</span>
+                      </div>
+                    )}
+                  </form>
+                </Form>
+              </div>
+            </div>
+
+            {/* Fixed button area */}
+            <div className="p-6 pt-4 border-t border-gray-100 flex-shrink-0">
+              <p className="text-xs text-gray-500 mb-3 text-center">
+                🦴 Note: PinkVan rides must be scheduled and confirmed in advance. An additional fee applies based on distance — we&apos;ll let you know the total when confirming your request.
+              </p>
+              <Button
+                type="submit"
+                onClick={form.handleSubmit(handleSubmit)}
+                disabled={isLoading}
+                className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <Mail className="w-5 h-5" />
+                    Send PinkVan Request
+                  </>
+                )}
+              </Button>
             </div>
           </div>
         </div>

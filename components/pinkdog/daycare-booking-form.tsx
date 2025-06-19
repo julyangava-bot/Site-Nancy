@@ -121,10 +121,10 @@ export function DaycareBookingForm({ children, variant = 'default' }: DaycareBoo
         headers: {
           'Content-Type': 'application/json',
         },
-                  body: JSON.stringify({
-            // Map daycare form fields to the expected format
-            ownerName: values.ownerName,
-            clientEmail: values.email,
+        body: JSON.stringify({
+          // Map daycare form fields to the expected format
+          ownerName: values.ownerName,
+          clientEmail: values.email,
           phone: values.phone,
           petType: 'dog',
           breeds: values.breedAndAge,
@@ -207,7 +207,7 @@ export function DaycareBookingForm({ children, variant = 'default' }: DaycareBoo
             onClick={() => setIsOpen(false)}
           />
           
-          <div className="relative w-full max-w-md mx-4 mt-16 sm:mt-20 mb-8 bg-white rounded-2xl shadow-2xl max-h-[calc(100vh-100px)] sm:max-h-[calc(100vh-120px)] overflow-hidden">
+          <div className="relative w-full max-w-md mx-4 mt-4 mb-8 bg-white rounded-2xl shadow-2xl max-h-[calc(100vh-60px)] flex flex-col">
             {/* Close button */}
             <button
               onClick={() => setIsOpen(false)}
@@ -218,9 +218,9 @@ export function DaycareBookingForm({ children, variant = 'default' }: DaycareBoo
               </svg>
             </button>
 
-            {/* Scrollable content */}
-            <div className="overflow-y-auto max-h-[calc(100vh-100px)] sm:max-h-[calc(100vh-120px)] p-6">
-              <div className="text-center mb-6">
+            {/* Header */}
+            <div className="p-6 pb-4 border-b border-gray-100 flex-shrink-0">
+              <div className="text-center">
                 <div className="flex items-center justify-center mb-4">
                   <Heart className="w-8 h-8 text-[#E73992] mr-2" />
                   <h2 className="text-2xl font-bold text-gray-900">🐶 Daycare Request</h2>
@@ -229,269 +229,276 @@ export function DaycareBookingForm({ children, variant = 'default' }: DaycareBoo
                   We&apos;re excited to welcome your pup to our daycare! Please fill out the info below so we can schedule their temperament test and get them ready for fun, safe play.
                 </p>
               </div>
+            </div>
 
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="ownerName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Your Name *</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Enter your full name" 
-                            {...field} 
-                            className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Email Address *</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="email"
-                            placeholder="your.email@example.com" 
-                            {...field} 
-                            className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="phone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Phone Number *</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="tel"
-                            placeholder="(555) 123-4567" 
-                            {...field} 
-                            className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="dogName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Dog&apos;s Name *</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="e.g., Buddy" 
-                            {...field} 
-                            className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="breedAndAge"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Breed & Age *</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="e.g., Golden Retriever, 3 years old" 
-                            {...field} 
-                            className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="previousDaycare"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Has your dog attended daycare before? *</FormLabel>
-                        <FormControl>
-                          <select 
-                            {...field} 
-                            className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                          >
-                            <option value="">Select an option</option>
-                            <option value="yes">Yes</option>
-                            <option value="no">No</option>
-                          </select>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="socialBehavior"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">How is your dog around other dogs? *</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="e.g., Friendly, Shy, Selective, Reactive, etc." 
-                            {...field} 
-                            className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="daycareDate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Daycare Date *</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="date" 
-                            {...field} 
-                            className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Scrollable content */}
+            <div className="flex-1 overflow-y-auto min-h-0">
+              <div className="p-6">
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
                     <FormField
                       control={form.control}
-                      name="dropOffTime"
+                      name="ownerName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Drop-off Time *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium">Your Name *</FormLabel>
                           <FormControl>
-                            <select 
+                            <Input 
+                              placeholder="Enter your full name" 
                               {...field} 
-                              className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                            >
-                              <option value="">Select time</option>
-                              {generateTimeOptions(form.watch('daycareDate')).map(option => (
-                                <option key={option.value} value={option.value}>
-                                  {option.label}
-                                </option>
-                              ))}
-                            </select>
+                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                            />
                           </FormControl>
                           <FormMessage />
-                          <p className="text-xs text-gray-500 mt-1">
-                            Mon-Sat: 8:30 AM - 5:00 PM | Sun: 12:00 PM - 4:00 PM
-                          </p>
                         </FormItem>
                       )}
                     />
 
                     <FormField
                       control={form.control}
-                      name="pickUpTime"
+                      name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Pick-up Time *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium">Email Address *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="email"
+                              placeholder="your.email@example.com" 
+                              {...field} 
+                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Phone Number *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="tel"
+                              placeholder="(555) 123-4567" 
+                              {...field} 
+                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="dogName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Dog&apos;s Name *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="e.g., Buddy" 
+                              {...field} 
+                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="breedAndAge"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Breed & Age *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="e.g., Golden Retriever, 3 years old" 
+                              {...field} 
+                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="previousDaycare"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Has your dog attended daycare before? *</FormLabel>
                           <FormControl>
                             <select 
                               {...field} 
                               className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                             >
-                              <option value="">Select time</option>
-                              {generateTimeOptions(form.watch('daycareDate')).map(option => (
-                                <option key={option.value} value={option.value}>
-                                  {option.label}
-                                </option>
-                              ))}
+                              <option value="">Select an option</option>
+                              <option value="yes">Yes</option>
+                              <option value="no">No</option>
                             </select>
                           </FormControl>
                           <FormMessage />
-                          <p className="text-xs text-gray-500 mt-1">
-                            Mon-Sat: 8:30 AM - 5:00 PM | Sun: 12:00 PM - 4:00 PM
-                          </p>
                         </FormItem>
                       )}
                     />
-                  </div>
 
-                  <FormField
-                    control={form.control}
-                    name="specialNotes"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Additional notes (optional)</FormLabel>
-                        <FormControl>
-                          <textarea 
-                            placeholder="Any special care instructions or behavior notes..."
-                            {...field} 
-                            className="flex min-h-[80px] w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-2 text-base shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm resize-none"
-                            rows={3}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  {/* Status Messages */}
-                  {submitStatus === 'success' && (
-                    <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg text-green-800">
-                      <CheckCircle className="w-5 h-5" />
-                      <span>Daycare request sent successfully! We&apos;ll contact you soon to schedule a temperament test.</span>
-                    </div>
-                  )}
-                  
-                  {submitStatus === 'error' && (
-                    <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-800">
-                      <XCircle className="w-5 h-5" />
-                      <span>{errorMessage || 'Failed to send daycare request. Please try again.'}</span>
-                    </div>
-                  )}
-
-                  <div className="pt-4 border-t border-gray-100">
-                    <Button
-                      type="submit"
-                      disabled={isLoading}
-                      className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-                    >
-                      {isLoading ? (
-                        <>
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                          Sending...
-                        </>
-                      ) : (
-                        <>
-                          <Mail className="w-5 h-5" />
-                          Send Daycare Request
-                        </>
+                    <FormField
+                      control={form.control}
+                      name="socialBehavior"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">How is your dog around other dogs? *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="e.g., Friendly, Shy, Selective, Reactive, etc." 
+                              {...field} 
+                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
                       )}
-                    </Button>
-                  </div>
-                </form>
-              </Form>
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="daycareDate"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Daycare Date *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="date" 
+                              {...field} 
+                              className="border-gray-200 focus:border-[#E73992] focus:ring-[#E73992]"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="dropOffTime"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-700 font-medium">Drop-off Time *</FormLabel>
+                            <FormControl>
+                              <select 
+                                {...field} 
+                                className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                              >
+                                <option value="">Select time</option>
+                                {generateTimeOptions(form.watch('daycareDate')).map(option => (
+                                  <option key={option.value} value={option.value}>
+                                    {option.label}
+                                  </option>
+                                ))}
+                              </select>
+                            </FormControl>
+                            <FormMessage />
+                            <p className="text-xs text-gray-500 mt-1">
+                              Mon-Sat: 8:30 AM - 5:00 PM | Sun: 12:00 PM - 4:00 PM
+                            </p>
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="pickUpTime"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-700 font-medium">Pick-up Time *</FormLabel>
+                            <FormControl>
+                              <select 
+                                {...field} 
+                                className="flex h-9 w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                              >
+                                <option value="">Select time</option>
+                                {generateTimeOptions(form.watch('daycareDate')).map(option => (
+                                  <option key={option.value} value={option.value}>
+                                    {option.label}
+                                  </option>
+                                ))}
+                              </select>
+                            </FormControl>
+                            <FormMessage />
+                            <p className="text-xs text-gray-500 mt-1">
+                              Mon-Sat: 8:30 AM - 5:00 PM | Sun: 12:00 PM - 4:00 PM
+                            </p>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <FormField
+                      control={form.control}
+                      name="specialNotes"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Additional notes (optional)</FormLabel>
+                          <FormControl>
+                            <textarea 
+                              placeholder="Any special care instructions or behavior notes..."
+                              {...field} 
+                              className="flex min-h-[80px] w-full rounded-[6px] border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-2 text-base shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm resize-none"
+                              rows={3}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    {/* Status Messages */}
+                    {submitStatus === 'success' && (
+                      <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg text-green-800">
+                        <CheckCircle className="w-5 h-5" />
+                        <span>Daycare request sent successfully! We&apos;ll contact you soon to schedule a temperament test.</span>
+                      </div>
+                    )}
+                    
+                    {submitStatus === 'error' && (
+                      <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-800">
+                        <XCircle className="w-5 h-5" />
+                        <span>{errorMessage || 'Failed to send daycare request. Please try again.'}</span>
+                      </div>
+                    )}
+                  </form>
+                </Form>
+              </div>
+            </div>
+
+            {/* Fixed button area */}
+            <div className="p-6 pt-4 border-t border-gray-100 flex-shrink-0">
+              <Button
+                type="submit"
+                onClick={form.handleSubmit(handleSubmit)}
+                disabled={isLoading}
+                className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <Mail className="w-5 h-5" />
+                    Send Daycare Request
+                  </>
+                )}
+              </Button>
             </div>
           </div>
         </div>
