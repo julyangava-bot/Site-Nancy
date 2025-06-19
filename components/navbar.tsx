@@ -153,6 +153,7 @@ export const Navbar = () => {
   }
 
   return (
+    <>
     <motion.div
       ref={ref}
       initial={{ opacity: 0 }}
@@ -201,12 +202,13 @@ export const Navbar = () => {
           scroll-behavior: smooth;
         }
       `}</style>
-      
-      <ServiceSelectionDialog 
-        isOpen={isServiceDialogOpen} 
-        onClose={() => setIsServiceDialogOpen(false)} 
-      />
     </motion.div>
+    
+    <ServiceSelectionDialog 
+      isOpen={isServiceDialogOpen} 
+      onClose={() => setIsServiceDialogOpen(false)} 
+    />
+    </>
   );
 };
 
