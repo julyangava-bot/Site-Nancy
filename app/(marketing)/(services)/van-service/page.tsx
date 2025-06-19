@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { ServicePageLayout } from "@/components/service-page-layout";
 import { VanBookingForm } from "@/components/pinkdog/van-booking-form";
 import { Car, Clock, MapPin, MessageCircle, Calendar, Heart } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 
-export default function VanServicePage() {
+function VanServiceContent() {
   const searchParams = useSearchParams();
   const [showBookingForm, setShowBookingForm] = useState(false);
 
@@ -108,5 +108,13 @@ export default function VanServicePage() {
         ctaText="Request PinkVan Service"
         ctaLink="/"
     />
+  );
+}
+
+export default function VanServicePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white" />}>
+      <VanServiceContent />
+    </Suspense>
   );
 } 

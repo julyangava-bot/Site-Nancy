@@ -18,7 +18,7 @@ export async function BlogLayout({
   return (
     <div className="mt-16 lg:mt-14 max-w-6xl mx-auto px-4">
       <div className="flex justify-between items-center px-2 py-8">
-        <Link href="/blog" className="flex space-x-2 items-center">
+        <Link href="/resources/blog" className="flex space-x-2 items-center">
           <IconArrowLeft className="w-4 h-4 text-gray-500" />
           <span className="text-sm text-gray-500">Back</span>
         </Link>

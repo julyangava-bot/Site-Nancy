@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { PetHotelBookingForm } from "@/components/pinkdog/pet-hotel-booking-form";
 import { Clock, Heart, Users, Cat, Home, Activity } from "lucide-react";
 import { motion } from "framer-motion";
@@ -8,7 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-export default function PetHotelPage() {
+function PetHotelContent() {
   const searchParams = useSearchParams();
   const [showBookingForm, setShowBookingForm] = useState(false);
 
@@ -298,7 +298,7 @@ export default function PetHotelPage() {
                   Book Pet Hotel
                 </PetHotelBookingForm>
                 <Link
-                  href="/faq"
+                  href="/resources/faq"
                   className="inline-flex items-center justify-center bg-transparent text-white border-2 border-white hover:bg-white/10 rounded-full px-8 py-4 text-lg font-semibold transition-colors"
                 >
                   Have Questions?
@@ -308,5 +308,13 @@ export default function PetHotelPage() {
           </div>
         </section>
     </main>
+  );
+}
+
+export default function PetHotelPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PetHotelContent />
+    </Suspense>
   );
 } 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { ServicePageLayout } from "@/components/service-page-layout";
 import { DaycareBookingForm } from "@/components/pinkdog/daycare-booking-form";
 import { Heart, Home, Activity, Sparkles, Trees, Car, Hotel, Cat, Dog, Tag, Package, Clock, Scissors, Utensils, Pill, Calendar, Truck, Check, PawPrint } from "lucide-react";
@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-export default function DaycarePage() {
+function DaycareContent() {
   const searchParams = useSearchParams();
   const [showBookingForm, setShowBookingForm] = useState(false);
 
@@ -555,5 +555,13 @@ export default function DaycarePage() {
         </div>
       </section>
     </>
+  );
+}
+
+export default function DaycarePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white" />}>
+      <DaycareContent />
+    </Suspense>
   );
 } 

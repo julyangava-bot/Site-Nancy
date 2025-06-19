@@ -1,11 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-export default function GroomingPage() {
+function GroomingContent() {
   const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
 
@@ -506,7 +506,7 @@ export default function GroomingPage() {
               Book Spa Day
             </Link>
             <Link
-              href="/faq"
+              href="/resources/faq"
               className="inline-flex items-center justify-center bg-transparent text-white border-2 border-white hover:bg-white/10 rounded-full px-8 py-4 text-lg font-semibold transition-colors"
             >
               Have Questions?
@@ -515,5 +515,13 @@ export default function GroomingPage() {
         </div>
       </section>
     </main>
+  );
+}
+
+export default function GroomingPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white" />}>
+      <GroomingContent />
+    </Suspense>
   );
 } 

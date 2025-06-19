@@ -38,7 +38,7 @@ export function PawPrint({
         duration: 4,
         repeat: Infinity,
         repeatType: "reverse" as const,
-        ease: "linear"
+        ease: "linear" as const
       }
     }
   };

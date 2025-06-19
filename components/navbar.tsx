@@ -14,7 +14,7 @@ import React, { useRef, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "./logo";
 import { handleSectionNavigation, scrollToSection } from "@/lib/navigation";
-import { Users, Heart, HelpCircle, BookOpen } from "lucide-react";
+import { Users, Heart, HelpCircle } from "lucide-react";
 import { IconBrandInstagram, IconBrandFacebook } from "@tabler/icons-react";
 import { useModal } from "@/context/providers";
 import { ServiceSelectionDialog } from "@/components/pinkdog/service-selection-dialog";
@@ -89,19 +89,19 @@ export const Navbar = () => {
         {
           name: "About Us",
           link: "/about",
-          icon: <Users className="w-8 h-8" />,
+          icon: <Users className="w-10 h-10" />,
           description: "Our story and mission"
         },
         {
           name: "Our Philosophy",
           link: "/philosophy",
-          icon: <Heart className="w-8 h-8" />,
+          icon: <Heart className="w-10 h-10" />,
           description: "Our values and approach"
         },
         {
           name: "Gallery",
           link: "/#gallery",
-          icon: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          icon: <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>,
           description: "Photos and videos"
@@ -109,24 +109,9 @@ export const Navbar = () => {
       ]
     },
     {
-      name: "Resources",
-      link: "#",
+      name: "FAQ",
+      link: "/faq",
       isSection: false,
-      hasDropdown: true,
-      dropdownItems: [
-        {
-          name: "FAQ",
-          link: "/faq",
-          icon: <HelpCircle className="w-8 h-8" />,
-          description: "Common questions answered"
-        },
-        // {
-        //   name: "Blog",
-        //   link: "/blog",
-        //   icon: <BookOpen className="w-8 h-8" />,
-        //   description: "Tips and pet care insights"
-        // }
-      ]
     },
     {
       name: "Contact",
@@ -307,8 +292,8 @@ const DesktopNav = ({
         );
       case "About":
         return <Users className="w-5 h-5" />;
-      case "Resources":
-        return <BookOpen className="w-5 h-5" />;
+      case "FAQ":
+        return <HelpCircle className="w-5 h-5" />;
       case "Contact":
         return (
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -451,89 +436,39 @@ const DesktopNav = ({
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 10 }}
                             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                            className="absolute top-[calc(100%_+_0.5rem)] left-1/2 -translate-x-1/2 bg-white rounded-xl shadow-lg p-4 z-50 w-[500px]"
+                            className="absolute top-[calc(100%_+_0.5rem)] left-1/2 -translate-x-1/2 bg-white rounded-2xl shadow-xl border border-gray-100 p-5 z-50 w-[520px]"
                           >
-                            <div className={`
-                              ${navItem.name === "Services" ? "grid grid-cols-2 gap-4" : ""}
-                              ${navItem.name === "About" ? "grid grid-cols-2 gap-4" : ""}
-                              ${navItem.name === "Resources" ? "flex justify-center gap-4" : ""}
-                            `}>
-                              {navItem.name === "About" && navItem.dropdownItems ? (
-                                <>
-                                  {/* First row - About Us and Our Philosophy */}
-                                  {navItem.dropdownItems.slice(0, 2).map((item, i) => (
-                                    <Link 
-                                      key={`dropdown-${i}`}
-                                      href={item.link}
-                                      className="flex items-start gap-3 p-3 rounded-lg hover:bg-pink-50 transition-colors duration-200"
-                                      onClick={() => setActiveDropdown(null)}
-                                    >
-                                      <div className="flex-shrink-0 h-14 w-14 relative flex items-center justify-center">
-                                        {item.icon && (
-                                          <div className="text-[#E73992]">{item.icon}</div>
-                                        )}
+                            <div className="grid grid-cols-2 gap-3">
+                              {navItem.dropdownItems?.map((item, i) => (
+                                <Link 
+                                  key={`dropdown-${i}`}
+                                  href={item.link}
+                                  className="group flex items-start gap-3 p-4 rounded-xl hover:bg-gradient-to-r hover:from-pink-50 hover:to-pink-50/50 transition-all duration-200 hover:shadow-sm"
+                                  onClick={() => setActiveDropdown(null)}
+                                >
+                                  <div className="flex-shrink-0 h-14 w-14 relative flex items-center justify-center">
+                                    {item.imageSrc ? (
+                                      <Image 
+                                        src={item.imageSrc} 
+                                        alt={item.name}
+                                        width={56}
+                                        height={56}
+                                        className="rounded-md object-contain"
+                                      />
+                                    ) : item.icon ? (
+                                      <div className="text-[#E73992] w-full h-full flex items-center justify-center bg-pink-50 rounded-xl group-hover:bg-white transition-colors duration-200">
+                                        {item.icon}
                                       </div>
-                                      <div>
-                                        <h3 className="font-medium text-gray-900">{item.name}</h3>
-                                        {item.description && (
-                                          <p className="text-xs text-gray-500 mt-0.5">{item.description}</p>
-                                        )}
-                                      </div>
-                                    </Link>
-                                  ))}
-                                  {/* Second row - Gallery centered */}
-                                  <div className="col-span-2 flex justify-center">
-                                    {navItem.dropdownItems[2] && (
-                                      <Link 
-                                        href={navItem.dropdownItems[2].link}
-                                        className="flex items-start gap-3 p-3 rounded-lg hover:bg-pink-50 transition-colors duration-200 max-w-[250px]"
-                                        onClick={() => setActiveDropdown(null)}
-                                      >
-                                        <div className="flex-shrink-0 h-14 w-14 relative flex items-center justify-center">
-                                          {navItem.dropdownItems[2].icon && (
-                                            <div className="text-[#E73992]">{navItem.dropdownItems[2].icon}</div>
-                                          )}
-                                        </div>
-                                        <div>
-                                          <h3 className="font-medium text-gray-900">{navItem.dropdownItems[2].name}</h3>
-                                          {navItem.dropdownItems[2].description && (
-                                            <p className="text-xs text-gray-500 mt-0.5">{navItem.dropdownItems[2].description}</p>
-                                          )}
-                                        </div>
-                                      </Link>
+                                    ) : null}
+                                  </div>
+                                  <div className="flex flex-col justify-center">
+                                    <h3 className="font-semibold text-gray-900 group-hover:text-[#E73992] transition-colors duration-200">{item.name}</h3>
+                                    {item.description && (
+                                      <p className="text-xs text-gray-600 mt-0.5 group-hover:text-gray-700 transition-colors duration-200">{item.description}</p>
                                     )}
                                   </div>
-                                </>
-                              ) : (
-                                navItem.dropdownItems?.map((item, i) => (
-                                  <Link 
-                                    key={`dropdown-${i}`}
-                                    href={item.link}
-                                    className="flex items-start gap-3 p-3 rounded-lg hover:bg-pink-50 transition-colors duration-200"
-                                    onClick={() => setActiveDropdown(null)}
-                                  >
-                                    <div className="flex-shrink-0 h-14 w-14 relative flex items-center justify-center">
-                                      {item.imageSrc ? (
-                                        <Image 
-                                          src={item.imageSrc} 
-                                          alt={item.name}
-                                          width={56}
-                                          height={56}
-                                          className="rounded-md object-contain"
-                                        />
-                                      ) : item.icon ? (
-                                        <div className="text-[#E73992]">{item.icon}</div>
-                                      ) : null}
-                                    </div>
-                                    <div>
-                                      <h3 className="font-medium text-gray-900">{item.name}</h3>
-                                      {item.description && (
-                                        <p className="text-xs text-gray-500 mt-0.5">{item.description}</p>
-                                      )}
-                                    </div>
-                                  </Link>
-                                ))
-                              )}
+                                </Link>
+                              ))}
                             </div>
                           </motion.div>
                         )}
@@ -594,7 +529,7 @@ const DesktopNav = ({
                       duration: 0.2,
                       ease: "easeInOut",
                     }}
-                    className="desktop-nav-container flex rounded-3xl absolute top-16 mt-2 backdrop-blur-xl bg-white/98 left-0 right-0 z-50 flex-col items-center justify-start w-full px-4 py-6 shadow-2xl max-h-[calc(100vh-8rem)] overflow-y-auto mobile-menu-scroll"
+                    className="desktop-nav-container flex rounded-3xl absolute top-[calc(100%+8px)] backdrop-blur-xl bg-white/98 left-0 right-0 z-50 flex-col items-center justify-start w-full px-4 py-6 shadow-2xl max-h-[calc(100vh-8rem)] overflow-y-auto mobile-menu-scroll"
                   >
                     {navItems.map((navItem, idx) => (
                       <motion.div
@@ -663,7 +598,7 @@ const DesktopNav = ({
                                                 className="rounded-md object-contain"
                                               />
                                             ) : item.icon ? (
-                                              <div className="w-5 h-5 text-[#E73992]">
+                                              <div className="w-5 h-5 flex items-center justify-center text-[#E73992]">
                                                 {item.icon}
                                               </div>
                                             ) : (
@@ -828,8 +763,8 @@ const MobileNav = ({
         );
       case "About":
         return <Users className="w-5 h-5" />;
-      case "Resources":
-        return <BookOpen className="w-5 h-5" />;
+      case "FAQ":
+        return <HelpCircle className="w-5 h-5" />;
       case "Contact":
         return (
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -922,7 +857,7 @@ const MobileNav = ({
                     ease: "easeInOut",
                   }}
                   className={cn(
-                    "flex rounded-3xl absolute top-16 mt-2 backdrop-blur-xl bg-white/98 z-50 flex-col items-center justify-start px-4 py-6 shadow-2xl mobile-menu-scroll",
+                    "flex rounded-3xl absolute top-[calc(100%+8px)] backdrop-blur-xl bg-white/98 z-50 flex-col items-center justify-start px-4 py-6 shadow-2xl mobile-menu-scroll",
                     "left-0 right-0 max-h-[calc(100vh-8rem)] overflow-y-auto"
                   )}
                 >
@@ -989,7 +924,7 @@ const MobileNav = ({
                                               className="rounded-md object-contain"
                                             />
                                           ) : item.icon ? (
-                                            <div className="w-5 h-5 text-[#E73992]">
+                                            <div className="w-5 h-5 flex items-center justify-center text-[#E73992]">
                                               {item.icon}
                                             </div>
                                           ) : (

@@ -1,7 +1,36 @@
 "use client";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { IconPlus, IconPhone, IconMail, IconBrandWhatsapp, IconClock, IconMapPin, IconCalendarEvent, IconPaw } from "@tabler/icons-react";
+import { 
+  IconPlus, 
+  IconPhone, 
+  IconMail, 
+  IconBrandWhatsapp, 
+  IconClock, 
+  IconMapPin, 
+  IconCalendarEvent, 
+  IconPaw,
+  IconCar,
+  IconHome,
+  IconScissors,
+  IconMessage,
+  IconStar,
+  IconCheck,
+  IconHeart,
+  IconAlertCircle,
+  IconSparkles,
+  IconBone,
+  IconBallTennis,
+  IconDog,
+  IconBulb,
+  IconCoin,
+  IconBolt,
+  IconLeaf,
+  IconCircleFilled,
+  IconCircle,
+  IconClipboard,
+  IconTarget
+} from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ServiceSelectionDialog } from "@/components/pinkdog/service-selection-dialog";
@@ -20,7 +49,7 @@ interface FAQSection {
 const faqSections: FAQSection[] = [
   {
     title: "General Questions",
-    icon: "🐾",
+    icon: <IconPaw className="w-8 h-8 text-[#E73992]" />,
     items: [
       {
         question: "What services do you offer at PinkDog Pet Resort?",
@@ -78,8 +107,9 @@ const faqSections: FAQSection[] = [
               </div>
             </div>
             <div className="bg-[#FFF0F7] rounded-lg p-3 border border-[#FCD1E6]">
-              <p className="text-sm text-gray-700">
-                📍 Perfect location for quick drop-offs and pick-ups during your commute
+              <p className="text-sm text-gray-700 flex items-center gap-2">
+                <IconMapPin className="w-4 h-4 text-[#E73992]" />
+                Perfect location for quick drop-offs and pick-ups during your commute
               </p>
             </div>
           </div>
@@ -107,8 +137,8 @@ const faqSections: FAQSection[] = [
                     </div>
                   </div>
                 </div>
-                <p className="text-sm text-gray-600 mt-3 italic">
-                  ⚠️ Hours may vary on holidays
+                <p className="text-sm text-gray-600 mt-3 italic flex items-center gap-1">
+                  <IconAlertCircle className="w-4 h-4 text-[#E73992]" /> Hours may vary on holidays
                 </p>
               </div>
             </div>
@@ -158,7 +188,7 @@ const faqSections: FAQSection[] = [
   },
   {
     title: "Van Transportation",
-    icon: "🚐",
+    icon: <IconCar className="w-8 h-8 text-[#E73992]" />,
     items: [
       {
         question: "Do you offer transportation services?",
@@ -166,7 +196,7 @@ const faqSections: FAQSection[] = [
           <div className="space-y-4">
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 bg-[#E73992] rounded-full flex items-center justify-center flex-shrink-0">
-                <span className="text-white text-xl">✓</span>
+                <IconCheck className="w-5 h-5 text-white" />
               </div>
               <div>
                 <p className="text-gray-700 leading-relaxed">
@@ -186,8 +216,8 @@ const faqSections: FAQSection[] = [
               </div>
             </div>
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <p className="text-green-800 font-medium">
-                💡 Perfect for busy pet parents who need help with transportation!
+              <p className="text-green-800 font-medium flex items-center gap-2">
+                <IconBulb className="w-5 h-5 text-green-600" /> Perfect for busy pet parents who need help with transportation!
               </p>
             </div>
           </div>
@@ -201,7 +231,7 @@ const faqSections: FAQSection[] = [
               Our van service covers <span className="font-semibold text-gray-800">Harvard and surrounding towns</span>.
             </p>
             <div className="bg-[#FFF0F7] rounded-lg p-4 border border-[#FCD1E6]">
-              <p className="font-medium text-gray-800 mb-2">📍 Service Area Includes:</p>
+              <p className="font-medium text-gray-800 mb-2 flex items-center gap-2"><IconMapPin className="w-5 h-5 text-[#E73992]" /> Service Area Includes:</p>
               <p className="text-gray-700 text-sm">
                 Harvard, Ayer, Littleton, Lancaster, Bolton, and nearby areas
               </p>
@@ -234,8 +264,8 @@ const faqSections: FAQSection[] = [
               </div>
             </div>
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-              <p className="text-blue-800 text-sm">
-                💬 You can request van service via phone, text, or email!
+              <p className="text-blue-800 text-sm flex items-center gap-2">
+                <IconMessage className="w-4 h-4 text-blue-600" /> You can request van service via phone, text, or email!
               </p>
             </div>
           </div>
@@ -249,15 +279,15 @@ const faqSections: FAQSection[] = [
               Yes, there is a <span className="font-semibold">small transportation fee</span> based on distance from our facility.
             </p>
             <div className="bg-[#FFF9FC] rounded-lg p-4 border border-[#FCD1E6]">
-              <p className="font-medium text-gray-800 mb-2">💰 Pricing Structure:</p>
+              <p className="font-medium text-gray-800 mb-2 flex items-center gap-2"><IconCoin className="w-5 h-5 text-[#E73992]" /> Pricing Structure:</p>
               <ul className="space-y-1 text-gray-700 text-sm">
                 <li>• Fee varies by location</li>
                 <li>• Round-trip discounts available</li>
                 <li>• Multiple pet discounts</li>
               </ul>
             </div>
-            <p className="text-sm text-gray-600 font-medium">
-              📞 Contact us for an exact quote based on your location!
+            <p className="text-sm text-gray-600 font-medium flex items-center gap-2">
+              <IconPhone className="w-4 h-4 text-[#E73992]" /> Contact us for an exact quote based on your location!
             </p>
           </div>
         )
@@ -266,7 +296,7 @@ const faqSections: FAQSection[] = [
   },
   {
     title: "Boarding & Daycare",
-    icon: "🏨",
+    icon: <IconHome className="w-8 h-8 text-[#E73992]" />,
     items: [
       {
         question: "What should I bring for boarding?",
@@ -278,20 +308,20 @@ const faqSections: FAQSection[] = [
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="bg-[#FFF0F7] rounded-lg p-4 border border-[#FCD1E6]">
                 <h4 className="font-bold text-gray-800 mb-2 flex items-center gap-2">
-                  <span className="text-2xl">🍖</span> Food & Treats
+                  <IconBone className="w-6 h-6 text-[#E73992]" /> Food & Treats
                 </h4>
                 <p className="text-sm text-gray-700">Your dog&apos;s regular food and any special treats they love</p>
               </div>
               <div className="bg-[#FFF0F7] rounded-lg p-4 border border-[#FCD1E6]">
                 <h4 className="font-bold text-gray-800 mb-2 flex items-center gap-2">
-                  <span className="text-2xl">🧸</span> Comfort Items
+                  <IconBallTennis className="w-6 h-6 text-[#E73992]" /> Comfort Items
                 </h4>
                 <p className="text-sm text-gray-700">Favorite toy or blanket with familiar scents</p>
               </div>
             </div>
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <p className="text-green-800 font-medium">
-                ✨ We provide everything else: bedding, bowls, toys, and lots of love!
+              <p className="text-green-800 font-medium flex items-center gap-2">
+                <IconSparkles className="w-5 h-5 text-green-600" /> We provide everything else: bedding, bowls, toys, and lots of love!
               </p>
             </div>
           </div>
@@ -328,8 +358,8 @@ const faqSections: FAQSection[] = [
               </div>
             </div>
             <div className="bg-[#FFF0F7] rounded-lg p-4 text-center">
-              <p className="text-[#E73992] font-bold">
-                💕 Plus lots of love, attention, and belly rubs!
+              <p className="text-[#E73992] font-bold flex items-center gap-2 justify-center">
+                <IconHeart className="w-5 h-5 text-[#E73992]" /> Plus lots of love, attention, and belly rubs!
               </p>
             </div>
           </div>
@@ -343,7 +373,7 @@ const faqSections: FAQSection[] = [
               Our daycare pricing is flexible to meet your needs:
             </p>
             <div className="bg-[#FFF9FC] rounded-lg p-4 border border-[#FCD1E6]">
-              <h4 className="font-bold text-gray-800 mb-3">💰 Pricing Options:</h4>
+              <h4 className="font-bold text-gray-800 mb-3 flex items-center gap-2"><IconCoin className="w-5 h-5 text-[#E73992]" /> Pricing Options:</h4>
               <ul className="space-y-2">
                 <li className="flex items-center gap-2">
                   <span className="text-[#E73992] font-bold">•</span>
@@ -360,8 +390,8 @@ const faqSections: FAQSection[] = [
               </ul>
             </div>
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <p className="text-blue-800 font-medium text-sm">
-                📧 Email pinkdogpetresort@gmail.com or call/text us for current rates and package options!
+              <p className="text-blue-800 font-medium text-sm flex items-center gap-2">
+                <IconMail className="w-4 h-4 text-blue-600" /> Email pinkdogpetresort@gmail.com or call/text us for current rates and package options!
               </p>
             </div>
           </div>
@@ -381,21 +411,33 @@ const faqSections: FAQSection[] = [
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 ml-13">
-              <div className="bg-white border border-gray-200 rounded-lg p-3">
-                <p className="font-medium text-gray-800">✅ Proper staff-to-dog ratio</p>
+              <div className="bg-[#FFF9FC] border border-[#FCD1E6] rounded-lg p-3">
+                <p className="font-medium text-gray-800 flex items-center gap-2">
+                  <IconCheck className="w-5 h-5 text-[#E73992]" />
+                  Proper staff-to-dog ratio
+                </p>
               </div>
-              <div className="bg-white border border-gray-200 rounded-lg p-3">
-                <p className="font-medium text-gray-800">✅ Safe play groups</p>
+              <div className="bg-[#FFF9FC] border border-[#FCD1E6] rounded-lg p-3">
+                <p className="font-medium text-gray-800 flex items-center gap-2">
+                  <IconCheck className="w-5 h-5 text-[#E73992]" />
+                  Safe play groups
+                </p>
               </div>
-              <div className="bg-white border border-gray-200 rounded-lg p-3">
-                <p className="font-medium text-gray-800">✅ Adequate space</p>
+              <div className="bg-[#FFF9FC] border border-[#FCD1E6] rounded-lg p-3">
+                <p className="font-medium text-gray-800 flex items-center gap-2">
+                  <IconCheck className="w-5 h-5 text-[#E73992]" />
+                  Adequate space
+                </p>
               </div>
-              <div className="bg-white border border-gray-200 rounded-lg p-3">
-                <p className="font-medium text-gray-800">✅ Personalized care</p>
+              <div className="bg-[#FFF9FC] border border-[#FCD1E6] rounded-lg p-3">
+                <p className="font-medium text-gray-800 flex items-center gap-2">
+                  <IconCheck className="w-5 h-5 text-[#E73992]" />
+                  Personalized care
+                </p>
               </div>
             </div>
-            <p className="text-sm text-gray-600 italic">
-              💡 Book early to secure your spot, especially during holidays!
+            <p className="text-sm text-gray-600 italic flex items-center gap-2">
+              <IconBulb className="w-4 h-4 text-[#E73992]" /> Book early to secure your spot, especially during holidays!
             </p>
           </div>
         )
@@ -404,7 +446,7 @@ const faqSections: FAQSection[] = [
   },
   {
     title: "Grooming & Spa",
-    icon: "🐶",
+    icon: <IconDog className="w-8 h-8 text-[#E73992]" />,
     items: [
       {
         question: "What grooming services are available?",
@@ -415,7 +457,7 @@ const faqSections: FAQSection[] = [
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="bg-gradient-to-br from-[#FFF0F7] to-[#FFF9FC] rounded-lg p-4 border border-[#FCD1E6]">
-                <h4 className="font-bold text-gray-800 mb-2">✂️ Basic Grooming</h4>
+                <h4 className="font-bold text-gray-800 mb-2 flex items-center gap-2"><IconScissors className="w-5 h-5 text-[#E73992]" /> Basic Grooming</h4>
                 <ul className="text-sm text-gray-700 space-y-1">
                   <li>• Bath & blow-dry</li>
                   <li>• Nail trimming</li>
@@ -424,7 +466,7 @@ const faqSections: FAQSection[] = [
                 </ul>
               </div>
               <div className="bg-gradient-to-br from-[#FFF0F7] to-[#FFF9FC] rounded-lg p-4 border border-[#FCD1E6]">
-                <h4 className="font-bold text-gray-800 mb-2">🌟 Premium Services</h4>
+                <h4 className="font-bold text-gray-800 mb-2 flex items-center gap-2"><IconStar className="w-5 h-5 text-[#E73992]" /> Premium Services</h4>
                 <ul className="text-sm text-gray-700 space-y-1">
                   <li>• Breed-specific cuts</li>
                   <li>• De-shedding treatments</li>
@@ -434,8 +476,8 @@ const faqSections: FAQSection[] = [
               </div>
             </div>
             <div className="bg-[#E73992] rounded-lg p-3 text-center">
-              <p className="text-white font-bold">
-                ✨ All services include a complimentary bandana or bow!
+              <p className="text-white font-bold flex items-center gap-2 justify-center">
+                <IconSparkles className="w-5 h-5 text-white" /> All services include a complimentary bandana or bow!
               </p>
             </div>
           </div>
@@ -456,18 +498,18 @@ const faqSections: FAQSection[] = [
             </div>
             <ul className="ml-10 space-y-2">
               <li className="flex items-center gap-2 text-gray-700">
-                <span className="text-green-500">✓</span> Your preferred date and time
+                <IconCheck className="w-4 h-4 text-green-500" /> Your preferred date and time
               </li>
               <li className="flex items-center gap-2 text-gray-700">
-                <span className="text-green-500">✓</span> Adequate time for your pet&apos;s specific needs
+                <IconCheck className="w-4 h-4 text-green-500" /> Adequate time for your pet&apos;s specific needs
               </li>
               <li className="flex items-center gap-2 text-gray-700">
-                <span className="text-green-500">✓</span> Personalized grooming consultation
+                <IconCheck className="w-4 h-4 text-green-500" /> Personalized grooming consultation
               </li>
             </ul>
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-              <p className="text-yellow-800 text-sm">
-                ⚡ Same-day appointments may be available - call to check!
+              <p className="text-yellow-800 text-sm flex items-center gap-2">
+                <IconBolt className="w-4 h-4 text-yellow-600" /> Same-day appointments may be available - call to check!
               </p>
             </div>
           </div>
@@ -479,7 +521,7 @@ const faqSections: FAQSection[] = [
           <div className="space-y-4">
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                <span className="text-white text-xl">✓</span>
+                <IconCheck className="w-5 h-5 text-white" />
               </div>
               <div>
                 <p className="font-bold text-gray-800 text-lg">Absolutely!</p>
@@ -487,7 +529,7 @@ const faqSections: FAQSection[] = [
               </div>
             </div>
             <div className="bg-[#FFF0F7] rounded-lg p-4 border border-[#FCD1E6]">
-              <h4 className="font-bold text-gray-800 mb-3">🌿 Our Gentle Approach Includes:</h4>
+              <h4 className="font-bold text-gray-800 mb-3 flex items-center gap-2"><IconLeaf className="w-5 h-5 text-[#E73992]" /> Our Gentle Approach Includes:</h4>
               <div className="space-y-2">
                 <div className="flex items-start gap-2">
                   <span className="text-[#E73992] mt-1">•</span>
@@ -512,8 +554,8 @@ const faqSections: FAQSection[] = [
                 </div>
               </div>
             </div>
-            <p className="text-sm text-gray-600 italic text-center">
-              💝 We&apos;ll work with you to ensure your pet&apos;s comfort throughout the grooming process!
+            <p className="text-sm text-gray-600 italic text-center flex items-center gap-2 justify-center">
+              <IconHeart className="w-4 h-4 text-[#E73992]" /> We&apos;ll work with you to ensure your pet&apos;s comfort throughout the grooming process!
             </p>
           </div>
         )
@@ -522,7 +564,7 @@ const faqSections: FAQSection[] = [
   },
   {
     title: "Policies & Booking",
-    icon: "💬",
+    icon: <IconMessage className="w-8 h-8 text-[#E73992]" />,
     items: [
       {
         question: "What vaccinations are required?",
@@ -532,9 +574,9 @@ const faqSections: FAQSection[] = [
               To keep all pets safe and healthy, we require:
             </p>
             <div className="space-y-3">
-              <div className="bg-red-50 border-l-4 border-red-500 rounded-lg p-4">
-                <h4 className="font-bold text-red-800 mb-2">🔴 Required Vaccinations:</h4>
-                <ul className="space-y-1 text-red-700">
+              <div className="bg-[#FFF0F7] border-l-4 border-[#E73992] rounded-lg p-4">
+                <h4 className="font-bold text-gray-800 mb-2 flex items-center gap-2"><IconCircleFilled className="w-5 h-5 text-red-500" /> Required Vaccinations:</h4>
+                <ul className="space-y-1 text-gray-700">
                   <li className="flex items-center gap-2">
                     <span className="font-bold">•</span> Rabies
                   </li>
@@ -547,7 +589,7 @@ const faqSections: FAQSection[] = [
                 </ul>
               </div>
               <div className="bg-yellow-50 border-l-4 border-yellow-500 rounded-lg p-4">
-                <h4 className="font-bold text-yellow-800 mb-2">🟡 Recommended:</h4>
+                <h4 className="font-bold text-yellow-800 mb-2 flex items-center gap-2"><IconCircle className="w-5 h-5 text-yellow-500" /> Recommended:</h4>
                 <ul className="space-y-1 text-yellow-700">
                   <li className="flex items-center gap-2">
                     <span className="font-bold">•</span> Canine Influenza (during flu season)
@@ -555,8 +597,8 @@ const faqSections: FAQSection[] = [
                 </ul>
               </div>
             </div>
-            <p className="text-sm text-gray-600 italic">
-              📋 Please bring vaccination records for your first visit!
+            <p className="text-sm text-gray-600 italic flex items-center gap-2">
+              <IconClipboard className="w-4 h-4 text-[#E73992]" /> Please bring vaccination records for your first visit!
             </p>
           </div>
         )
@@ -628,8 +670,8 @@ const faqSections: FAQSection[] = [
               </div>
             </div>
             <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-              <p className="text-red-800 text-sm">
-                ⚠️ Late cancellations may incur a fee to cover staffing costs
+              <p className="text-red-800 text-sm flex items-center gap-2">
+                <IconAlertCircle className="w-4 h-4 text-red-600" /> Late cancellations may incur a fee to cover staffing costs
               </p>
             </div>
           </div>
@@ -642,7 +684,7 @@ const faqSections: FAQSection[] = [
             <div className="bg-green-50 border-2 border-green-500 rounded-lg p-4">
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-white text-2xl">🐕</span>
+                  <IconDog className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <p className="font-bold text-green-800 text-lg">We welcome ALL breeds and sizes!</p>
@@ -651,7 +693,7 @@ const faqSections: FAQSection[] = [
               </div>
             </div>
             <div className="bg-[#FFF0F7] rounded-lg p-4 border border-[#FCD1E6]">
-              <h4 className="font-bold text-gray-800 mb-2">🎯 Our Only Requirement:</h4>
+              <h4 className="font-bold text-gray-800 mb-2 flex items-center gap-2"><IconTarget className="w-5 h-5 text-[#E73992]" /> Our Only Requirement:</h4>
               <p className="text-gray-700">
                 All dogs must pass a <span className="font-semibold">temperament assessment</span> before joining group activities.
               </p>
@@ -659,8 +701,8 @@ const faqSections: FAQSection[] = [
                 This ensures a safe, fun environment for everyone!
               </p>
             </div>
-            <p className="text-center text-[#E73992] font-bold">
-              💕 Every dog is special, and we treat them that way!
+            <p className="text-center text-[#E73992] font-bold flex items-center gap-2 justify-center">
+              <IconHeart className="w-5 h-5 text-[#E73992]" /> Every dog is special, and we treat them that way!
             </p>
           </div>
         )
@@ -716,7 +758,7 @@ export default function FAQPage() {
               className="mb-12"
             >
               <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                <span className="text-3xl">{section.icon}</span>
+                {section.icon}
                 {section.title}
               </h2>
 

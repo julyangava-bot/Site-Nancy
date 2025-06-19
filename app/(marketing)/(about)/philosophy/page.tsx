@@ -76,7 +76,7 @@ export default function PhilosophyPage() {
                   className="rounded-full px-8 py-6 text-lg border-[#E73992] text-[#E73992] hover:bg-[#FFF0F7]"
                   asChild
                 >
-                  <Link href="/faq">Have Questions?</Link>
+                  <Link href="/resources/faq">Have Questions?</Link>
                 </Button>
               </div>
             </motion.div>
@@ -396,7 +396,7 @@ export default function PhilosophyPage() {
                 className="bg-transparent text-white border-white hover:bg-white/10 rounded-full px-8 py-6 text-lg font-semibold"
                 asChild
               >
-                <Link href="/faq">Have Questions?</Link>
+                <Link href="/resources/faq">Have Questions?</Link>
               </Button>
             </div>
           </motion.div>
