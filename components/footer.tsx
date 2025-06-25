@@ -6,13 +6,10 @@ import { IconBrandInstagram, IconBrandFacebook, IconMapPin, IconClock, IconPhone
 import { motion } from "motion/react";
 import { useRouter, usePathname } from "next/navigation";
 import { handleSectionNavigation, isSectionLink } from "@/lib/navigation";
-import { useServiceDialog } from "@/context/service-dialog-context";
-
 export function Footer() {
   const router = useRouter();
   const pathname = usePathname();
   const isHomePage = pathname === "/";
-  const { openServiceDialog } = useServiceDialog();
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (isSectionLink(href)) {
@@ -184,23 +181,14 @@ export function Footer() {
             <ul className="space-y-2">
               {supportLinks.map((item, idx) => (
                 <li key={idx}>
-                  {item.isDialog ? (
-                    <button
-                      onClick={() => openServiceDialog()}
-                      className="text-gray-600 hover:text-[#E73992] transition-colors text-sm block py-1 text-center w-full"
-                    >
-                      {item.name}
-                    </button>
-                  ) : (
-                    <Link
-                      href={item.href}
-                      onClick={(e) => handleLinkClick(e, item.href)}
-                      className="text-gray-600 hover:text-[#E73992] transition-colors text-sm block py-1"
-                      {...(item.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                    >
-                      {item.name}
-                    </Link>
-                  )}
+                  <Link
+                    href={item.href}
+                    onClick={(e) => handleLinkClick(e, item.href)}
+                    className="text-gray-600 hover:text-[#E73992] transition-colors text-sm block py-1"
+                    {...(item.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  >
+                    {item.name}
+                  </Link>
                 </li>
               ))}
             </ul>
