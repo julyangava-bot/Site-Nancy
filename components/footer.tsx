@@ -40,7 +40,6 @@ export function Footer() {
   const supportLinks = [
     { name: "FAQ", href: "/faq" },
     { name: "Contact Us", href: "#checkin-info" },
-    { name: "Book Now", href: "#book-now", isDialog: true },
   ];
 
   const legalLinks = [

@@ -298,7 +298,7 @@ function PetHotelContent() {
                   Book Pet Hotel
                 </PetHotelBookingForm>
                 <Link
-                  href="/resources/faq"
+                  href="/faq"
                   className="inline-flex items-center justify-center bg-transparent text-white border-2 border-white hover:bg-white/10 rounded-full px-8 py-4 text-lg font-semibold transition-colors"
                 >
                   Have Questions?
