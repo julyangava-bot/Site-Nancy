@@ -20,6 +20,15 @@ import { Button } from "@/components/ui/button";
 import { Car, Mail, Loader2, CheckCircle, XCircle } from "lucide-react";
 import { useModal } from "@/context/providers";
 import { DatePicker } from "./date-picker";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const vanFormSchema = z.object({
   ownerName: z.string().min(2, "Name must be at least 2 characters"),
@@ -116,7 +125,7 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
   const [errorMessage, setErrorMessage] = React.useState('');
   const { setIsAnyModalOpen } = useModal();
 
-  // Generate time options based on selected date and business hours
+  // Generate time options based on selected date and business hours with 24-hour constraint
   const generateTimeOptions = (date: string) => {
     if (!date) return [];
     
@@ -124,26 +133,39 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
     const dateParts = date.split('-');
     const selectedDate = new Date(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]));
     const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, etc.
+    const now = new Date();
+    const twentyFourHoursFromNow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
     
-    const options = [];
+    const options: SelectOption[] = [];
+    const timeWindows = [];
     
     // Sunday: Limited hours - 12:00 PM - 4:00 PM
     if (dayOfWeek === 0) {
-      options.push(
-        { value: "12:00 PM - 2:00 PM", label: "12:00 PM - 2:00 PM" },
-        { value: "2:00 PM - 4:00 PM", label: "2:00 PM - 4:00 PM" }
+      timeWindows.push(
+        { value: "12:00 PM - 2:00 PM", label: "12:00 PM - 2:00 PM", startHour: 12, startMinute: 0 },
+        { value: "2:00 PM - 4:00 PM", label: "2:00 PM - 4:00 PM", startHour: 14, startMinute: 0 }
       );
     } else {
       // Monday-Saturday: Full hours
-      options.push(
-        { value: "8:00 AM - 10:00 AM", label: "8:00 AM - 10:00 AM (Morning Pickup)" },
-        { value: "10:00 AM - 12:00 PM", label: "10:00 AM - 12:00 PM" },
-        { value: "12:00 PM - 2:00 PM", label: "12:00 PM - 2:00 PM" },
-        { value: "2:00 PM - 4:00 PM", label: "2:00 PM - 4:00 PM" },
-        { value: "3:00 PM - 5:00 PM", label: "3:00 PM - 5:00 PM (Afternoon Drop-off)" },
-        { value: "4:00 PM - 6:00 PM", label: "4:00 PM - 6:00 PM" }
+      timeWindows.push(
+        { value: "8:00 AM - 10:00 AM", label: "8:00 AM - 10:00 AM (Morning Pickup)", startHour: 8, startMinute: 0 },
+        { value: "10:00 AM - 12:00 PM", label: "10:00 AM - 12:00 PM", startHour: 10, startMinute: 0 },
+        { value: "12:00 PM - 2:00 PM", label: "12:00 PM - 2:00 PM", startHour: 12, startMinute: 0 },
+        { value: "2:00 PM - 4:00 PM", label: "2:00 PM - 4:00 PM", startHour: 14, startMinute: 0 },
+        { value: "3:00 PM - 5:00 PM", label: "3:00 PM - 5:00 PM (Afternoon Drop-off)", startHour: 15, startMinute: 0 },
+        { value: "4:00 PM - 6:00 PM", label: "4:00 PM - 6:00 PM", startHour: 16, startMinute: 0 }
       );
     }
+    
+    // Filter time windows based on 24-hour constraint
+    timeWindows.forEach(window => {
+      const dateTime = new Date(selectedDate);
+      dateTime.setHours(window.startHour, window.startMinute, 0, 0);
+      
+      if (dateTime >= twentyFourHoursFromNow) {
+        options.push({ value: window.value, label: window.label });
+      }
+    });
     
     return options;
   };
@@ -231,79 +253,55 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
     }
   }, [initialOpen]);
 
-  // Control body scroll when modal is open and reset states when closed
+  // Control modal open state for context
   React.useEffect(() => {
-    if (isOpen) {
-      document.body.classList.add('overflow-hidden');
-      setIsAnyModalOpen(true);
-    } else {
-      document.body.classList.remove('overflow-hidden');
-      setIsAnyModalOpen(false);
-      // Reset states when modal closes
+    setIsAnyModalOpen(isOpen);
+    
+    // Reset states when modal closes
+    if (!isOpen) {
       setSubmitStatus('idle');
       setErrorMessage('');
       setIsLoading(false);
     }
 
     return () => {
-      document.body.classList.remove('overflow-hidden');
       setIsAnyModalOpen(false);
     };
   }, [isOpen, setIsAnyModalOpen]);
 
 
   return (
-    <>
-      <button
-        onClick={() => setIsOpen(true)}
-        className={variant === 'cta' 
-          ? "inline-flex items-center justify-center bg-white text-[#E73992] hover:bg-gray-100 rounded-full px-8 py-4 text-lg font-semibold transition-colors"
-          : "bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-6 sm:px-8 py-3 text-base sm:text-lg font-medium transition-colors inline-flex items-center justify-center whitespace-nowrap"
-        }
-        data-testid="van-booking-trigger"
-      >
-        {children}
-      </button>
-
-      {/* Custom Modal with mobile-first fullscreen design */}
-      {isOpen && (
-        <div className="fixed inset-0 z-50 bg-white md:bg-black md:bg-opacity-50 md:backdrop-blur-sm md:flex md:items-start md:justify-center">
-          {/* Desktop backdrop */}
-          <div 
-            className="hidden md:block fixed inset-0" 
-            onClick={() => setIsOpen(false)}
-          />
-          
-          {/* Mobile: fullscreen, Desktop: modal */}
-          <div className="h-full w-full md:relative md:w-full md:max-w-lg md:mx-4 md:mt-8 md:mb-8 md:h-[calc(100vh-64px)] bg-white md:rounded-2xl md:shadow-2xl flex flex-col">
-            {/* Header - Fixed */}
-            <div className="sticky top-0 bg-white z-10 border-b border-gray-100">
-              {/* Close button */}
-              <button
-                onClick={() => setIsOpen(false)}
-                className="absolute top-4 right-4 z-20 p-2 text-gray-400 hover:text-gray-600 transition-colors bg-white rounded-full shadow-md"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-
-              <div className="p-6 pt-4">
-                <div className="text-center">
-                  <div className="flex items-center justify-center mb-3">
-                    <Car className="w-8 h-8 text-[#E73992] mr-2" />
-                    <h2 className="text-2xl font-bold text-gray-900">PinkVan Request</h2>
-                  </div>
-                  <p className="text-gray-600 text-sm px-4">
-                    Need a lift for your pup? Our PinkVan offers safe and convenient transportation!
-                  </p>
-                </div>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <button
+          className={variant === 'cta' 
+            ? "inline-flex items-center justify-center bg-white text-[#E73992] hover:bg-gray-100 rounded-full px-8 py-4 text-lg font-semibold transition-colors"
+            : "bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-6 sm:px-8 py-3 text-base sm:text-lg font-medium transition-colors inline-flex items-center justify-center whitespace-nowrap"
+          }
+          data-testid="van-booking-trigger"
+        >
+          {children}
+        </button>
+      </DialogTrigger>
+      
+      <DialogContent className="flex flex-col overflow-hidden">
+        <DialogHeader>
+          <div className="p-6 pt-4">
+            <div className="text-center">
+              <div className="flex items-center justify-center mb-3">
+                <Car className="w-8 h-8 text-[#E73992] mr-2" />
+                <DialogTitle>PinkVan Request</DialogTitle>
               </div>
+              <DialogDescription className="px-4">
+                Need a lift for your pup? Our PinkVan offers safe and convenient transportation!
+              </DialogDescription>
             </div>
+          </div>
+        </DialogHeader>
 
-            {/* Scrollable content */}
-            <div className="flex-1 overflow-y-auto overscroll-contain">
-              <div className="p-6">
+        {/* Scrollable content */}
+        <div className="flex-1 overflow-y-auto overscroll-contain">
+          <div className="p-6">
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
                     <FormField
@@ -455,6 +453,25 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
                       )}
                     />
 
+                    {/* Van Service Hours Info */}
+                    <div className="bg-gray-50 rounded-xl p-4 mb-5">
+                      <p className="text-sm font-medium text-gray-700 mb-2">Van Service Hours</p>
+                      <div className="space-y-1 text-xs text-gray-600">
+                        <p>• Monday - Saturday: 8:00 AM - 6:00 PM</p>
+                        <p>• Sunday: 12:00 PM - 4:00 PM</p>
+                      </div>
+                      <div className="mt-3 pt-3 border-t border-gray-200">
+                        <p className="text-xs text-gray-600 flex items-start gap-1">
+                          <span className="text-[#E73992]">•</span>
+                          <span>Van service requires 24 hours advance booking</span>
+                        </p>
+                        <p className="text-xs text-gray-600 mt-1 flex items-start gap-1">
+                          <span className="text-[#E73992]">•</span>
+                          <span>Additional charges apply based on distance and time</span>
+                        </p>
+                      </div>
+                    </div>
+
                     <FormField
                       control={form.control}
                       name="desiredDate"
@@ -466,13 +483,15 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
                               selected={field.value}
                               onSelect={(date) => {
                                 if (date) {
-                                  field.onChange(format(date, 'yyyy-MM-dd'));
+                                  // Ensure we're working with local date to avoid timezone issues
+                                  const localDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                                  field.onChange(format(localDate, 'yyyy-MM-dd'));
                                 }
                               }}
                               disabled={(date) => {
-                                const today = new Date();
-                                today.setHours(0, 0, 0, 0);
-                                return date < today;
+                                // Check if this date would have any available time slots
+                                const availableTimes = generateTimeOptions(format(date, 'yyyy-MM-dd'));
+                                return availableTimes.length === 0;
                               }}
                               placeholderText="Select service date"
                             />
@@ -503,9 +522,7 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
                             />
                           </FormControl>
                           <FormMessage className="text-xs" />
-                          <p className="text-xs text-gray-500 mt-1">
-                            Mon-Sat: Morning Pickup (8-10 AM) | Afternoon Drop-off (3-5 PM)
-                          </p>
+                       
                         </FormItem>
                       )}
                     />
@@ -598,40 +615,35 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
                       </div>
                     )}
 
-                    {/* Add padding at bottom for mobile fixed button */}
-                    <div className="h-32 md:hidden" />
-                  </form>
-                </Form>
-              </div>
-            </div>
-
-            {/* Fixed button area - Always visible */}
-            <div className="sticky bottom-0 p-6 pt-4 border-t border-gray-100 bg-white">
-              <p className="text-xs text-gray-500 mb-3 text-center">
-                Note: PinkVan rides must be scheduled in advance. Additional fee applies based on distance.
-              </p>
-              <Button
-                type="submit"
-                onClick={form.handleSubmit(handleSubmit)}
-                disabled={isLoading}
-                className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 text-lg rounded-full transition-all duration-300 hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    <Mail className="w-5 h-5" />
-                    Send PinkVan Request
-                  </>
-                )}
-              </Button>
-            </div>
+                {/* Add padding at bottom for mobile fixed button */}
+                <div className="h-32 md:hidden" />
+              </form>
+            </Form>
           </div>
         </div>
-      )}
-    </>
+
+        {/* Fixed button area - Always visible */}
+        <DialogFooter>
+          <Button
+            type="submit"
+            onClick={form.handleSubmit(handleSubmit)}
+            disabled={isLoading}
+            className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 text-lg rounded-full transition-all duration-300 hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                Sending...
+              </>
+            ) : (
+              <>
+                <Mail className="w-5 h-5" />
+                Send PinkVan Request
+              </>
+            )}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -20,6 +20,15 @@ import { Button } from "@/components/ui/button";
 import { Heart, Mail, Loader2, CheckCircle, XCircle } from "lucide-react";
 import { useModal } from "@/context/providers";
 import { DatePicker } from "./date-picker";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const daycareFormSchema = z.object({
   ownerName: z.string().min(2, "Name must be at least 2 characters"),
@@ -113,12 +122,14 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
   const [errorMessage, setErrorMessage] = React.useState('');
   const { setIsAnyModalOpen } = useModal();
 
-  // Generate time options based on business hours
-  const generateTimeOptions = (date: string) => {
+  // Generate time options based on business hours and 24-hour constraint
+  const generateTimeOptions = (date: string, isDropOff: boolean = true) => {
     if (!date) return [];
     
     const selectedDate = new Date(date);
     const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, etc.
+    const now = new Date();
+    const twentyFourHoursFromNow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
     
     let startHour = 8;
     let startMinute = 30;
@@ -145,7 +156,18 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
         hour12: true
       });
       
-      options.push({ value: timeString, label: displayTime });
+      // For drop-off times, ensure they are at least 24 hours from now
+      if (isDropOff) {
+        const dateTime = new Date(selectedDate);
+        dateTime.setHours(currentHour, currentMinute, 0, 0);
+        
+        if (dateTime >= twentyFourHoursFromNow) {
+          options.push({ value: timeString, label: displayTime });
+        }
+      } else {
+        // For pick-up times, no 24-hour restriction
+        options.push({ value: timeString, label: displayTime });
+      }
       
       // Increment by 30 minutes
       currentMinute += 30;
@@ -156,6 +178,27 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
     }
     
     return options;
+  };
+  
+  // Generate pick-up time options that are after drop-off time
+  const generatePickUpTimeOptions = (daycareDate: string) => {
+    const baseOptions = generateTimeOptions(daycareDate, false);
+    const dropOffTime = form.watch('dropOffTime');
+    
+    // If no drop-off time selected, show all times
+    if (!dropOffTime) {
+      return baseOptions;
+    }
+    
+    // Filter times to be after drop-off time
+    const [dropOffHour, dropOffMinute] = dropOffTime.split(':').map(Number);
+    const dropOffMinutes = dropOffHour * 60 + dropOffMinute;
+    
+    return baseOptions.filter(option => {
+      const [hour, minute] = option.value.split(':').map(Number);
+      const optionMinutes = hour * 60 + minute;
+      return optionMinutes > dropOffMinutes;
+    });
   };
 
   const form = useForm<DaycareFormValues>({
@@ -238,79 +281,55 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
     }
   }, [initialOpen]);
 
-  // Control body scroll when modal is open and reset states when closed
+  // Control modal open state for context
   React.useEffect(() => {
-    if (isOpen) {
-      document.body.classList.add('overflow-hidden');
-      setIsAnyModalOpen(true);
-    } else {
-      document.body.classList.remove('overflow-hidden');
-      setIsAnyModalOpen(false);
-      // Reset states when modal closes
+    setIsAnyModalOpen(isOpen);
+    
+    // Reset states when modal closes
+    if (!isOpen) {
       setSubmitStatus('idle');
       setErrorMessage('');
       setIsLoading(false);
     }
 
     return () => {
-      document.body.classList.remove('overflow-hidden');
       setIsAnyModalOpen(false);
     };
   }, [isOpen, setIsAnyModalOpen]);
 
 
   return (
-    <>
-      <button
-        onClick={() => setIsOpen(true)}
-        className={variant === 'cta' 
-          ? "inline-flex items-center justify-center bg-white text-[#E73992] hover:bg-gray-100 rounded-full px-8 py-4 text-lg font-semibold transition-colors"
-          : "bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-6 sm:px-8 py-3 text-base sm:text-lg font-medium transition-colors inline-flex items-center justify-center whitespace-nowrap"
-        }
-        data-testid="daycare-booking-trigger"
-      >
-        {children}
-      </button>
-
-      {/* Custom Modal with mobile-first fullscreen design */}
-      {isOpen && (
-        <div className="fixed inset-0 z-50 bg-white md:bg-black md:bg-opacity-50 md:backdrop-blur-sm md:flex md:items-start md:justify-center">
-          {/* Desktop backdrop */}
-          <div 
-            className="hidden md:block fixed inset-0" 
-            onClick={() => setIsOpen(false)}
-          />
-          
-          {/* Mobile: fullscreen, Desktop: modal */}
-          <div className="h-full w-full md:relative md:w-full md:max-w-lg md:mx-4 md:mt-8 md:mb-8 md:h-[calc(100vh-64px)] bg-white md:rounded-2xl md:shadow-2xl flex flex-col">
-            {/* Header - Fixed */}
-            <div className="sticky top-0 bg-white z-10 border-b border-gray-100">
-              {/* Close button */}
-              <button
-                onClick={() => setIsOpen(false)}
-                className="absolute top-4 right-4 z-20 p-2 text-gray-400 hover:text-gray-600 transition-colors bg-white rounded-full shadow-md"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-
-              <div className="p-6 pt-4">
-                <div className="text-center">
-                  <div className="flex items-center justify-center mb-3">
-                    <Heart className="w-8 h-8 text-[#E73992] mr-2" />
-                    <h2 className="text-2xl font-bold text-gray-900">Daycare Request</h2>
-                  </div>
-                  <p className="text-gray-600 text-sm px-4">
-                    We&apos;re excited to welcome your pup! Fill out the info below for their temperament test.
-                  </p>
-                </div>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <button
+          className={variant === 'cta' 
+            ? "inline-flex items-center justify-center bg-white text-[#E73992] hover:bg-gray-100 rounded-full px-8 py-4 text-lg font-semibold transition-colors"
+            : "bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-6 sm:px-8 py-3 text-base sm:text-lg font-medium transition-colors inline-flex items-center justify-center whitespace-nowrap"
+          }
+          data-testid="daycare-booking-trigger"
+        >
+          {children}
+        </button>
+      </DialogTrigger>
+      
+      <DialogContent className="flex flex-col overflow-hidden">
+        <DialogHeader>
+          <div className="p-6 pt-4">
+            <div className="text-center">
+              <div className="flex items-center justify-center mb-3">
+                <Heart className="w-8 h-8 text-[#E73992] mr-2" />
+                <DialogTitle>Daycare Request</DialogTitle>
               </div>
+              <DialogDescription className="px-4">
+                We&apos;re excited to welcome your pup! Fill out the info below for their temperament test.
+              </DialogDescription>
             </div>
+          </div>
+        </DialogHeader>
 
-            {/* Scrollable content */}
-            <div className="flex-1 overflow-y-auto overscroll-contain">
-              <div className="p-6">
+        {/* Scrollable content */}
+        <div className="flex-1 overflow-y-auto overscroll-contain">
+          <div className="p-6">
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
                     <FormField
@@ -456,6 +475,19 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
                       )}
                     />
 
+
+                    {/* Business Hours Info */}
+                    <div className="bg-gray-50 rounded-xl p-4 mb-5">
+                      <p className="text-sm font-medium text-gray-700 mb-2">Daycare Hours</p>
+                      <div className="space-y-1 text-xs text-gray-600">
+                        <p>• Monday - Saturday: 8:30 AM - 5:00 PM</p>
+                        <p>• Sunday: 12:00 PM - 4:00 PM</p>
+                        <p className="text-amber-600 mt-2 flex items-start gap-1">
+                          <span className="text-amber-500">⚠️</span>
+                          <span>Daycare bookings require 24 hours advance notice</span>
+                        </p>
+                      </div>
+                    </div>
                     <FormField
                       control={form.control}
                       name="daycareDate"
@@ -467,13 +499,15 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
                               selected={field.value}
                               onSelect={(date) => {
                                 if (date) {
-                                  field.onChange(format(date, 'yyyy-MM-dd'));
+                                  // Ensure we're working with local date to avoid timezone issues
+                                  const localDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                                  field.onChange(format(localDate, 'yyyy-MM-dd'));
                                 }
                               }}
                               disabled={(date) => {
-                                const today = new Date();
-                                today.setHours(0, 0, 0, 0);
-                                return date < today;
+                                // Check if this date would have any available time slots
+                                const availableTimes = generateTimeOptions(format(date, 'yyyy-MM-dd'), true);
+                                return availableTimes.length === 0;
                               }}
                               placeholderText="Select daycare date"
                             />
@@ -482,6 +516,7 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
                         </FormItem>
                       )}
                     />
+
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <FormField
@@ -492,9 +527,9 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
                             <FormLabel className="text-gray-700 font-medium text-sm">Drop-off Time *</FormLabel>
                             <FormControl>
                               <Select
-                                value={field.value ? generateTimeOptions(form.watch('daycareDate')).find(opt => opt.value === field.value) : null}
+                                value={field.value ? generateTimeOptions(form.watch('daycareDate'), true).find(opt => opt.value === field.value) : null}
                                 onChange={(option) => field.onChange(option?.value)}
-                                options={generateTimeOptions(form.watch('daycareDate'))}
+                                options={generateTimeOptions(form.watch('daycareDate'), true)}
                                 placeholder="Select time"
                                 styles={customSelectStyles}
                                 className="react-select-container"
@@ -505,9 +540,6 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
                               />
                             </FormControl>
                             <FormMessage className="text-xs" />
-                            <p className="text-xs text-gray-500 mt-1">
-                              Mon-Sat: 8:30 AM - 5:00 PM
-                            </p>
                           </FormItem>
                         )}
                       />
@@ -520,9 +552,9 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
                             <FormLabel className="text-gray-700 font-medium text-sm">Pick-up Time *</FormLabel>
                             <FormControl>
                               <Select
-                                value={field.value ? generateTimeOptions(form.watch('daycareDate')).find(opt => opt.value === field.value) : null}
+                                value={field.value ? generatePickUpTimeOptions(form.watch('daycareDate')).find(opt => opt.value === field.value) : null}
                                 onChange={(option) => field.onChange(option?.value)}
-                                options={generateTimeOptions(form.watch('daycareDate'))}
+                                options={generatePickUpTimeOptions(form.watch('daycareDate'))}
                                 placeholder="Select time"
                                 styles={customSelectStyles}
                                 className="react-select-container"
@@ -533,9 +565,7 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
                               />
                             </FormControl>
                             <FormMessage className="text-xs" />
-                            <p className="text-xs text-gray-500 mt-1">
-                              Sun: 12:00 PM - 4:00 PM
-                            </p>
+                        
                           </FormItem>
                         )}
                       />
@@ -576,37 +606,35 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
                       </div>
                     )}
 
-                    {/* Add padding at bottom for mobile fixed button */}
-                    <div className="h-20 md:hidden" />
-                  </form>
-                </Form>
-              </div>
-            </div>
-
-            {/* Fixed button area - Always visible */}
-            <div className="sticky bottom-0 p-6 pt-4 border-t border-gray-100 bg-white">
-              <Button
-                type="submit"
-                onClick={form.handleSubmit(handleSubmit)}
-                disabled={isLoading}
-                className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 text-lg rounded-full transition-all duration-300 hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    <Mail className="w-5 h-5" />
-                    Send Daycare Request
-                  </>
-                )}
-              </Button>
-            </div>
+                {/* Add padding at bottom for mobile fixed button */}
+                <div className="h-20 md:hidden" />
+              </form>
+            </Form>
           </div>
         </div>
-      )}
-    </>
+
+        {/* Fixed button area - Always visible */}
+        <DialogFooter>
+          <Button
+            type="submit"
+            onClick={form.handleSubmit(handleSubmit)}
+            disabled={isLoading}
+            className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 text-lg rounded-full transition-all duration-300 hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                Sending...
+              </>
+            ) : (
+              <>
+                <Mail className="w-5 h-5" />
+                Send Daycare Request
+              </>
+            )}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

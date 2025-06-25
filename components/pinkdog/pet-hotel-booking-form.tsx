@@ -20,6 +20,15 @@ import { Button } from "@/components/ui/button";
 import { Hotel, Mail, Loader2, CheckCircle, XCircle } from "lucide-react";
 import { useModal } from "@/context/providers";
 import { DatePicker } from "./date-picker";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const petHotelFormSchema = z.object({
   ownerName: z.string().min(2, "Name must be at least 2 characters"),
@@ -113,12 +122,14 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
   const [errorMessage, setErrorMessage] = React.useState('');
   const { setIsAnyModalOpen } = useModal();
 
-  // Generate time options based on business hours
-  const generateTimeOptions = (date: string) => {
+  // Generate time options based on business hours and 24-hour constraint
+  const generateTimeOptions = (date: string, isCheckIn: boolean = true) => {
     if (!date) return [];
     
     const selectedDate = new Date(date);
     const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, etc.
+    const now = new Date();
+    const twentyFourHoursFromNow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
     
     let startHour = 8;
     let startMinute = 30;
@@ -145,7 +156,18 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
         hour12: true
       });
       
-      options.push({ value: timeString, label: displayTime });
+      // For check-in times, ensure they are at least 24 hours from now
+      if (isCheckIn) {
+        const dateTime = new Date(selectedDate);
+        dateTime.setHours(currentHour, currentMinute, 0, 0);
+        
+        if (dateTime >= twentyFourHoursFromNow) {
+          options.push({ value: timeString, label: displayTime });
+        }
+      } else {
+        // For check-out times, no 24-hour restriction
+        options.push({ value: timeString, label: displayTime });
+      }
       
       // Increment by 30 minutes
       currentMinute += 30;
@@ -156,6 +178,11 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
     }
     
     return options;
+  };
+  
+  // Generate check-out time options (no longer needs to filter based on check-in time since it's always a different day)
+  const generateCheckOutTimeOptions = (checkOutDate: string) => {
+    return generateTimeOptions(checkOutDate, false);
   };
 
   const form = useForm<PetHotelFormValues>({
@@ -228,79 +255,55 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
     }
   }, [initialOpen]);
 
-  // Control body scroll when modal is open and reset states when closed
+  // Control modal open state for context
   React.useEffect(() => {
-    if (isOpen) {
-      document.body.classList.add('overflow-hidden');
-      setIsAnyModalOpen(true);
-    } else {
-      document.body.classList.remove('overflow-hidden');
-      setIsAnyModalOpen(false);
-      // Reset states when modal closes
+    setIsAnyModalOpen(isOpen);
+    
+    // Reset states when modal closes
+    if (!isOpen) {
       setSubmitStatus('idle');
       setErrorMessage('');
       setIsLoading(false);
     }
 
     return () => {
-      document.body.classList.remove('overflow-hidden');
       setIsAnyModalOpen(false);
     };
   }, [isOpen, setIsAnyModalOpen]);
 
 
   return (
-    <>
-      <button
-        onClick={() => setIsOpen(true)}
-        className={variant === 'cta' 
-          ? "inline-flex items-center justify-center bg-white text-[#E73992] hover:bg-gray-100 rounded-full px-8 py-4 text-lg font-semibold transition-colors"
-          : "bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-6 sm:px-8 py-3 text-base sm:text-lg font-medium transition-colors inline-flex items-center justify-center whitespace-nowrap"
-        }
-        data-testid="pet-hotel-booking-trigger"
-      >
-        {children}
-      </button>
-
-      {/* Custom Modal with mobile-first fullscreen design */}
-      {isOpen && (
-        <div className="fixed inset-0 z-50 bg-white md:bg-black md:bg-opacity-50 md:backdrop-blur-sm md:flex md:items-start md:justify-center">
-          {/* Desktop backdrop */}
-          <div 
-            className="hidden md:block fixed inset-0" 
-            onClick={() => setIsOpen(false)}
-          />
-          
-          {/* Mobile: fullscreen, Desktop: modal */}
-          <div className="h-full w-full md:relative md:w-full md:max-w-lg md:mx-4 md:mt-8 md:mb-8 md:h-[calc(100vh-64px)] bg-white md:rounded-2xl md:shadow-2xl flex flex-col">
-            {/* Header - Fixed */}
-            <div className="sticky top-0 bg-white z-10 border-b border-gray-100">
-              {/* Close button */}
-              <button
-                onClick={() => setIsOpen(false)}
-                className="absolute top-4 right-4 z-20 p-2 text-gray-400 hover:text-gray-600 transition-colors bg-white rounded-full shadow-md"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-
-              <div className="p-6 pt-4">
-                <div className="text-center">
-                  <div className="flex items-center justify-center mb-3">
-                    <Hotel className="w-8 h-8 text-[#E73992] mr-2" />
-                    <h2 className="text-2xl font-bold text-gray-900">Pet Hotel Booking</h2>
-                  </div>
-                  <p className="text-gray-600 text-sm px-4">
-                    Reserve your pet&apos;s stay at our comfortable and caring hotel.
-                  </p>
-                </div>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <button
+          className={variant === 'cta' 
+            ? "inline-flex items-center justify-center bg-white text-[#E73992] hover:bg-gray-100 rounded-full px-8 py-4 text-lg font-semibold transition-colors"
+            : "bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-6 sm:px-8 py-3 text-base sm:text-lg font-medium transition-colors inline-flex items-center justify-center whitespace-nowrap"
+          }
+          data-testid="pet-hotel-booking-trigger"
+        >
+          {children}
+        </button>
+      </DialogTrigger>
+      
+      <DialogContent className="flex flex-col overflow-hidden">
+        <DialogHeader>
+          <div className="p-6 pt-4">
+            <div className="text-center">
+              <div className="flex items-center justify-center mb-3">
+                <Hotel className="w-8 h-8 text-[#E73992] mr-2" />
+                <DialogTitle>Pet Hotel Booking</DialogTitle>
               </div>
+              <DialogDescription className="px-4">
+                Reserve your pet&apos;s stay at our comfortable and caring hotel.
+              </DialogDescription>
             </div>
+          </div>
+        </DialogHeader>
 
-            {/* Scrollable content */}
-            <div className="flex-1 overflow-y-auto overscroll-contain">
-              <div className="p-6">
+        {/* Scrollable content */}
+        <div className="flex-1 overflow-y-auto overscroll-contain">
+          <div className="p-6">
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
                     <FormField
@@ -442,6 +445,15 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
                       )}
                     />
 
+                    {/* Business Hours Info */}
+                    <div className="bg-gray-50 rounded-xl p-4 mb-5">
+                      <p className="text-sm font-medium text-gray-700 mb-2">Business Hours</p>
+                      <div className="space-y-1 text-xs text-gray-600">
+                        <p>• Monday - Saturday: 8:30 AM - 5:00 PM</p>
+                        <p>• Sunday: 12:00 PM - 4:00 PM</p>
+                      </div>
+                    </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <FormField
                         control={form.control}
@@ -454,13 +466,15 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
                                 selected={field.value}
                                 onSelect={(date) => {
                                   if (date) {
-                                    field.onChange(format(date, 'yyyy-MM-dd'));
+                                    // Ensure we're working with local date to avoid timezone issues
+                                    const localDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                                    field.onChange(format(localDate, 'yyyy-MM-dd'));
                                   }
                                 }}
                                 disabled={(date) => {
-                                  const today = new Date();
-                                  today.setHours(0, 0, 0, 0);
-                                  return date < today;
+                                  // Check if this date would have any available time slots
+                                  const availableTimes = generateTimeOptions(format(date, 'yyyy-MM-dd'), true);
+                                  return availableTimes.length === 0;
                                 }}
                                 placeholderText="Select check-in date"
                               />
@@ -478,9 +492,9 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
                             <FormLabel className="text-gray-700 font-medium text-sm">Check-in Time *</FormLabel>
                             <FormControl>
                               <Select
-                                value={field.value ? generateTimeOptions(form.watch('checkInDate')).find(opt => opt.value === field.value) : null}
+                                value={field.value ? generateTimeOptions(form.watch('checkInDate'), true).find(opt => opt.value === field.value) : null}
                                 onChange={(option) => field.onChange(option?.value)}
-                                options={generateTimeOptions(form.watch('checkInDate'))}
+                                options={generateTimeOptions(form.watch('checkInDate'), true)}
                                 placeholder="Select time"
                                 styles={customSelectStyles}
                                 className="react-select-container"
@@ -491,9 +505,6 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
                               />
                             </FormControl>
                             <FormMessage className="text-xs" />
-                            <p className="text-xs text-gray-500 mt-1">
-                              Mon-Sat: 8:30 AM - 5:00 PM
-                            </p>
                           </FormItem>
                         )}
                       />
@@ -511,15 +522,33 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
                                 selected={field.value}
                                 onSelect={(date) => {
                                   if (date) {
-                                    field.onChange(format(date, 'yyyy-MM-dd'));
+                                    // Ensure we're working with local date to avoid timezone issues
+                                    const localDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                                    field.onChange(format(localDate, 'yyyy-MM-dd'));
                                   }
                                 }}
                                 disabled={(date) => {
-                                  const today = new Date();
-                                  today.setHours(0, 0, 0, 0);
                                   const checkInDate = form.watch('checkInDate');
-                                  const minDate = checkInDate ? new Date(checkInDate) : today;
-                                  return date < minDate;
+                                  
+                                  if (!checkInDate) {
+                                    // If no check-in date selected, disable all dates
+                                    return true;
+                                  }
+                                  
+                                  // Check-out must be at least one day after check-in
+                                  // Parse dates properly to avoid timezone issues
+                                  const checkIn = new Date(checkInDate + 'T00:00:00');
+                                  const dateToCheck = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                                  
+                                  // Add one day to check-in date
+                                  const minCheckOutDate = new Date(checkIn);
+                                  minCheckOutDate.setDate(minCheckOutDate.getDate() + 1);
+                                  
+                                  // Compare dates
+                                  dateToCheck.setHours(0, 0, 0, 0);
+                                  minCheckOutDate.setHours(0, 0, 0, 0);
+                                  
+                                  return dateToCheck < minCheckOutDate;
                                 }}
                                 placeholderText="Select check-out date"
                               />
@@ -537,9 +566,9 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
                             <FormLabel className="text-gray-700 font-medium text-sm">Check-out Time *</FormLabel>
                             <FormControl>
                               <Select
-                                value={field.value ? generateTimeOptions(form.watch('checkOutDate')).find(opt => opt.value === field.value) : null}
+                                value={field.value ? generateCheckOutTimeOptions(form.watch('checkOutDate')).find(opt => opt.value === field.value) : null}
                                 onChange={(option) => field.onChange(option?.value)}
-                                options={generateTimeOptions(form.watch('checkOutDate'))}
+                                options={generateCheckOutTimeOptions(form.watch('checkOutDate'))}
                                 placeholder="Select time"
                                 styles={customSelectStyles}
                                 className="react-select-container"
@@ -550,8 +579,9 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
                               />
                             </FormControl>
                             <FormMessage className="text-xs" />
-                            <p className="text-xs text-gray-500 mt-1">
-                              Sun: 12:00 PM - 4:00 PM
+                            <p className="text-xs text-amber-600 mt-1 flex items-start gap-1">
+                              <span className="text-amber-500">⚠️</span>
+                              <span>Check-out after 11:00 AM will incur an additional day charge</span>
                             </p>
                           </FormItem>
                         )}
@@ -593,37 +623,35 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
                       </div>
                     )}
 
-                    {/* Add padding at bottom for mobile fixed button */}
-                    <div className="h-20 md:hidden" />
-                  </form>
-                </Form>
-              </div>
-            </div>
-
-            {/* Fixed button area - Always visible */}
-            <div className="sticky bottom-0 p-6 pt-4 border-t border-gray-100 bg-white">
-              <Button
-                type="submit"
-                onClick={form.handleSubmit(handleSubmit)}
-                disabled={isLoading}
-                className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 text-lg rounded-full transition-all duration-300 hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    <Mail className="w-5 h-5" />
-                    Send Booking Request
-                  </>
-                )}
-              </Button>
-            </div>
+                {/* Add padding at bottom for mobile fixed button */}
+                <div className="h-20 md:hidden" />
+              </form>
+            </Form>
           </div>
         </div>
-      )}
-    </>
+
+        {/* Fixed button area - Always visible */}
+        <DialogFooter>
+          <Button
+            type="submit"
+            onClick={form.handleSubmit(handleSubmit)}
+            disabled={isLoading}
+            className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 text-lg rounded-full transition-all duration-300 hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                Sending...
+              </>
+            ) : (
+              <>
+                <Mail className="w-5 h-5" />
+                Send Booking Request
+              </>
+            )}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

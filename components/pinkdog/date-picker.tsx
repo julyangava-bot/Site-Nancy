@@ -16,7 +16,8 @@ interface DatePickerProps {
 
 export function DatePicker({ selected, onSelect, disabled, placeholderText = "Select date" }: DatePickerProps) {
   const [isOpen, setIsOpen] = React.useState(false);
-  const selectedDate = selected ? new Date(selected) : undefined;
+  // Parse the date string properly to avoid timezone issues
+  const selectedDate = selected ? new Date(selected + 'T00:00:00') : undefined;
 
   // Close on escape key
   React.useEffect(() => {
@@ -53,8 +54,8 @@ export function DatePicker({ selected, onSelect, disabled, placeholderText = "Se
             onClick={() => setIsOpen(false)}
           />
           
-          {/* Calendar popup - centered on mobile */}
-          <div className="fixed inset-x-4 top-1/2 -translate-y-1/2 z-50 md:absolute md:inset-x-auto md:top-full md:translate-y-0 md:mt-2 md:left-0 md:right-auto">
+          {/* Calendar popup - centered on screen for both mobile and desktop */}
+          <div className="fixed inset-x-4 top-1/2 -translate-y-1/2 z-50 md:left-1/2 md:right-auto md:-translate-x-1/2">
             <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 p-6 max-w-sm mx-auto">
               <DayPicker
                 mode="single"
