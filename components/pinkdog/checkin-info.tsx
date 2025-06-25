@@ -14,7 +14,7 @@ const hours = [
 const contactInfo = {
   phone: "+1 978-772-4242",
   whatsapp: "954-914-0128",
-  email: "email@email.com",
+  email: "pinkdogpetresort@gmail.com",
   address: "259 Ayer Rd, Harvard, MA 01451, US",
   instagram: "pinkdogspa",
 };
@@ -189,7 +189,7 @@ export function CheckInInfo() {
                     </div>
                   </div>
 
-                  {/* <div className="flex items-start">
+                  <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#E73992] mt-0.5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
@@ -197,7 +197,7 @@ export function CheckInInfo() {
                       <h4 className="font-medium text-gray-700">Email</h4>
                       <a href="mailto:pinkdogpetresort@gmail.com" className="text-[#E73992] font-semibold hover:underline">{contactInfo.email}</a>
                     </div>
-                  </div> */}
+                  </div>
 
                   <div className="flex items-start">
                     <svg

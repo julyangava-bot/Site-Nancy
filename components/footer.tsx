@@ -188,7 +188,7 @@ export function Footer() {
                   {item.isDialog ? (
                     <button
                       onClick={() => openServiceDialog()}
-                      className="text-gray-600 hover:text-[#E73992] transition-colors text-sm block py-1 text-left w-full"
+                      className="text-gray-600 hover:text-[#E73992] transition-colors text-sm block py-1 text-center w-full"
                     >
                       {item.name}
                     </button>
