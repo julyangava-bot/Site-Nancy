@@ -674,7 +674,7 @@ export function Gallery() {
         {/* Photo Lightbox modal */}
         {selectedImage && (
           <div 
-            className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black bg-opacity-90 z-[100] flex items-center justify-center p-4"
             onClick={() => setSelectedImage(null)}
           >
             <div className="relative max-w-4xl w-full max-h-[90vh]" onClick={e => e.stopPropagation()}>
@@ -720,7 +720,7 @@ export function Gallery() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="fixed inset-0 z-50 flex items-center justify-center p-4"
+                className="fixed inset-0 z-[100] flex items-center justify-center p-4"
                 onClick={() => setSelectedVideo(null)}
               >
                 {/* Semi-transparent overlay */}
@@ -732,13 +732,13 @@ export function Gallery() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.7 }}
                   transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                  className="relative w-full max-w-md aspect-[9/16] z-10 bg-black rounded-2xl overflow-hidden shadow-2xl"
+                  className="relative w-full max-w-md aspect-[9/16] z-[110] bg-black rounded-2xl overflow-hidden shadow-2xl"
                   onClick={e => e.stopPropagation()}
                 >
                   {/* Close button */}
                   <button 
                     onClick={() => setSelectedVideo(null)}
-                    className="absolute top-4 right-4 z-10 bg-white/20 backdrop-blur-sm text-white hover:text-pink-300 p-2 rounded-full transition-colors duration-200"
+                    className="absolute top-4 right-4 z-[120] bg-white/20 backdrop-blur-sm text-white hover:text-pink-300 p-2 rounded-full transition-colors duration-200"
                     aria-label="Close modal"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
