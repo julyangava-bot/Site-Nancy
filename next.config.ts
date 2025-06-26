@@ -62,6 +62,12 @@ const nextConfig: NextConfig = {
       },
       // Also handle /services/ base path
       {
+        source: '/services/daycare',
+        destination: '/daycare',
+        permanent: true,
+      },
+      // Also handle /services/ base path
+      {
         source: '/services',
         destination: '/',
         permanent: true,
