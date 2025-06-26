@@ -22,7 +22,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Resource pages
   const resourcePages = [
     { route: '/faq', priority: 0.7, frequency: 'weekly' as const },
-    { route: '/blog', priority: 0.6, frequency: 'weekly' as const },
   ];
 
   // Legal pages

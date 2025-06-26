@@ -22,6 +22,7 @@ const nextConfig: NextConfig = {
   // Redirects for SEO
   async redirects() {
     return [
+      // Contact redirects
       {
         source: '/contact',
         destination: '/#checkin-info',
@@ -30,6 +31,39 @@ const nextConfig: NextConfig = {
       {
         source: '/contact-us',
         destination: '/#checkin-info',
+        permanent: true,
+      },
+      // Old service URLs redirects
+      {
+        source: '/services/grooming',
+        destination: '/grooming',
+        permanent: true,
+      },
+      {
+        source: '/services/pet-hotel',
+        destination: '/pet-hotel',
+        permanent: true,
+      },
+      {
+        source: '/services/van-service',
+        destination: '/van-service',
+        permanent: true,
+      },
+      {
+        source: '/services/daycare',
+        destination: '/daycare',
+        permanent: true,
+      },
+      // About page redirect
+      {
+        source: '/about-us',
+        destination: '/about',
+        permanent: true,
+      },
+      // Also handle /services/ base path
+      {
+        source: '/services',
+        destination: '/',
         permanent: true,
       },
     ]
