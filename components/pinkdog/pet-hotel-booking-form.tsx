@@ -34,9 +34,11 @@ const petHotelFormSchema = z.object({
   ownerName: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
   phone: z.string().min(10, "Please enter a valid phone number"),
-  petType: z.enum(["dog", "cat", "both"], {
+  petType: z.enum(["dog", "cat"], {
     required_error: "Please select pet type",
   }),
+  petName: z.string().min(1, "Please enter pet name(s)"),
+  petAge: z.string().min(1, "Please enter pet age"),
   numberOfPets: z.string().min(1, "Please enter number of pets"),
   breeds: z.string().min(1, "Please enter breed(s)"),
   checkInDate: z.string().min(1, "Please select check-in date"),
@@ -192,6 +194,8 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
       email: "",
       phone: "",
       petType: undefined,
+      petName: "",
+      petAge: "",
       numberOfPets: "",
       breeds: "",
       checkInDate: "",
@@ -367,6 +371,25 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
 
                     <FormField
                       control={form.control}
+                      name="petName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Pet Name(s) *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="e.g., Max, Luna" 
+                              {...field} 
+                              className="h-11 text-base border-gray-200 bg-[#F2F2F2] rounded-xl focus:border-[#E73992] focus:ring-[#E73992] placeholder:text-gray-400"
+                              style={{ fontSize: '16px' }}
+                            />
+                          </FormControl>
+                          <FormMessage className="text-xs" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
                       name="petType"
                       render={({ field }) => (
                         <FormItem>
@@ -375,13 +398,12 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
                             <Select
                               value={field.value ? { 
                                 value: field.value, 
-                                label: field.value === 'dog' ? 'Dog' : field.value === 'cat' ? 'Cat' : 'Both' 
+                                label: field.value === 'dog' ? 'Dog' : 'Cat' 
                               } : null}
                               onChange={(option) => field.onChange(option?.value)}
                               options={[
                                 { value: 'dog', label: 'Dog' },
-                                { value: 'cat', label: 'Cat' },
-                                { value: 'both', label: 'Both' }
+                                { value: 'cat', label: 'Cat' }
                               ]}
                               placeholder="Select pet type"
                               styles={customSelectStyles}
@@ -389,6 +411,25 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
                               classNamePrefix="react-select"
                               isClearable={false}
                               isSearchable={false}
+                            />
+                          </FormControl>
+                          <FormMessage className="text-xs" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="petAge"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Pet Age *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="e.g., 2 years, 6 months" 
+                              {...field} 
+                              className="h-11 text-base border-gray-200 bg-[#F2F2F2] rounded-xl focus:border-[#E73992] focus:ring-[#E73992] placeholder:text-gray-400"
+                              style={{ fontSize: '16px' }}
                             />
                           </FormControl>
                           <FormMessage className="text-xs" />

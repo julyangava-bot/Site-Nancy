@@ -25,6 +25,8 @@ interface TestData {
   email?: string;
   phone: string;
   petType: string;
+  petName?: string;
+  petAge?: string;
   breeds: string;
   numberOfPets: string;
   checkInDate: string;
@@ -33,6 +35,14 @@ interface TestData {
   checkOutTime: string;
   specialNotes: string;
   serviceType?: string;
+  // Van specific fields
+  petSize?: string;
+  serviceNeeded?: string;
+  address?: string;
+  requestedService?: string;
+  // Daycare specific fields
+  previousDaycare?: string;
+  socialBehavior?: string;
 }
 
 interface TestCase {
@@ -46,6 +56,8 @@ interface TestResult {
   status: 'idle' | 'loading' | 'success' | 'error';
   message?: string;
   details?: string;
+  requestData?: string;
+  responseData?: string;
 }
 
 // Test data matching EXACT format sent by real forms
@@ -60,13 +72,17 @@ const testCases: TestCase[] = [
       clientEmail: "thiagobardini85@gmail.com",
       phone: "(978) 555-0123",
       petType: "dog",
-      breeds: "Golden Retriever, 3 years old",
+      petName: "Buddy",
+      petAge: "3 years",
+      breeds: "Golden Retriever",
       numberOfPets: "1",
       checkInDate: "2024-02-15",
       checkInTime: "08:30",
       checkOutDate: "2024-02-15",
       checkOutTime: "17:00",
-      specialNotes: "Dog Name: Buddy\nPrevious Daycare Experience: Yes\nSocial Behavior: Friendly and playful with other dogs\nAdditional Notes: Loves treats and gets excited around new people.",
+      previousDaycare: "yes",
+      socialBehavior: "Friendly and playful with other dogs",
+      specialNotes: "Loves treats and gets excited around new people.",
       serviceType: "daycare"
     }
   },
@@ -80,6 +96,8 @@ const testCases: TestCase[] = [
       email: "thiagobardini85@gmail.com",
       phone: "(978) 555-0234",
       petType: "dog",
+      petName: "Rocky",
+      petAge: "4 years",
       breeds: "Labrador Retriever",
       numberOfPets: "1",
       checkInDate: "2024-03-01",
@@ -87,7 +105,8 @@ const testCases: TestCase[] = [
       checkOutDate: "2024-03-05",
       checkOutTime: "16:00",
       specialNotes: "Rocky loves belly rubs and needs his medication twice daily. Very friendly with staff.",
-      clientEmail: "thiagobardini85@gmail.com"
+      clientEmail: "thiagobardini85@gmail.com",
+      serviceType: "pethotel"
     }
   },
   {
@@ -99,15 +118,22 @@ const testCases: TestCase[] = [
       ownerName: "Robert Brown",
       clientEmail: "thiagobardini85@gmail.com",
       phone: "(978) 555-0345",
-      petType: "van-service",
-      breeds: "German Shepherd, Large",
-      numberOfPets: "Bella",
+      petType: "dog",
+      petName: "Bella",
+      petAge: "5 years",
+      breeds: "German Shepherd",
+      numberOfPets: "1",
       checkInDate: "2024-02-22",
       checkInTime: "8:00 AM",
       checkOutDate: "2024-02-22",
       checkOutTime: "10:00 AM",
       serviceType: "van",
-      specialNotes: "Pet Name(s): Bella\nService Needed: pickup\nAddress: 123 Oak Street, Groton, MA 01450\nRequested Service: grooming\nSpecial Instructions: Please use the side gate. Gate code is 1234."
+      // Van specific fields
+      petSize: "Large",
+      serviceNeeded: "pickup",
+      address: "123 Oak Street, Groton, MA 01450",
+      requestedService: "grooming",
+      specialNotes: "Please use the side gate. Gate code is 1234."
     }
   }
 ];
@@ -159,13 +185,15 @@ export default function TestFormsPage() {
       [testCase.id]: { status: 'loading' }
     }));
 
+    const requestBody = JSON.stringify(testCase.data, null, 2);
+
     try {
       const response = await fetch('/api/send-booking-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(testCase.data),
+        body: requestBody,
       });
 
       const responseData = await response.json();
@@ -176,7 +204,9 @@ export default function TestFormsPage() {
             [testCase.id]: {
               status: 'success',
               message: 'Email sent successfully!',
-              details: JSON.stringify(responseData, null, 2)
+              details: JSON.stringify(responseData, null, 2),
+              requestData: requestBody,
+              responseData: JSON.stringify(responseData, null, 2)
             }
           }));
       } else {
@@ -185,7 +215,9 @@ export default function TestFormsPage() {
             [testCase.id]: {
               status: 'error',
               message: `Failed: ${response.status}`,
-              details: JSON.stringify(responseData, null, 2)
+              details: JSON.stringify(responseData, null, 2),
+              requestData: requestBody,
+              responseData: JSON.stringify(responseData, null, 2)
             }
           }));
       }
@@ -195,7 +227,9 @@ export default function TestFormsPage() {
         [testCase.id]: {
           status: 'error',
           message: 'Network error',
-          details: error instanceof Error ? error.message : 'Unknown error'
+          details: error instanceof Error ? error.message : 'Unknown error',
+          requestData: requestBody,
+          responseData: 'No response - network error'
         }
       }));
     }
@@ -355,20 +389,38 @@ export default function TestFormsPage() {
                 </div>
 
                 {result && result.status !== 'idle' && (
-                  <Alert variant={getAlertVariant(result.status)}>
-                    <AlertDescription>
-                      <div className="space-y-1">
-                        <div className="font-medium">{result.message}</div>
-                                                                          {result.details && (
-                           <div className="text-xs opacity-75">
-                             <pre className="mt-1 overflow-x-auto text-wrap">
-                               {result.details}
-                             </pre>
-                           </div>
-                         )}
+                  <>
+                    <Alert variant={getAlertVariant(result.status)}>
+                      <AlertDescription>
+                        <div className="space-y-1">
+                          <div className="font-medium">{result.message}</div>
+                        </div>
+                      </AlertDescription>
+                    </Alert>
+
+                    {/* Request/Response Logs */}
+                    {(result.requestData || result.responseData) && (
+                      <div className="mt-4 space-y-3">
+                        {result.requestData && (
+                          <div className="border rounded-lg p-3">
+                            <h4 className="text-sm font-semibold text-gray-700 mb-2">📤 Request Data:</h4>
+                            <pre className="text-xs bg-gray-50 p-2 rounded overflow-x-auto">
+                              {result.requestData}
+                            </pre>
+                          </div>
+                        )}
+                        
+                        {result.responseData && (
+                          <div className="border rounded-lg p-3">
+                            <h4 className="text-sm font-semibold text-gray-700 mb-2">📥 Response Data:</h4>
+                            <pre className="text-xs bg-gray-50 p-2 rounded overflow-x-auto">
+                              {result.responseData}
+                            </pre>
+                          </div>
+                        )}
                       </div>
-                    </AlertDescription>
-                  </Alert>
+                    )}
+                  </>
                 )}
               </CardContent>
             </Card>

@@ -34,12 +34,16 @@ const daycareFormSchema = z.object({
   ownerName: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
   phone: z.string().min(10, "Please enter a valid phone number"),
-  dogName: z.string().min(1, "Please enter your dog's name"),
-  breedAndAge: z.string().min(1, "Please enter breed and age"),
-  previousDaycare: z.enum(["yes", "no"], {
-    required_error: "Please select if your dog has attended daycare before",
+  petType: z.enum(["dog", "cat"], {
+    required_error: "Please select pet type",
   }),
-  socialBehavior: z.string().min(1, "Please describe how your dog is around other dogs"),
+  petName: z.string().min(1, "Please enter your pet's name"),
+  breed: z.string().min(1, "Please enter breed"),
+  age: z.string().min(1, "Please enter age"),
+  previousDaycare: z.enum(["yes", "no"], {
+    required_error: "Please select if your pet has attended daycare before",
+  }),
+  socialBehavior: z.string().min(1, "Please describe how your pet is around other pets"),
   daycareDate: z.string().min(1, "Please select daycare date"),
   dropOffTime: z.string().min(1, "Please select drop-off time"),
   pickUpTime: z.string().min(1, "Please select pick-up time"),
@@ -207,8 +211,10 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
       ownerName: "",
       email: "",
       phone: "",
-      dogName: "",
-      breedAndAge: "",
+      petType: undefined,
+      petName: "",
+      breed: "",
+      age: "",
       previousDaycare: undefined,
       socialBehavior: "",
       daycareDate: "",
@@ -234,14 +240,19 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
           ownerName: values.ownerName,
           clientEmail: values.email,
           phone: values.phone,
-          petType: 'dog',
-          breeds: values.breedAndAge,
+          petType: values.petType,
+          petName: values.petName,
+          petAge: values.age,
+          breeds: values.breed,
           numberOfPets: '1',
           checkInDate: values.daycareDate,
           checkInTime: values.dropOffTime,
           checkOutDate: values.daycareDate, // Same day for daycare
           checkOutTime: values.pickUpTime,
-          specialNotes: `Dog Name: ${values.dogName}\nPrevious Daycare Experience: ${values.previousDaycare === 'yes' ? 'Yes' : 'No'}\nSocial Behavior: ${values.socialBehavior}${values.specialNotes ? `\nAdditional Notes: ${values.specialNotes}` : ''}`,
+          // Send structured data as separate fields
+          previousDaycare: values.previousDaycare,
+          socialBehavior: values.socialBehavior,
+          specialNotes: values.specialNotes || '', // Only actual special notes
           serviceType: 'daycare', // Add service type to distinguish from pet hotel
         }),
       });
@@ -393,10 +404,10 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
 
                     <FormField
                       control={form.control}
-                      name="dogName"
+                      name="petName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium text-sm">Dog&apos;s Name *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Pet Name *</FormLabel>
                           <FormControl>
                             <Input 
                               placeholder="e.g., Buddy" 
@@ -412,13 +423,62 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
 
                     <FormField
                       control={form.control}
-                      name="breedAndAge"
+                      name="petType"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium text-sm">Breed & Age *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Pet Type *</FormLabel>
+                          <FormControl>
+                            <Select
+                              value={field.value ? { 
+                                value: field.value, 
+                                label: field.value === 'dog' ? 'Dog' : 'Cat' 
+                              } : null}
+                              onChange={(option) => field.onChange(option?.value)}
+                              options={[
+                                { value: 'dog', label: 'Dog' },
+                                { value: 'cat', label: 'Cat' }
+                              ]}
+                              placeholder="Select pet type"
+                              styles={customSelectStyles}
+                              className="react-select-container"
+                              classNamePrefix="react-select"
+                              isClearable={false}
+                              isSearchable={false}
+                            />
+                          </FormControl>
+                          <FormMessage className="text-xs" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="breed"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Breed *</FormLabel>
                           <FormControl>
                             <Input 
-                              placeholder="e.g., Golden Retriever, 3 years old" 
+                              placeholder="e.g., Golden Retriever" 
+                              {...field} 
+                              className="h-11 text-base border-gray-200 bg-[#F2F2F2] rounded-xl focus:border-[#E73992] focus:ring-[#E73992] placeholder:text-gray-400"
+                              style={{ fontSize: '16px' }}
+                            />
+                          </FormControl>
+                          <FormMessage className="text-xs" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="age"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Age *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="e.g., 3 years" 
                               {...field} 
                               className="h-11 text-base border-gray-200 bg-[#F2F2F2] rounded-xl focus:border-[#E73992] focus:ring-[#E73992] placeholder:text-gray-400"
                               style={{ fontSize: '16px' }}

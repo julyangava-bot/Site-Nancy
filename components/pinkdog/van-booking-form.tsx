@@ -35,7 +35,13 @@ const vanFormSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   phone: z.string().min(10, "Please enter a valid phone number"),
   petNames: z.string().min(1, "Please enter your pet's name(s)"),
-  breedAndSize: z.string().min(1, "Please enter breed and size"),
+  petType: z.enum(["dog", "cat"], {
+    required_error: "Please select pet type",
+  }),
+  numberOfPets: z.string().min(1, "Please enter number of pets"),
+  breed: z.string().min(1, "Please enter breed"),
+  size: z.string().min(1, "Please enter size"),
+  age: z.string().min(1, "Please enter age"),
   serviceNeeded: z.enum(["pickup", "dropoff", "both"], {
     required_error: "Please select service type needed",
   }),
@@ -177,7 +183,11 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
       email: "",
       phone: "",
       petNames: "",
-      breedAndSize: "",
+      petType: undefined,
+      numberOfPets: "",
+      breed: "",
+      size: "",
+      age: "",
       serviceNeeded: undefined,
       address: "",
       desiredDate: "",
@@ -206,15 +216,22 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
           ownerName: values.ownerName,
           clientEmail: values.email,
           phone: values.phone,
-          petType: 'van-service',
-          breeds: values.breedAndSize,
-          numberOfPets: values.petNames,
+          petType: values.petType,
+          petName: values.petNames,
+          petAge: values.age,
+          breeds: values.breed,
+          numberOfPets: values.numberOfPets,
           checkInDate: values.desiredDate,
           checkInTime: values.timeWindow.split(' - ')[0],
           checkOutDate: values.desiredDate,
           checkOutTime: values.timeWindow.split(' - ')[1] || values.timeWindow.split(' - ')[0],
           serviceType: 'van', // Identify as van service
-          specialNotes: `Pet Name(s): ${values.petNames}\nService Needed: ${values.serviceNeeded}\nAddress: ${values.address}\nRequested Service: ${values.requestedService === 'other' ? values.otherServiceType : values.requestedService}${values.specialInstructions ? `\nSpecial Instructions: ${values.specialInstructions}` : ''}`,
+          // Send structured data as separate fields
+          petSize: values.size,
+          serviceNeeded: values.serviceNeeded,
+          address: values.address,
+          requestedService: values.requestedService === 'other' ? values.otherServiceType : values.requestedService,
+          specialNotes: values.specialInstructions || '', // Only actual special instructions
         }),
       });
 
@@ -384,13 +401,120 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
 
                     <FormField
                       control={form.control}
-                      name="breedAndSize"
+                      name="petType"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium text-sm">Breed & Size *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Pet Type *</FormLabel>
+                          <FormControl>
+                            <Select
+                              value={field.value ? { 
+                                value: field.value, 
+                                label: field.value === 'dog' ? 'Dog' : 'Cat' 
+                              } : null}
+                              onChange={(option) => field.onChange(option?.value)}
+                              options={[
+                                { value: 'dog', label: 'Dog' },
+                                { value: 'cat', label: 'Cat' }
+                              ]}
+                              placeholder="Select pet type"
+                              styles={customSelectStyles}
+                              className="react-select-container"
+                              classNamePrefix="react-select"
+                              isClearable={false}
+                              isSearchable={false}
+                            />
+                          </FormControl>
+                          <FormMessage className="text-xs" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="numberOfPets"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Number of Pets *</FormLabel>
+                          <FormControl>
+                            <Select
+                              value={field.value ? { value: field.value, label: field.value } : null}
+                              onChange={(option) => field.onChange(option?.value)}
+                              options={[
+                                { value: '1', label: '1' },
+                                { value: '2', label: '2' },
+                                { value: '3', label: '3' },
+                                { value: '4', label: '4' },
+                                { value: '5+', label: '5 or more' }
+                              ]}
+                              placeholder="Select number of pets"
+                              styles={customSelectStyles}
+                              className="react-select-container"
+                              classNamePrefix="react-select"
+                              isClearable={false}
+                              isSearchable={false}
+                            />
+                          </FormControl>
+                          <FormMessage className="text-xs" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="breed"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Breed *</FormLabel>
                           <FormControl>
                             <Input 
-                              placeholder="e.g., Golden Retriever, Large" 
+                              placeholder="e.g., Golden Retriever" 
+                              {...field} 
+                              className="h-11 text-base border-gray-200 bg-[#F2F2F2] rounded-xl focus:border-[#E73992] focus:ring-[#E73992] placeholder:text-gray-400"
+                              style={{ fontSize: '16px' }}
+                            />
+                          </FormControl>
+                          <FormMessage className="text-xs" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="size"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Size *</FormLabel>
+                          <FormControl>
+                            <Select
+                              value={field.value ? { value: field.value, label: field.value } : null}
+                              onChange={(option) => field.onChange(option?.value)}
+                              options={[
+                                { value: 'Small', label: 'Small' },
+                                { value: 'Medium', label: 'Medium' },
+                                { value: 'Large', label: 'Large' }
+                              ]}
+                              placeholder="Select size"
+                              styles={customSelectStyles}
+                              className="react-select-container"
+                              classNamePrefix="react-select"
+                              isClearable={false}
+                              isSearchable={false}
+                            />
+                          </FormControl>
+                          <FormMessage className="text-xs" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="age"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Age *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="e.g., 3 years" 
                               {...field} 
                               className="h-11 text-base border-gray-200 bg-[#F2F2F2] rounded-xl focus:border-[#E73992] focus:ring-[#E73992] placeholder:text-gray-400"
                               style={{ fontSize: '16px' }}
@@ -457,8 +581,7 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
                     <div className="bg-gray-50 rounded-xl p-4 mb-5">
                       <p className="text-sm font-medium text-gray-700 mb-2">Van Service Hours</p>
                       <div className="space-y-1 text-xs text-gray-600">
-                        <p>• Monday - Saturday: 8:00 AM - 6:00 PM</p>
-                        <p>• Sunday: 12:00 PM - 4:00 PM</p>
+                        <p>• Monday - Saturday: 8:00 AM - 4:00 PM</p>
                       </div>
                       <div className="mt-3 pt-3 border-t border-gray-200">
                         <p className="text-xs text-gray-600 flex items-start gap-1">
