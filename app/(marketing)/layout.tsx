@@ -1,14 +1,7 @@
-import type { Metadata } from "next";
 import "../globals.css";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { ScrollToHash } from "@/components/scroll-to-hash";
-
-export const metadata: Metadata = {
-  title: "PinkDog Pet Resort | Premier Pet Care",
-  description:
-    "PinkDog Pet Resort offers premium pet care services including grooming, daycare, and boarding in a safe and loving environment.",
-};
 
 export default function MarketingLayout({
   children,

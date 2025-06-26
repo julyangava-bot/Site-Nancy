@@ -32,6 +32,19 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
+  alternates: {
+    canonical: "https://pinkdogpetresort.com",
+  },
+  other: {
+    "contact:phone_number": "(978) 772-4242",
+    "contact:country_name": "United States",
+    "contact:region": "Massachusetts",
+    "contact:postal_code": "01451",
+    "geo.region": "US-MA",
+    "geo.placename": "Harvard",
+    "geo.position": "42.4973;-71.5811",
+    "ICBM": "42.4973, -71.5811",
+  },
   openGraph: {
     title: "PinkDog Pet Resort - Premium Pet Care in Harvard, MA",
     description: "Where pets feel at home! 24/7 pet hotel, daycare & grooming services. Professional care, spacious play areas & personalized attention. Book now!",
@@ -39,10 +52,11 @@ export const metadata: Metadata = {
     siteName: "PinkDog Pet Resort",
     images: [
       {
-        url: "https://pinkdogpetresort.com/images/pink-dog-resort.png",
+        url: "/images/pinkdogresort-metada.png",
         width: 1200,
         height: 630,
         alt: "PinkDog Pet Resort - Your Pet's Favorite Place",
+        type: "image/png",
       }
     ],
     locale: "en_US",
@@ -54,7 +68,7 @@ export const metadata: Metadata = {
     description: "Where pets feel at home! 24/7 pet hotel, daycare & grooming services. Book now!",
     site: "@pinkdogspa",
     creator: "@pinkdogspa",
-    images: ["https://pinkdogpetresort.com/images/pink-dog-resort.png"],
+    images: ["/images/pinkdogresort-metada.png"],
   },
   robots: {
     index: true,
@@ -83,6 +97,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <SchemaMarkup />
+        <link rel="canonical" href="https://pinkdogpetresort.com" />
       </head>
       <body className={cn("antialiased", inter.className, urbanist.variable)} suppressHydrationWarning>
         <Analytics />

@@ -42,7 +42,7 @@ export function SchemaMarkup() {
       "https://pinkdogspa.com"
     ],
     "image": [
-      "https://pinkdogpetresort.com/images/pink-dog-resort.png",
+      "https://pinkdogpetresort.com/images/pinkdogresort-metada.png",
       "https://pinkdogpetresort.com/images/pinkdog-mascots.png"
     ],
     "priceRange": "$$",

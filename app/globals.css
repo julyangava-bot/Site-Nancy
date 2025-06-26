@@ -158,3 +158,127 @@ nav a:hover {
   color: #E73992 !important;
 }
 
+/* Gallery shimmer animation */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+/* Gallery Swiper custom styles */
+.swiper-button-prev,
+.swiper-button-next {
+  color: #E73992 !important;
+  background: rgba(255, 255, 255, 0.9);
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  font-size: 20px !important;
+}
+
+.swiper-pagination-bullet {
+  background: #E73992 !important;
+  opacity: 0.5;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1;
+}
+
+/* Gallery modal z-index fix */
+.gallery-modal {
+  z-index: 9999 !important;
+}
+
+/* Image carousel responsive sizing */
+.gallery-image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: #f8f8f8;
+}
+
+/* Swiper thumb styles */
+.swiper-slide-thumb-active {
+  opacity: 1 !important;
+}
+
+.swiper-slide-thumb-active > div {
+  border-color: #E73992 !important;
+}
+
+.swiper-slide-thumb-active .absolute {
+  background: transparent !important;
+}
+
+/* iOS-specific fixes for gallery */
+@supports (-webkit-touch-callout: none) {
+  /* iOS Safari specific styles */
+  .overscroll-contain {
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Prevent body scroll when modal is open */
+  body.overflow-hidden {
+    position: fixed !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    -webkit-overflow-scrolling: auto !important;
+  }
+  
+  /* Fix for iOS modal backdrop */
+  .fixed.inset-0 {
+    position: fixed !important;
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  /* Optimize image rendering on iOS */
+  img {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  
+  /* Prevent tap highlight on gallery items */
+  .cursor-pointer {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Additional mobile optimizations */
+@media (max-width: 768px) {
+  /* Reduce animations on mobile for better performance */
+  .transition-transform,
+  .transition-opacity,
+  .transition-colors {
+    transition-duration: 0.2s !important;
+  }
+  
+  /* Optimize hover states for touch devices */
+  @media (hover: none) {
+    .group-hover\:opacity-100,
+    .group-hover\:scale-110 {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+}
