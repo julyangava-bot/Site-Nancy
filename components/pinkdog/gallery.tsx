@@ -961,6 +961,19 @@ const Modal = ({ isOpen, onClose, children }: { isOpen: boolean; onClose: () => 
     if (isOpen) {
       // Add class to body instead of directly manipulating style
       document.body.classList.add('overflow-hidden', 'fixed', 'w-full');
+      
+      // Prevent default touch behaviors on iOS
+      const preventDefaultTouch = (e: TouchEvent) => {
+        if (e.touches.length > 1) {
+          e.preventDefault();
+        }
+      };
+      
+      document.addEventListener('touchmove', preventDefaultTouch, { passive: false });
+      
+      return () => {
+        document.removeEventListener('touchmove', preventDefaultTouch);
+      };
     } else {
       document.body.classList.remove('overflow-hidden', 'fixed', 'w-full');
     }
@@ -972,14 +985,33 @@ const Modal = ({ isOpen, onClose, children }: { isOpen: boolean; onClose: () => 
 
   if (!isOpen) return null;
 
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onClose();
+  };
+
+  const handleContentClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
   return (
     <div 
       className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/90 overscroll-contain"
-      onClick={onClose}
-      style={{ WebkitOverflowScrolling: 'touch' }}
+      onClick={handleBackdropClick}
+      onTouchMove={(e) => e.stopPropagation()}
+      style={{ 
+        WebkitOverflowScrolling: 'touch',
+        touchAction: 'none'
+      }}
     >
       <button
-        onClick={onClose}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onClose();
+        }}
         className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-[10000] p-2"
         aria-label="Close modal"
       >
@@ -989,7 +1021,8 @@ const Modal = ({ isOpen, onClose, children }: { isOpen: boolean; onClose: () => 
       </button>
       <div 
         className="relative max-w-7xl max-h-[90vh] w-full overscroll-contain" 
-        onClick={(e) => e.stopPropagation()}
+        onClick={handleContentClick}
+        style={{ touchAction: 'pan-y pinch-zoom' }}
       >
         {children}
       </div>
@@ -1468,34 +1501,64 @@ export function Gallery() {
                 <Swiper
                   modules={[Navigation, Pagination]}
                   spaceBetween={10}
-                  navigation={true}
-                  pagination={{ clickable: true }}
+                  navigation={!isMobile}
+                  pagination={{ 
+                    clickable: true,
+                    dynamicBullets: true,
+                    dynamicMainBullets: 3
+                  }}
                   initialSlide={getCategoryImages().findIndex(img => img.id === selectedImage.id)}
                   className="h-full w-full"
                   style={{ height: '100%' }}
-                  speed={400}
+                  speed={300}
                   effect="slide"
-                  touchRatio={1.5}
+                  touchRatio={1}
+                  threshold={10}
                   resistanceRatio={0.85}
                   grabCursor={true}
+                  preventClicks={true}
+                  preventClicksPropagation={true}
+                  touchStartPreventDefault={false}
+                  touchMoveStopPropagation={true}
+                  allowTouchMove={true}
+                  simulateTouch={true}
+                  cssMode={false}
+                  touchEventsTarget="container"
+                  onTouchStart={(swiper, event) => {
+                    event.stopPropagation();
+                  }}
+                  onTouchMove={(swiper, event) => {
+                    event.stopPropagation();
+                  }}
+                  onSlideChange={() => {
+                    // Prevent any default behaviors during slide change
+                  }}
                 >
                   {getCategoryImages().map((image) => (
                     <SwiperSlide key={image.id} className="flex items-center justify-center">
-                      <div className="relative w-full h-full flex items-center justify-center bg-black">
+                      <div className="relative w-full h-full flex items-center justify-center bg-black" 
+                           style={{ touchAction: 'pan-y pinch-zoom' }}>
                         <Image
                           src={image.src}
                           alt={image.alt}
                           width={1600}
                           height={1200}
-                          className="object-contain max-w-full max-h-full"
-                          style={{ maxHeight: '85vh' }}
+                          className="object-contain max-w-full max-h-full select-none"
+                          style={{ 
+                            maxHeight: '85vh',
+                            pointerEvents: 'none',
+                            userSelect: 'none',
+                            WebkitUserSelect: 'none',
+                            WebkitTouchCallout: 'none'
+                          }}
                           priority={false}
                           loading="lazy"
                           quality={isIOS ? 75 : 85}
+                          draggable={false}
                         />
-                                                  <div className="absolute bottom-0 left-0 right-0 gallery-caption p-3 sm:p-4">
-                            <p className="text-center text-xs sm:text-sm font-light leading-relaxed">{image.caption}</p>
-                          </div>
+                        <div className="absolute bottom-0 left-0 right-0 gallery-caption p-3 sm:p-4 pointer-events-none">
+                          <p className="text-center text-xs sm:text-sm font-light leading-relaxed select-none">{image.caption}</p>
+                        </div>
                       </div>
                     </SwiperSlide>
                   ))}
