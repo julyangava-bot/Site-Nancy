@@ -32,7 +32,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { route: '/data-deletion', priority: 0.2, frequency: 'yearly' as const },
   ];
 
-  const allPages = [...mainPages, ...aboutPages, ...resourcePages, ...legalPages];
+  // Add contact section with hash
+  const contactSection = [
+    { route: '/#checkin-info', priority: 0.9, frequency: 'monthly' as const },
+  ];
+
+  const allPages = [...mainPages, ...aboutPages, ...resourcePages, ...legalPages, ...contactSection];
 
   return allPages.map(({ route, priority, frequency }) => ({
     url: `${baseUrl}${route}`,

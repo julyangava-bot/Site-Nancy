@@ -19,9 +19,20 @@ const nextConfig: NextConfig = {
   // Optimize for production
   poweredByHeader: false,
   compress: true,
-  // Experimental features for better performance
-  experimental: {
-    optimizeCss: true,
+  // Redirects for SEO
+  async redirects() {
+    return [
+      {
+        source: '/contact',
+        destination: '/#checkin-info',
+        permanent: true,
+      },
+      {
+        source: '/contact-us',
+        destination: '/#checkin-info',
+        permanent: true,
+      },
+    ]
   },
 };
 

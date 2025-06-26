@@ -269,14 +269,7 @@ export function CheckInInfo() {
                   </div>
                 </div>
 
-                {/* <div className="mt-8 flex justify-center">
-                  <Button
-                    className="bg-[#E73992] text-white hover:bg-[#d3337f] rounded-full px-8 py-2.5"
-                    asChild
-                  >
-                    <Link href="/contact">Contact Us Now</Link>
-                  </Button>
-                </div> */}
+
               </motion.div>
             </div>
 
