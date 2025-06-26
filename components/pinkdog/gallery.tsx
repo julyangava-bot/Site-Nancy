@@ -1173,8 +1173,10 @@ export function Gallery() {
     ? getAllPhotosImages()
     : getImageSet().filter(image => image.category === selectedCategory);
   
-  // For non-All Photos categories, use all available images in that category
-  const displayedImages = filteredImages;
+  // For non-All Photos categories, limit the number of displayed images
+  const displayedImages = selectedCategory === "all" 
+    ? filteredImages 
+    : filteredImages.slice(0, photoCount); // Limit to photoCount (8 desktop, 6 mobile)
   
   const isVideoTab = selectedCategory === "videos";
 
