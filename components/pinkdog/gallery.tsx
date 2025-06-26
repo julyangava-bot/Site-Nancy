@@ -961,19 +961,6 @@ const Modal = ({ isOpen, onClose, children }: { isOpen: boolean; onClose: () => 
     if (isOpen) {
       // Add class to body instead of directly manipulating style
       document.body.classList.add('overflow-hidden', 'fixed', 'w-full');
-      
-      // Prevent default touch behaviors on iOS
-      const preventDefaultTouch = (e: TouchEvent) => {
-        if (e.touches.length > 1) {
-          e.preventDefault();
-        }
-      };
-      
-      document.addEventListener('touchmove', preventDefaultTouch, { passive: false });
-      
-      return () => {
-        document.removeEventListener('touchmove', preventDefaultTouch);
-      };
     } else {
       document.body.classList.remove('overflow-hidden', 'fixed', 'w-full');
     }
@@ -985,30 +972,14 @@ const Modal = ({ isOpen, onClose, children }: { isOpen: boolean; onClose: () => 
 
   if (!isOpen) return null;
 
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    onClose();
-  };
-
-  const handleContentClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-
   return (
     <div 
       className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/90 overscroll-contain"
-      onClick={handleBackdropClick}
-      onTouchMove={(e) => e.stopPropagation()}
-      style={{ 
-        WebkitOverflowScrolling: 'touch',
-        touchAction: 'none'
-      }}
+      onClick={onClose}
+      style={{ WebkitOverflowScrolling: 'touch' }}
     >
       <button
         onClick={(e) => {
-          e.preventDefault();
           e.stopPropagation();
           onClose();
         }}
@@ -1021,8 +992,7 @@ const Modal = ({ isOpen, onClose, children }: { isOpen: boolean; onClose: () => 
       </button>
       <div 
         className="relative max-w-7xl max-h-[90vh] w-full overscroll-contain" 
-        onClick={handleContentClick}
-        style={{ touchAction: 'pan-y pinch-zoom' }}
+        onClick={(e) => e.stopPropagation()}
       >
         {children}
       </div>
@@ -1496,74 +1466,119 @@ export function Gallery() {
         {selectedImage && (
           <div className="flex items-center justify-center h-full">
             <div className="w-full h-full max-h-[90vh] max-w-6xl">
-              {/* Main Swiper for all devices including iOS */}
-              <div className="relative bg-black rounded-lg overflow-hidden h-full">
-                <Swiper
-                  modules={[Navigation, Pagination]}
-                  spaceBetween={10}
-                  navigation={!isMobile}
-                  pagination={{ 
-                    clickable: true,
-                    dynamicBullets: true,
-                    dynamicMainBullets: 3
-                  }}
-                  initialSlide={getCategoryImages().findIndex(img => img.id === selectedImage.id)}
-                  className="h-full w-full"
-                  style={{ height: '100%' }}
-                  speed={300}
-                  effect="slide"
-                  touchRatio={1}
-                  threshold={10}
-                  resistanceRatio={0.85}
-                  grabCursor={true}
-                  preventClicks={true}
-                  preventClicksPropagation={true}
-                  touchStartPreventDefault={false}
-                  touchMoveStopPropagation={true}
-                  allowTouchMove={true}
-                  simulateTouch={true}
-                  cssMode={false}
-                  touchEventsTarget="container"
-                  onTouchStart={(swiper, event) => {
-                    event.stopPropagation();
-                  }}
-                  onTouchMove={(swiper, event) => {
-                    event.stopPropagation();
-                  }}
-                  onSlideChange={() => {
-                    // Prevent any default behaviors during slide change
-                  }}
-                >
-                  {getCategoryImages().map((image) => (
-                    <SwiperSlide key={image.id} className="flex items-center justify-center">
-                      <div className="relative w-full h-full flex items-center justify-center bg-black" 
-                           style={{ touchAction: 'pan-y pinch-zoom' }}>
-                        <Image
-                          src={image.src}
-                          alt={image.alt}
-                          width={1600}
-                          height={1200}
-                          className="object-contain max-w-full max-h-full select-none"
-                          style={{ 
-                            maxHeight: '85vh',
-                            pointerEvents: 'none',
-                            userSelect: 'none',
-                            WebkitUserSelect: 'none',
-                            WebkitTouchCallout: 'none'
-                          }}
-                          priority={false}
-                          loading="lazy"
-                          quality={isIOS ? 75 : 85}
-                          draggable={false}
-                        />
-                        <div className="absolute bottom-0 left-0 right-0 gallery-caption p-3 sm:p-4 pointer-events-none">
-                          <p className="text-center text-xs sm:text-sm font-light leading-relaxed select-none">{image.caption}</p>
+              {/* Desktop: Swiper carousel */}
+              {!isMobile ? (
+                <div className="relative bg-black rounded-lg overflow-hidden h-full">
+                  <Swiper
+                    modules={[Navigation, Pagination]}
+                    spaceBetween={10}
+                    navigation={true}
+                    pagination={{ 
+                      clickable: true,
+                      dynamicBullets: true,
+                      dynamicMainBullets: 3
+                    }}
+                    initialSlide={getCategoryImages().findIndex(img => img.id === selectedImage.id)}
+                    className="h-full w-full"
+                    style={{ height: '100%' }}
+                    speed={300}
+                    effect="slide"
+                    touchRatio={1}
+                    threshold={10}
+                    resistanceRatio={0.85}
+                    grabCursor={true}
+                  >
+                    {getCategoryImages().map((image) => (
+                      <SwiperSlide key={image.id} className="flex items-center justify-center">
+                        <div className="relative w-full h-full flex items-center justify-center bg-black">
+                          <Image
+                            src={image.src}
+                            alt={image.alt}
+                            width={1600}
+                            height={1200}
+                            className="object-contain max-w-full max-h-full"
+                            style={{ maxHeight: '85vh' }}
+                            priority={false}
+                            loading="lazy"
+                            quality={85}
+                          />
+                          <div className="absolute bottom-0 left-0 right-0 gallery-caption p-3 sm:p-4 pointer-events-none">
+                            <p className="text-center text-xs sm:text-sm font-light leading-relaxed">{image.caption}</p>
+                          </div>
                         </div>
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                </div>
+              ) : (
+                /* Mobile: Simple image viewer without carousel */
+                <div className="relative bg-black rounded-lg overflow-hidden h-full flex items-center justify-center">
+                  <div className="relative w-full h-full flex items-center justify-center">
+                    <Image
+                      src={selectedImage.src}
+                      alt={selectedImage.alt}
+                      width={1200}
+                      height={900}
+                      className="object-contain max-w-full max-h-full"
+                      style={{ maxHeight: '85vh' }}
+                      priority={true}
+                      loading="eager"
+                      quality={isIOS ? 75 : 85}
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 gallery-caption p-3 sm:p-4">
+                      <p className="text-center text-xs sm:text-sm font-light leading-relaxed">{selectedImage.caption}</p>
+                    </div>
+                  </div>
+                  
+                  {/* Mobile navigation buttons */}
+                  {getCategoryImages().length > 1 && (
+                    <>
+                      {/* Previous button */}
+                      {getCategoryImages().findIndex(img => img.id === selectedImage.id) > 0 && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const currentIndex = getCategoryImages().findIndex(img => img.id === selectedImage.id);
+                            if (currentIndex > 0) {
+                              setSelectedImage(getCategoryImages()[currentIndex - 1]);
+                            }
+                          }}
+                          className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm rounded-full p-2 text-white"
+                          aria-label="Previous image"
+                        >
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                          </svg>
+                        </button>
+                      )}
+                      
+                      {/* Next button */}
+                      {getCategoryImages().findIndex(img => img.id === selectedImage.id) < getCategoryImages().length - 1 && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const currentIndex = getCategoryImages().findIndex(img => img.id === selectedImage.id);
+                            if (currentIndex < getCategoryImages().length - 1) {
+                              setSelectedImage(getCategoryImages()[currentIndex + 1]);
+                            }
+                          }}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm rounded-full p-2 text-white"
+                          aria-label="Next image"
+                        >
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </button>
+                      )}
+                      
+                      {/* Image counter */}
+                      <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-sm rounded-full px-3 py-1 text-white text-sm">
+                        {getCategoryImages().findIndex(img => img.id === selectedImage.id) + 1} / {getCategoryImages().length}
                       </div>
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-              </div>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         )}
