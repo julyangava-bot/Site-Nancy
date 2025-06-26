@@ -1008,7 +1008,6 @@ export function Gallery() {
   const [selectedImage, setSelectedImage] = useState<ImageItem | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<VideoItem | null>(null);
   const [isIOS, setIsIOS] = useState(false);
-  const [imageTransition, setImageTransition] = useState(false);
   
   // Refs for interval cleanup
   const photoIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -1459,111 +1458,55 @@ export function Gallery() {
         </motion.div>
       </div>
 
-      {/* Image Modal with Swiper - Optimized for iOS */}
+      {/* Image Modal with Swiper - Works on all devices */}
       <Modal isOpen={!!selectedImage} onClose={() => setSelectedImage(null)}>
         {selectedImage && (
           <div className="flex items-center justify-center h-full">
             <div className="w-full h-full max-h-[90vh] max-w-6xl">
-              {/* Main Swiper */}
+              {/* Main Swiper for all devices including iOS */}
               <div className="relative bg-black rounded-lg overflow-hidden h-full">
-                {isIOS || isMobile ? (
-                  // Simple image view for iOS and mobile
-                  <div className="relative w-full h-full flex items-center justify-center">
-                    <div className={`absolute inset-0 flex items-center justify-center ${imageTransition ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}>
-                      <Image
-                        src={selectedImage.src}
-                        alt={selectedImage.alt}
-                        width={1200}
-                        height={900}
-                        className="object-contain max-w-full max-h-full"
-                        style={{ maxHeight: '85vh' }}
-                        priority
-                        quality={85}
-                      />
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 sm:p-6">
-                      <p className="text-white text-center text-sm sm:text-lg">{selectedImage.caption}</p>
-                    </div>
-                    {/* Simple navigation for iOS and mobile */}
-                    <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-2 sm:px-4">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setImageTransition(true);
-                          setTimeout(() => {
-                            const currentIndex = getCategoryImages().findIndex(img => img.id === selectedImage.id);
-                            const prevIndex = currentIndex > 0 ? currentIndex - 1 : getCategoryImages().length - 1;
-                            setSelectedImage(getCategoryImages()[prevIndex]);
-                            setImageTransition(false);
-                          }, 150);
-                        }}
-                        className="bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transition-all duration-200 transform active:scale-95"
-                        aria-label="Previous image"
-                      >
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                        </svg>
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setImageTransition(true);
-                          setTimeout(() => {
-                            const currentIndex = getCategoryImages().findIndex(img => img.id === selectedImage.id);
-                            const nextIndex = currentIndex < getCategoryImages().length - 1 ? currentIndex + 1 : 0;
-                            setSelectedImage(getCategoryImages()[nextIndex]);
-                            setImageTransition(false);
-                          }, 150);
-                        }}
-                        className="bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transition-all duration-200 transform active:scale-95"
-                        aria-label="Next image"
-                      >
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  // Full Swiper for non-iOS devices
-                  <Swiper
-                    modules={[Navigation, Pagination]}
-                    spaceBetween={10}
-                    navigation={true}
-                    pagination={{ clickable: true }}
-                    initialSlide={getCategoryImages().findIndex(img => img.id === selectedImage.id)}
-                    className="h-full w-full"
-                    style={{ height: '100%' }}
-                    speed={400}
-                    effect="slide"
-                  >
-                    {getCategoryImages().map((image) => (
-                      <SwiperSlide key={image.id} className="flex items-center justify-center">
-                        <div className="relative w-full h-full flex items-center justify-center bg-black">
-                          <Image
-                            src={image.src}
-                            alt={image.alt}
-                            width={1600}
-                            height={1200}
-                            className="object-contain max-w-full max-h-full"
-                            style={{ maxHeight: '85vh' }}
-                            priority
-                          />
-                          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-                            <p className="text-white text-center text-lg">{image.caption}</p>
+                <Swiper
+                  modules={[Navigation, Pagination]}
+                  spaceBetween={10}
+                  navigation={true}
+                  pagination={{ clickable: true }}
+                  initialSlide={getCategoryImages().findIndex(img => img.id === selectedImage.id)}
+                  className="h-full w-full"
+                  style={{ height: '100%' }}
+                  speed={400}
+                  effect="slide"
+                  touchRatio={1.5}
+                  resistanceRatio={0.85}
+                  grabCursor={true}
+                >
+                  {getCategoryImages().map((image) => (
+                    <SwiperSlide key={image.id} className="flex items-center justify-center">
+                      <div className="relative w-full h-full flex items-center justify-center bg-black">
+                        <Image
+                          src={image.src}
+                          alt={image.alt}
+                          width={1600}
+                          height={1200}
+                          className="object-contain max-w-full max-h-full"
+                          style={{ maxHeight: '85vh' }}
+                          priority={false}
+                          loading="lazy"
+                          quality={isIOS ? 75 : 85}
+                        />
+                                                  <div className="absolute bottom-0 left-0 right-0 gallery-caption p-3 sm:p-4">
+                            <p className="text-center text-xs sm:text-sm font-light leading-relaxed">{image.caption}</p>
                           </div>
-                        </div>
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
-                )}
+                      </div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
               </div>
             </div>
           </div>
         )}
       </Modal>
 
-      {/* Video Modal - Optimized for iOS */}
+      {/* Video Modal - Simple modal without carousel */}
       <Modal isOpen={!!selectedVideo} onClose={() => setSelectedVideo(null)}>
         {selectedVideo && (
           <div className="flex items-center justify-center h-full">
