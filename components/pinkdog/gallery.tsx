@@ -1008,6 +1008,7 @@ export function Gallery() {
   const [selectedImage, setSelectedImage] = useState<ImageItem | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<VideoItem | null>(null);
   const [isIOS, setIsIOS] = useState(false);
+  const [imageTransition, setImageTransition] = useState(false);
   
   // Refs for interval cleanup
   const photoIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -1463,32 +1464,38 @@ export function Gallery() {
             <div className="w-full h-full max-h-[90vh] max-w-6xl">
               {/* Main Swiper */}
               <div className="relative bg-black rounded-lg overflow-hidden h-full">
-                {isIOS ? (
-                  // Simple image view for iOS
+                {isIOS || isMobile ? (
+                  // Simple image view for iOS and mobile
                   <div className="relative w-full h-full flex items-center justify-center">
-                    <Image
-                      src={selectedImage.src}
-                      alt={selectedImage.alt}
-                      width={1200}
-                      height={900}
-                      className="object-contain max-w-full max-h-full"
-                      style={{ maxHeight: '85vh' }}
-                      priority
-                      quality={85}
-                    />
+                    <div className={`absolute inset-0 flex items-center justify-center ${imageTransition ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}>
+                      <Image
+                        src={selectedImage.src}
+                        alt={selectedImage.alt}
+                        width={1200}
+                        height={900}
+                        className="object-contain max-w-full max-h-full"
+                        style={{ maxHeight: '85vh' }}
+                        priority
+                        quality={85}
+                      />
+                    </div>
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 sm:p-6">
                       <p className="text-white text-center text-sm sm:text-lg">{selectedImage.caption}</p>
                     </div>
-                    {/* Simple navigation for iOS */}
+                    {/* Simple navigation for iOS and mobile */}
                     <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-2 sm:px-4">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          const currentIndex = getCategoryImages().findIndex(img => img.id === selectedImage.id);
-                          const prevIndex = currentIndex > 0 ? currentIndex - 1 : getCategoryImages().length - 1;
-                          setSelectedImage(getCategoryImages()[prevIndex]);
+                          setImageTransition(true);
+                          setTimeout(() => {
+                            const currentIndex = getCategoryImages().findIndex(img => img.id === selectedImage.id);
+                            const prevIndex = currentIndex > 0 ? currentIndex - 1 : getCategoryImages().length - 1;
+                            setSelectedImage(getCategoryImages()[prevIndex]);
+                            setImageTransition(false);
+                          }, 150);
                         }}
-                        className="bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transition-colors"
+                        className="bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transition-all duration-200 transform active:scale-95"
                         aria-label="Previous image"
                       >
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1498,11 +1505,15 @@ export function Gallery() {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          const currentIndex = getCategoryImages().findIndex(img => img.id === selectedImage.id);
-                          const nextIndex = currentIndex < getCategoryImages().length - 1 ? currentIndex + 1 : 0;
-                          setSelectedImage(getCategoryImages()[nextIndex]);
+                          setImageTransition(true);
+                          setTimeout(() => {
+                            const currentIndex = getCategoryImages().findIndex(img => img.id === selectedImage.id);
+                            const nextIndex = currentIndex < getCategoryImages().length - 1 ? currentIndex + 1 : 0;
+                            setSelectedImage(getCategoryImages()[nextIndex]);
+                            setImageTransition(false);
+                          }, 150);
                         }}
-                        className="bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transition-colors"
+                        className="bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transition-all duration-200 transform active:scale-95"
                         aria-label="Next image"
                       >
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1521,6 +1532,8 @@ export function Gallery() {
                     initialSlide={getCategoryImages().findIndex(img => img.id === selectedImage.id)}
                     className="h-full w-full"
                     style={{ height: '100%' }}
+                    speed={400}
+                    effect="slide"
                   >
                     {getCategoryImages().map((image) => (
                       <SwiperSlide key={image.id} className="flex items-center justify-center">
@@ -1553,35 +1566,15 @@ export function Gallery() {
         {selectedVideo && (
           <div className="flex items-center justify-center h-full">
             <div className="relative w-full max-w-[506px]" style={{ aspectRatio: '9/16' }}>
-              {isIOS ? (
-                // For iOS, use a link to YouTube app/website
-                <div className="w-full h-full bg-black rounded-lg flex flex-col items-center justify-center p-6">
-                  <Image
-                    src={`https://img.youtube.com/vi/${selectedVideo.youtubeId}/hqdefault.jpg`}
-                    alt={selectedVideo.name}
-                    width={480}
-                    height={360}
-                    className="rounded-lg mb-4"
-                  />
-                  <p className="text-white text-lg mb-4">{selectedVideo.name}</p>
-                  <a
-                    href={`https://www.youtube.com/watch?v=${selectedVideo.youtubeId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-[#E73992] text-white px-6 py-3 rounded-full font-medium hover:bg-[#d3337f] transition-colors"
-                  >
-                    Watch on YouTube
-                  </a>
-                </div>
-              ) : (
-                // Full iframe for non-iOS devices
-                <iframe
-                  src={`https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1&mute=0&loop=1&playlist=${selectedVideo.youtubeId}&controls=1&showinfo=0&rel=0&modestbranding=1`}
-                  className="absolute inset-0 w-full h-full rounded-lg"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              )}
+              {/* Embedded YouTube video */}
+              <iframe
+                src={`https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1&mute=0&loop=1&playlist=${selectedVideo.youtubeId}&controls=1&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
+                className="absolute inset-0 w-full h-full rounded-lg"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                allowFullScreen
+                title={selectedVideo.name}
+                style={{ border: 0 }}
+              />
             </div>
           </div>
         )}

@@ -264,8 +264,57 @@ nav a:hover {
   }
 }
 
+/* Smooth transitions for gallery images */
+.gallery-image-transition {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Gallery modal image transitions */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideRight {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.gallery-image-enter {
+  animation: fadeIn 0.3s ease-out;
+}
+
 /* Additional mobile optimizations */
 @media (max-width: 768px) {
+  /* Smooth transitions for mobile gallery */
+  .transition-all {
+    -webkit-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
+  }
+  
   /* Reduce animations on mobile for better performance */
   .transition-transform,
   .transition-opacity,
@@ -281,4 +330,15 @@ nav a:hover {
       transform: none !important;
     }
   }
+  
+  /* Smooth image transitions on mobile */
+  img {
+    will-change: transform, opacity;
+  }
+}
+
+/* YouTube iframe optimization */
+iframe[src*="youtube.com"] {
+  border: 0;
+  will-change: transform;
 }
