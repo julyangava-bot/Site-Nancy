@@ -65,6 +65,7 @@ export function Footer() {
         weekdays: "Mon-Sat: 9:00 AM - 5:30 PM",
         sunday: "Sunday: Closed"
       },
+      phone: "978-261-5679",
       features: ["Grooming", "Spa Services"],
       mapUrl: "https://maps.google.com/?q=621+Boston+Post+Rd+Sudbury+MA+01776",
       hasExternalSite: true
@@ -76,6 +77,7 @@ export function Footer() {
         weekdays: "Mon-Sat: 9:00 AM - 5:30 PM",
         sunday: "Sunday: Closed"
       },
+      phone: "978-429-8191",
       features: ["Grooming", "Spa Services"],
       mapUrl: "https://maps.google.com/?q=650+Massachusetts+Ave+Boxborough+MA+01719",
       hasExternalSite: true
@@ -87,6 +89,7 @@ export function Footer() {
         weekdays: "Mon-Sat: 8:30 AM - 5:00 PM",
         sunday: "Sunday: Closed"
       },
+      phone: "954-531-1707",
       features: ["Grooming", "Spa Services", "Daycare"],
       mapUrl: "https://maps.google.com/?q=4407+West+Boulevard+Coconut+Creek+FL+33073",
       hasExternalSite: true
@@ -126,15 +129,6 @@ export function Footer() {
                 aria-label="Facebook"
               >
                 <IconBrandFacebook size={20} />
-              </Link>
-              <Link
-                href="https://wa.me/19549140128"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white rounded-full p-2 text-gray-600 hover:text-white hover:bg-[#25d366] transition-all duration-300 shadow-md hover:shadow-lg"
-                aria-label="WhatsApp"
-              >
-                <IconBrandWhatsapp size={20} />
               </Link>
             </div>
           </div>
@@ -282,6 +276,20 @@ export function Footer() {
                       >
                         {location.phone}
                       </a>
+                      {location.name === "Coconut Creek, FL" && (
+                        <>
+                          <span className="text-gray-400 text-xs">|</span>
+                          <IconBrandWhatsapp size={16} className="text-green-600" />
+                          <a 
+                            href="https://wa.me/+19549140128"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-gray-600 hover:text-green-600 transition-colors text-xs"
+                          >
+                            954-914-0128
+                          </a>
+                        </>
+                      )}
                     </div>
                   )}
                 </div>

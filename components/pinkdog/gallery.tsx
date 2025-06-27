@@ -338,7 +338,7 @@ const galleryImages = [
     caption: "Welcome to PinkDog",
     category: "facility"
   },
-  // New WhatsApp images
+  // Additional images
   {
     id: 47,
     src: "/images/gallery/all/image-47.jpg",

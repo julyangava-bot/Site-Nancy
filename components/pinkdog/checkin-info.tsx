@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { IconBrandWhatsapp } from "@tabler/icons-react";
 
 
 // Hours data
@@ -13,7 +12,6 @@ const hours = [
 // Contact info
 const contactInfo = {
   phone: "+1 978-772-4242",
-  whatsapp: "954-914-0128",
   email: "pinkdogpetresort@gmail.com",
   address: "259 Ayer Rd, Harvard, MA 01451, US",
   instagram: "pinkdogspa",
@@ -176,18 +174,6 @@ export function CheckInInfo() {
                     </div>
                   </div>
 
-                  <div className="flex items-start">
-                    <IconBrandWhatsapp className="h-6 w-6 text-[#E73992] mt-0.5 mr-3" />
-                    <div>
-                      <h4 className="font-medium text-gray-700">Text/WhatsApp</h4>
-                      <a
-                        href={`sms:${contactInfo.whatsapp}`}
-                        className="text-[#E73992] font-semibold hover:underline"
-                      >
-                        {contactInfo.whatsapp}
-                      </a>
-                    </div>
-                  </div>
 
                   <div className="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#E73992] mt-0.5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">

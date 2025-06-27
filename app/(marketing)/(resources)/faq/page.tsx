@@ -5,7 +5,6 @@ import {
   IconPlus, 
   IconPhone, 
   IconMail, 
-  IconBrandWhatsapp, 
   IconClock, 
   IconMapPin, 
   IconCalendarEvent, 
@@ -161,15 +160,6 @@ const faqSections: FAQSection[] = [
                 </div>
               </a>
               
-              <a href="https://wa.me/9549140128" className="flex items-center gap-3 bg-[#FFF9FC] rounded-lg p-4 hover:bg-[#FFF0F7] transition-colors group">
-                <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
-                  <IconBrandWhatsapp size={24} className="text-white" />
-                </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-gray-800 group-hover:text-green-600 transition-colors">Text/WhatsApp</p>
-                  <p className="text-green-600 font-bold text-lg">954-914-0128</p>
-                </div>
-              </a>
               
               <a href="mailto:pinkdogpetresort@gmail.com" className="flex items-center gap-3 bg-[#FFF9FC] rounded-lg p-4 hover:bg-[#FFF0F7] transition-colors group">
                 <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
@@ -618,15 +608,6 @@ const faqSections: FAQSection[] = [
                     <span className="font-bold text-gray-800">Call Us</span>
                   </div>
                   <span className="text-[#E73992] font-bold">978-772-4242</span>
-                </div>
-              </a>
-              <a href="sms:954-914-0128" className="block bg-gradient-to-r from-[#FFF0F7] to-[#FFF9FC] rounded-lg p-4 border border-[#FCD1E6] hover:shadow-md transition-shadow">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <IconBrandWhatsapp size={20} className="text-green-600" />
-                    <span className="font-bold text-gray-800">Text/WhatsApp</span>
-                  </div>
-                  <span className="text-green-600 font-bold">954-914-0128</span>
                 </div>
               </a>
               <a href="mailto:pinkdogpetresort@gmail.com" className="block bg-gradient-to-r from-[#FFF0F7] to-[#FFF9FC] rounded-lg p-4 border border-[#FCD1E6] hover:shadow-md transition-shadow">
