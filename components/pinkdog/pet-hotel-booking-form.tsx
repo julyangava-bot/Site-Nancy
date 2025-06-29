@@ -135,8 +135,8 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
     
     let startHour = 8;
     let startMinute = 30;
-    let endHour = 17;
-    let endMinute = 0;
+    let endHour = 16;
+    let endMinute = 30;
     
     // Sunday: 12:00 PM - 4:00 PM
     if (dayOfWeek === 0) {

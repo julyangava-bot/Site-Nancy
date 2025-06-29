@@ -37,11 +37,11 @@
         <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #FFE4E1;">
           <p style="margin: 5px 0; color: #333333;">
             <strong>Check-in:</strong> 
-            <span style="background-color: #f8f9fa; padding: 3px 8px; border-radius: 4px; font-family: monospace; color: #333333;">{{ $('Booking - PinkDogResort-Web').item.json.body.checkIn.split(' ')[0].split('-')[1] + '-' + $('Booking - PinkDogResort-Web').item.json.body.checkIn.split(' ')[0].split('-')[2] + '-' + $('Booking - PinkDogResort-Web').item.json.body.checkIn.split(' ')[0].split('-')[0] + ' at ' + $('Booking - PinkDogResort-Web').item.json.body.checkIn.split(' ').slice(1).join(' ') }}</span>
+            <span style="background-color: #f8f9fa; padding: 3px 8px; border-radius: 4px; font-family: monospace; color: #333333;">{{ $('Booking - PinkDogResort-Web').item.json.body.checkIn.split(' ')[0].split('-')[1] + '-' + $('Booking - PinkDogResort-Web').item.json.body.checkIn.split(' ')[0].split('-')[2] + '-' + $('Booking - PinkDogResort-Web').item.json.body.checkIn.split(' ')[0].split('-')[0] + ' at ' + (function() { var time = $('Booking - PinkDogResort-Web').item.json.body.checkIn.split(' ').slice(1).join(' '); var [hours, minutes] = time.split(':'); var h = parseInt(hours); var ampm = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return h + ':' + minutes + ' ' + ampm; })() }}</span>
           </p>
           <p style="margin: 5px 0; color: #333333;">
             <strong>Check-out:</strong> 
-            <span style="background-color: #f8f9fa; padding: 3px 8px; border-radius: 4px; font-family: monospace; color: #333333;">{{ $('Booking - PinkDogResort-Web').item.json.body.checkOut.split(' ')[0].split('-')[1] + '-' + $('Booking - PinkDogResort-Web').item.json.body.checkOut.split(' ')[0].split('-')[2] + '-' + $('Booking - PinkDogResort-Web').item.json.body.checkOut.split(' ')[0].split('-')[0] + ' at ' + $('Booking - PinkDogResort-Web').item.json.body.checkOut.split(' ').slice(1).join(' ') }}</span>
+            <span style="background-color: #f8f9fa; padding: 3px 8px; border-radius: 4px; font-family: monospace; color: #333333;">{{ $('Booking - PinkDogResort-Web').item.json.body.checkOut.split(' ')[0].split('-')[1] + '-' + $('Booking - PinkDogResort-Web').item.json.body.checkOut.split(' ')[0].split('-')[2] + '-' + $('Booking - PinkDogResort-Web').item.json.body.checkOut.split(' ')[0].split('-')[0] + ' at ' + (function() { var time = $('Booking - PinkDogResort-Web').item.json.body.checkOut.split(' ').slice(1).join(' '); var [hours, minutes] = time.split(':'); var h = parseInt(hours); var ampm = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return h + ':' + minutes + ' ' + ampm; })() }}</span>
           </p>
         </div>
         
