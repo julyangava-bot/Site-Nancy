@@ -29,6 +29,7 @@ import {
   DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useBlockedDates } from "@/hooks/useBlockedDates";
 
 const petHotelFormSchema = z.object({
   ownerName: z.string().min(2, "Name must be at least 2 characters"),
@@ -123,6 +124,7 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
   const [submitStatus, setSubmitStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = React.useState('');
   const { setIsAnyModalOpen } = useModal();
+  const { isDateBlocked, getBlockedTimesForDate } = useBlockedDates('pethotel');
 
   // Generate time options based on business hours and 24-hour constraint
   const generateTimeOptions = (date: string, isCheckIn: boolean = true) => {
@@ -158,17 +160,23 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
         hour12: true
       });
       
-      // For check-in times, ensure they are at least 24 hours from now
+      // Check if this time slot is blocked
+      const blockedTimes = getBlockedTimesForDate(selectedDate);
+      const isBlocked = blockedTimes.includes(timeString);
+      
+      // For check-in times, ensure they are at least 24 hours from now and not blocked
       if (isCheckIn) {
         const dateTime = new Date(selectedDate);
         dateTime.setHours(currentHour, currentMinute, 0, 0);
         
-        if (dateTime >= twentyFourHoursFromNow) {
+        if (dateTime >= twentyFourHoursFromNow && !isBlocked) {
           options.push({ value: timeString, label: displayTime });
         }
       } else {
-        // For check-out times, no 24-hour restriction
-        options.push({ value: timeString, label: displayTime });
+        // For check-out times, no 24-hour restriction but check if blocked
+        if (!isBlocked) {
+          options.push({ value: timeString, label: displayTime });
+        }
       }
       
       // Increment by 30 minutes
@@ -513,6 +521,10 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
                                   }
                                 }}
                                 disabled={(date) => {
+                                  // Check if the entire date is blocked
+                                  if (isDateBlocked(date)) {
+                                    return true;
+                                  }
                                   // Check if this date would have any available time slots
                                   const availableTimes = generateTimeOptions(format(date, 'yyyy-MM-dd'), true);
                                   return availableTimes.length === 0;
@@ -573,6 +585,11 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
                                   
                                   if (!checkInDate) {
                                     // If no check-in date selected, disable all dates
+                                    return true;
+                                  }
+                                  
+                                  // Check if the entire date is blocked
+                                  if (isDateBlocked(date)) {
                                     return true;
                                   }
                                   

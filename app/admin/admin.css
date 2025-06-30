@@ -1,0 +1,91 @@
+/* Admin Panel Styles */
+
+/* DayPicker Styles */
+.rdp {
+  --rdp-cell-size: 40px;
+  --rdp-accent-color: #E73992;
+  --rdp-background-color: #E73992;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.rdp-day_selected:not([disabled]) {
+  background-color: #E73992 !important;
+  color: white !important;
+}
+
+.rdp-day_selected:hover:not([disabled]) {
+  background-color: #d3337f !important;
+  color: white !important;
+}
+
+.rdp-day:hover:not([disabled]) {
+  background-color: #FFF0F7;
+  color: #E73992;
+  cursor: pointer;
+}
+
+.rdp-button {
+  border: none;
+  cursor: pointer;
+}
+
+.rdp-button:hover:not([disabled]) {
+  background-color: #FFF0F7;
+}
+
+.rdp-day_today {
+  font-weight: bold;
+  font-size: 110%;
+}
+
+.rdp-caption {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 1rem;
+}
+
+/* Select Dropdown Styles */
+[data-radix-select-content] {
+  background-color: white !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-radix-select-item] {
+  cursor: pointer;
+}
+
+[data-radix-select-item][data-highlighted] {
+  background-color: #FFF0F7 !important;
+  color: #E73992 !important;
+}
+
+[data-radix-select-item][data-state="checked"] {
+  background-color: #E73992 !important;
+  color: white !important;
+}
+
+/* Switch Styles */
+[data-state="checked"] {
+  background-color: #E73992 !important;
+}
+
+/* Input Focus Styles */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #E73992;
+  box-shadow: 0 0 0 3px rgba(231, 57, 146, 0.1);
+}
+
+/* Button Hover States */
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  transition: all 0.2s ease;
+}
+
+/* Card Hover Effects */
+.hover\:shadow-md {
+  transition: box-shadow 0.3s ease;
+}

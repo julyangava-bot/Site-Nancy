@@ -8,7 +8,13 @@
       "Bash(npm run build:*)",
       "Bash(npm run lint)",
       "Bash(rm:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx eslint:*)",
+      "Bash(true)",
+      "Bash(npx prisma:*)",
+      "Bash(chmod:*)",
+      "Bash(node:*)"
     ],
     "deny": []
   }

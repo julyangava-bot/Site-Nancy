@@ -29,6 +29,7 @@ import {
   DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useBlockedDates } from "@/hooks/useBlockedDates";
 
 const vanFormSchema = z.object({
   ownerName: z.string().min(2, "Name must be at least 2 characters"),
@@ -130,6 +131,7 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
   const [submitStatus, setSubmitStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = React.useState('');
   const { setIsAnyModalOpen } = useModal();
+  const { isDateBlocked, getBlockedTimesForDate } = useBlockedDates('van');
 
   // Generate time options based on selected date and business hours with 24-hour constraint
   const generateTimeOptions = (date: string) => {
@@ -612,6 +614,10 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
                                 }
                               }}
                               disabled={(date) => {
+                                // Check if the entire date is blocked
+                                if (isDateBlocked(date)) {
+                                  return true;
+                                }
                                 // Check if this date would have any available time slots
                                 const availableTimes = generateTimeOptions(format(date, 'yyyy-MM-dd'));
                                 return availableTimes.length === 0;
