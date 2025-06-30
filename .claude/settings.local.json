@@ -14,7 +14,9 @@
       "Bash(true)",
       "Bash(npx prisma:*)",
       "Bash(chmod:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": []
   }

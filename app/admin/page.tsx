@@ -9,7 +9,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { DayPicker } from 'react-day-picker'
 import 'react-day-picker/dist/style.css'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Switch } from '@/components/ui/switch'
 import { Trash2, Calendar as CalendarIcon, Clock, Shield } from 'lucide-react'
 import { format } from 'date-fns'
 import { enUS } from 'date-fns/locale'
@@ -30,7 +29,7 @@ export default function AdminPage() {
   const [token, setToken] = useState('')
   const [blockedDates, setBlockedDates] = useState<BlockedDate[]>([])
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
-  const [isFullDay] = useState(true) // Always block full day
+  // Always block full day - isFullDay is always true
   const [reason, setReason] = useState('')
   const [service, setService] = useState<string>('all')
   const [loading, setLoading] = useState(false)
@@ -357,7 +356,7 @@ export default function AdminPage() {
                         </div>
                         {blocked.reason && (
                           <p className="text-sm text-gray-500 mt-1 italic">
-                            "{blocked.reason}"
+                            &quot;{blocked.reason}&quot;
                           </p>
                         )}
                       </div>

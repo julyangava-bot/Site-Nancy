@@ -131,7 +131,7 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
   const [submitStatus, setSubmitStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = React.useState('');
   const { setIsAnyModalOpen } = useModal();
-  const { isDateBlocked, getBlockedTimesForDate } = useBlockedDates('van');
+  const { isDateBlocked } = useBlockedDates('van');
 
   // Generate time options based on selected date and business hours with 24-hour constraint
   const generateTimeOptions = (date: string) => {
