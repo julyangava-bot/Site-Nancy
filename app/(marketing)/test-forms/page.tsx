@@ -280,6 +280,10 @@ export default function TestFormsPage() {
         <p className="text-gray-600">
           Simple testing interface for PinkDog booking forms. Send one test email for each form type.
         </p>
+        <div className="mt-2 inline-flex items-center gap-2 text-sm bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-1">
+          <span className="text-yellow-800">⚠️ Test URL configured:</span>
+          <code className="text-xs bg-yellow-100 px-1 rounded">booking-request-reply</code>
+        </div>
       </div>
 
       {/* Server Status & Quick Actions */}
@@ -403,7 +407,10 @@ export default function TestFormsPage() {
                       <div className="mt-4 space-y-3">
                         {result.requestData && (
                           <div className="border rounded-lg p-3">
-                            <h4 className="text-sm font-semibold text-gray-700 mb-2">📤 Request Data:</h4>
+                            <h4 className="text-sm font-semibold text-gray-700 mb-2">📤 Request Data Sent:</h4>
+                            <div className="text-xs bg-gray-50 p-2 rounded mb-2">
+                              <strong className="text-green-600">✅ New field added: "storeSlug": "pink-dog-pet-resort"</strong>
+                            </div>
                             <pre className="text-xs bg-gray-50 p-2 rounded overflow-x-auto">
                               {result.requestData}
                             </pre>
@@ -412,7 +419,7 @@ export default function TestFormsPage() {
                         
                         {result.responseData && (
                           <div className="border rounded-lg p-3">
-                            <h4 className="text-sm font-semibold text-gray-700 mb-2">📥 Response Data:</h4>
+                            <h4 className="text-sm font-semibold text-gray-700 mb-2">📥 Response from Server:</h4>
                             <pre className="text-xs bg-gray-50 p-2 rounded overflow-x-auto">
                               {result.responseData}
                             </pre>
@@ -439,6 +446,15 @@ export default function TestFormsPage() {
             <div><strong>Method:</strong> POST</div>
             <div><strong>Content-Type:</strong> application/json</div>
             <div><strong>Forms:</strong> Daycare, Pet Hotel, Van Service</div>
+            <div className="mt-3 p-3 bg-green-50 rounded-lg border border-green-200">
+              <strong className="text-green-700">🆕 New field in all forms:</strong>
+              <div className="mt-1 font-mono text-xs bg-white p-2 rounded">
+                "storeSlug": "pink-dog-pet-resort"
+              </div>
+              <p className="text-xs text-gray-600 mt-2">
+                This field is automatically added to all booking requests to identify the store in your dashboard.
+              </p>
+            </div>
           </div>
         </CardContent>
       </Card>
