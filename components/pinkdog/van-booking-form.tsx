@@ -30,6 +30,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useBlockedDates } from "@/hooks/useBlockedDates";
+import { useTimeSlots } from "@/hooks/useTimeSlots";
 
 const vanFormSchema = z.object({
   ownerName: z.string().min(2, "Name must be at least 2 characters"),
@@ -132,48 +133,84 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
   const [errorMessage, setErrorMessage] = React.useState('');
   const { setIsAnyModalOpen } = useModal();
   const { isDateBlocked } = useBlockedDates('van');
+  const { timeSlots, loading: timeSlotsLoading } = useTimeSlots('van');
 
-  // Generate time options based on selected date and business hours with 24-hour constraint
+  // Generate time options based on configured slots and 24-hour constraint
   const generateTimeOptions = (date: string) => {
     if (!date) return [];
     
     // Create date with explicit timezone handling to avoid timezone issues
     const dateParts = date.split('-');
     const selectedDate = new Date(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]));
-    const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, etc.
     const now = new Date();
     const twentyFourHoursFromNow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
     
-    const options: SelectOption[] = [];
-    const timeWindows = [];
+    // Get configured time slots
+    const configuredSlots = timeSlots.time_window || [];
     
-    // Sunday: Limited hours - 12:00 PM - 4:00 PM
-    if (dayOfWeek === 0) {
-      timeWindows.push(
-        { value: "12:00 PM - 2:00 PM", label: "12:00 PM - 2:00 PM", startHour: 12, startMinute: 0 },
-        { value: "2:00 PM - 4:00 PM", label: "2:00 PM - 4:00 PM", startHour: 14, startMinute: 0 }
-      );
-    } else {
-      // Monday-Saturday: Full hours
-      timeWindows.push(
-        { value: "8:00 AM - 10:00 AM", label: "8:00 AM - 10:00 AM (Morning Pickup)", startHour: 8, startMinute: 0 },
-        { value: "10:00 AM - 12:00 PM", label: "10:00 AM - 12:00 PM", startHour: 10, startMinute: 0 },
-        { value: "12:00 PM - 2:00 PM", label: "12:00 PM - 2:00 PM", startHour: 12, startMinute: 0 },
-        { value: "2:00 PM - 4:00 PM", label: "2:00 PM - 4:00 PM", startHour: 14, startMinute: 0 },
-        { value: "3:00 PM - 5:00 PM", label: "3:00 PM - 5:00 PM (Afternoon Drop-off)", startHour: 15, startMinute: 0 },
-        { value: "4:00 PM - 6:00 PM", label: "4:00 PM - 6:00 PM", startHour: 16, startMinute: 0 }
-      );
+    // If no configured slots, fall back to default time windows
+    if (configuredSlots.length === 0) {
+      const dayOfWeek = selectedDate.getDay();
+      const options: SelectOption[] = [];
+      const timeWindows = [];
+      
+      // Sunday: Limited hours - 12:00 PM - 4:00 PM
+      if (dayOfWeek === 0) {
+        timeWindows.push(
+          { value: "12:00 PM - 2:00 PM", label: "12:00 PM - 2:00 PM", startHour: 12, startMinute: 0 },
+          { value: "2:00 PM - 4:00 PM", label: "2:00 PM - 4:00 PM", startHour: 14, startMinute: 0 }
+        );
+      } else {
+        // Monday-Saturday: Full hours
+        timeWindows.push(
+          { value: "8:00 AM - 10:00 AM", label: "8:00 AM - 10:00 AM (Morning Pickup)", startHour: 8, startMinute: 0 },
+          { value: "10:00 AM - 12:00 PM", label: "10:00 AM - 12:00 PM", startHour: 10, startMinute: 0 },
+          { value: "12:00 PM - 2:00 PM", label: "12:00 PM - 2:00 PM", startHour: 12, startMinute: 0 },
+          { value: "2:00 PM - 4:00 PM", label: "2:00 PM - 4:00 PM", startHour: 14, startMinute: 0 },
+          { value: "3:00 PM - 5:00 PM", label: "3:00 PM - 5:00 PM (Afternoon Drop-off)", startHour: 15, startMinute: 0 },
+          { value: "4:00 PM - 6:00 PM", label: "4:00 PM - 6:00 PM", startHour: 16, startMinute: 0 }
+        );
+      }
+      
+      // Filter time windows based on 24-hour constraint
+      timeWindows.forEach(window => {
+        const dateTime = new Date(selectedDate);
+        dateTime.setHours(window.startHour, window.startMinute, 0, 0);
+        
+        if (dateTime >= twentyFourHoursFromNow) {
+          options.push({ value: window.value, label: window.label });
+        }
+      });
+      
+      return options;
     }
     
-    // Filter time windows based on 24-hour constraint
-    timeWindows.forEach(window => {
+    // Use configured slots
+    const options: SelectOption[] = [];
+    
+    for (const slot of configuredSlots) {
+      // Extract start time from the window (e.g., "8:00 AM - 10:00 AM")
+      const timeMatch = slot.value.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/);
+      if (!timeMatch) continue;
+      
+      let hours = parseInt(timeMatch[1]);
+      const minutes = parseInt(timeMatch[2]);
+      const period = timeMatch[3];
+      
+      // Convert to 24-hour format
+      if (period === 'PM' && hours !== 12) {
+        hours += 12;
+      } else if (period === 'AM' && hours === 12) {
+        hours = 0;
+      }
+      
       const dateTime = new Date(selectedDate);
-      dateTime.setHours(window.startHour, window.startMinute, 0, 0);
+      dateTime.setHours(hours, minutes, 0, 0);
       
       if (dateTime >= twentyFourHoursFromNow) {
-        options.push({ value: window.value, label: window.label });
+        options.push(slot);
       }
-    });
+    }
     
     return options;
   };
@@ -647,7 +684,7 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
                               classNamePrefix="react-select"
                               isClearable={false}
                               isSearchable={false}
-                              isDisabled={!form.watch('desiredDate')}
+                              isDisabled={!form.watch('desiredDate') || timeSlotsLoading}
                             />
                           </FormControl>
                           <FormMessage className="text-xs" />

@@ -409,7 +409,7 @@ export default function TestFormsPage() {
                           <div className="border rounded-lg p-3">
                             <h4 className="text-sm font-semibold text-gray-700 mb-2">📤 Request Data Sent:</h4>
                             <div className="text-xs bg-gray-50 p-2 rounded mb-2">
-                              <strong className="text-green-600">✅ New field added: &quot;storeSlug&quot;: &quot;pink-dog-pet-resort&quot;</strong>
+                              <strong className="text-green-600">✅ New field added: &quot;storeSlug&quot;: &quot;pink-dog-havard&quot;</strong>
                             </div>
                             <pre className="text-xs bg-gray-50 p-2 rounded overflow-x-auto">
                               {result.requestData}
@@ -449,7 +449,7 @@ export default function TestFormsPage() {
             <div className="mt-3 p-3 bg-green-50 rounded-lg border border-green-200">
               <strong className="text-green-700">🆕 New field in all forms:</strong>
               <div className="mt-1 font-mono text-xs bg-white p-2 rounded">
-                &quot;storeSlug&quot;: &quot;pink-dog-pet-resort&quot;
+                &quot;storeSlug&quot;: &quot;pink-dog-havard&quot;
               </div>
               <p className="text-xs text-gray-600 mt-2">
                 This field is automatically added to all booking requests to identify the store in your dashboard.

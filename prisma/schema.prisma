@@ -29,3 +29,16 @@ model BlockedDate {
   @@index([date])
   @@index([service])
 }
+
+model TimeSlotConfig {
+  id        String   @id @default(cuid())
+  service   String   // "daycare", "pethotel", "van"
+  slotType  String   // "drop_off", "pick_up", "check_in", "check_out", "time_window"
+  timeSlots Json     // Array of available time slots
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([service, slotType])
+  @@index([service])
+}

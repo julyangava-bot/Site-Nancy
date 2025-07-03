@@ -30,6 +30,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useBlockedDates } from "@/hooks/useBlockedDates";
+import { useTimeSlots } from "@/hooks/useTimeSlots";
 
 const daycareFormSchema = z.object({
   ownerName: z.string().min(2, "Name must be at least 2 characters"),
@@ -127,65 +128,102 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
   const [errorMessage, setErrorMessage] = React.useState('');
   const { setIsAnyModalOpen } = useModal();
   const { isDateBlocked, getBlockedTimesForDate } = useBlockedDates('daycare');
+  const { timeSlots, loading: timeSlotsLoading } = useTimeSlots('daycare');
 
-  // Generate time options based on business hours and 24-hour constraint
+  // Generate time options based on configured slots and 24-hour constraint
   const generateTimeOptions = (date: string, isDropOff: boolean = true) => {
     if (!date) return [];
     
     const selectedDate = new Date(date);
-    const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, etc.
     const now = new Date();
     const twentyFourHoursFromNow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
     
-    let startHour = 8;
-    let startMinute = 30;
-    let endHour = 16;
-    let endMinute = 30;
+    // Get configured time slots
+    const configuredSlots = isDropOff ? 
+      (timeSlots.drop_off || []) : 
+      (timeSlots.pick_up || []);
     
-    // Sunday: 12:00 PM - 4:00 PM
-    if (dayOfWeek === 0) {
-      startHour = 12;
-      startMinute = 0;
-      endHour = 16;
-      endMinute = 0;
-    }
-    
-    const options = [];
-    let currentHour = startHour;
-    let currentMinute = startMinute;
-    
-    while (currentHour < endHour || (currentHour === endHour && currentMinute <= endMinute)) {
-      const timeString = `${currentHour.toString().padStart(2, '0')}:${currentMinute.toString().padStart(2, '0')}`;
-      const displayTime = new Date(2000, 0, 1, currentHour, currentMinute).toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      });
+    // If no configured slots, fall back to default business hours
+    if (configuredSlots.length === 0) {
+      const dayOfWeek = selectedDate.getDay();
+      let startHour = 8;
+      let startMinute = 30;
+      let endHour = 16;
+      let endMinute = 30;
       
-      // Check if this time slot is blocked
-      const blockedTimes = getBlockedTimesForDate(selectedDate);
-      const isBlocked = blockedTimes.includes(timeString);
+      // Sunday: 12:00 PM - 4:00 PM
+      if (dayOfWeek === 0) {
+        startHour = 12;
+        startMinute = 0;
+        endHour = 16;
+        endMinute = 0;
+      }
       
-      // For drop-off times, ensure they are at least 24 hours from now and not blocked
-      if (isDropOff) {
-        const dateTime = new Date(selectedDate);
-        dateTime.setHours(currentHour, currentMinute, 0, 0);
+      const options = [];
+      let currentHour = startHour;
+      let currentMinute = startMinute;
+      
+      while (currentHour < endHour || (currentHour === endHour && currentMinute <= endMinute)) {
+        const timeString = `${currentHour.toString().padStart(2, '0')}:${currentMinute.toString().padStart(2, '0')}`;
+        const displayTime = new Date(2000, 0, 1, currentHour, currentMinute).toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true
+        });
         
-        if (dateTime >= twentyFourHoursFromNow && !isBlocked) {
-          options.push({ value: timeString, label: displayTime });
+        // Check if this time slot is blocked
+        const blockedTimes = getBlockedTimesForDate(selectedDate);
+        const isBlocked = blockedTimes.includes(timeString);
+        
+        // For drop-off times, ensure they are at least 24 hours from now and not blocked
+        if (isDropOff) {
+          const dateTime = new Date(selectedDate);
+          dateTime.setHours(currentHour, currentMinute, 0, 0);
+          
+          if (dateTime >= twentyFourHoursFromNow && !isBlocked) {
+            options.push({ value: timeString, label: displayTime });
+          }
+        } else {
+          // For pick-up times, no 24-hour restriction but check if blocked
+          if (!isBlocked) {
+            options.push({ value: timeString, label: displayTime });
+          }
         }
-      } else {
-        // For pick-up times, no 24-hour restriction but check if blocked
-        if (!isBlocked) {
-          options.push({ value: timeString, label: displayTime });
+        
+        // Increment by 30 minutes
+        currentMinute += 30;
+        if (currentMinute >= 60) {
+          currentMinute = 0;
+          currentHour += 1;
         }
       }
       
-      // Increment by 30 minutes
-      currentMinute += 30;
-      if (currentMinute >= 60) {
-        currentMinute = 0;
-        currentHour += 1;
+      return options;
+    }
+    
+    // Use configured slots
+    const options = [];
+    const blockedTimes = getBlockedTimesForDate(selectedDate);
+    
+    for (const slot of configuredSlots) {
+      const [hours, minutes] = slot.value.split(':').map(Number);
+      
+      // Check if this time slot is blocked
+      if (blockedTimes.includes(slot.value)) {
+        continue;
+      }
+      
+      // For drop-off times, ensure they are at least 24 hours from now
+      if (isDropOff) {
+        const dateTime = new Date(selectedDate);
+        dateTime.setHours(hours, minutes, 0, 0);
+        
+        if (dateTime >= twentyFourHoursFromNow) {
+          options.push(slot);
+        }
+      } else {
+        // For pick-up times, no 24-hour restriction
+        options.push(slot);
       }
     }
     
@@ -608,7 +646,7 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
                                 classNamePrefix="react-select"
                                 isClearable={false}
                                 isSearchable={false}
-                                isDisabled={!form.watch('daycareDate')}
+                                isDisabled={!form.watch('daycareDate') || timeSlotsLoading}
                               />
                             </FormControl>
                             <FormMessage className="text-xs" />
@@ -633,7 +671,7 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
                                 classNamePrefix="react-select"
                                 isClearable={false}
                                 isSearchable={false}
-                                isDisabled={!form.watch('daycareDate')}
+                                isDisabled={!form.watch('daycareDate') || timeSlotsLoading}
                               />
                             </FormControl>
                             <FormMessage className="text-xs" />
