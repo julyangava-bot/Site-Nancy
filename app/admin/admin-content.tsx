@@ -52,6 +52,11 @@ export function AdminContent({ userEmail }: AdminContentProps) {
   }
 
   const handleLogout = async () => {
+    // Clear remember me settings
+    if (typeof window !== 'undefined') {
+      document.cookie = 'remember-me=; max-age=0; path=/; SameSite=Lax'
+      localStorage.removeItem('admin-email')
+    }
     await signOut({ redirect: true, callbackUrl: '/' })
   }
 

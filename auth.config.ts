@@ -25,11 +25,18 @@ export default {
       
       return true
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id
         token.role = user.role
       }
+      
+      // Handle session updates
+      if (trigger === "update" && session) {
+        // Update token with new session data
+        return { ...token, ...session }
+      }
+      
       return token
     },
     async session({ session, token }) {
