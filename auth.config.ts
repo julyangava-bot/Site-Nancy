@@ -3,15 +3,20 @@ import type { NextAuthConfig } from 'next-auth'
 export default {
   providers: [],
   pages: {
-    signIn: '/admin',
-    error: '/admin',
+    signIn: '/admin/login',
+    error: '/admin/login',
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user
       const isOnAdmin = nextUrl.pathname.startsWith('/admin')
+      const isOnAdminLogin = nextUrl.pathname === '/admin/login'
       const isOnApi = nextUrl.pathname.startsWith('/api/admin')
       
+      // Allow access to login page
+      if (isOnAdminLogin) return true
+      
+      // Protect admin routes
       if (isOnAdmin || isOnApi) {
         if (isLoggedIn) return true
         return false // Redirect unauthenticated users to login page

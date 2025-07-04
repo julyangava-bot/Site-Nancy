@@ -9,10 +9,12 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Shield, Loader2, AlertCircle } from 'lucide-react'
+import Link from 'next/link'
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [rememberMe, setRememberMe] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
@@ -27,7 +29,14 @@ export default function AdminLoginPage() {
         email,
         password,
         redirect: false,
+        callbackUrl: '/admin',
       })
+      
+      // Store remember me preference
+      if (result?.ok && rememberMe) {
+        // Set a longer session cookie
+        document.cookie = `remember-me=true; max-age=${60 * 60 * 24 * 30}; path=/` // 30 days
+      }
 
       if (result?.error) {
         setError('Invalid email or password')
@@ -106,6 +115,19 @@ export default function AdminLoginPage() {
               />
             </div>
             
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="rememberMe"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="w-4 h-4 text-pink-500 bg-gray-100 border-gray-300 rounded focus:ring-pink-400 focus:ring-2"
+              />
+              <Label htmlFor="rememberMe" className="text-sm text-gray-600 cursor-pointer select-none">
+                Remember me on this device
+              </Label>
+            </div>
+            
             {error && (
               <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 p-3 rounded-lg">
                 <AlertCircle className="w-4 h-4" />
@@ -127,6 +149,15 @@ export default function AdminLoginPage() {
                 'Sign In'
               )}
             </Button>
+            
+            <div className="text-center">
+              <Link 
+                href="/admin/reset-password"
+                className="text-sm text-gray-600 hover:text-pink-600 transition-colors"
+              >
+                Forgot your password?
+              </Link>
+            </div>
           </form>
         </CardContent>
       </Card>
