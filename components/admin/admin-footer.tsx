@@ -1,15 +1,25 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 
 export function AdminFooter() {
   return (
     <footer className="mt-auto border-t border-gray-200 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          {/* Copyright */}
-          <div className="text-sm text-gray-500">
-            © {new Date().getFullYear()} PinkDog Pet Resort Admin. All rights reserved.
+          {/* Left Side - Logo and Copyright */}
+          <div className="flex items-center gap-3">
+            <Image 
+              src="/images/pinkdog_original_no_txt.png" 
+              alt="PinkDog Logo" 
+              width={32}
+              height={32}
+              className="opacity-75"
+            />
+            <div className="text-sm text-gray-500">
+              © {new Date().getFullYear()} PinkDog Pet Resort Admin. All rights reserved.
+            </div>
           </div>
           
           {/* Powered By Section */}

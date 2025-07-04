@@ -67,6 +67,7 @@ export function ServiceManagerBase({
       fetchBlockedDates()
       fetchTimeSlots()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, service])
 
   // Blocked Dates Functions
@@ -159,7 +160,11 @@ export function ServiceManagerBase({
         const slotsMap: Record<string, TimeSlot[]> = {}
         const activeMap: Record<string, boolean> = {}
         
-        data.forEach((config: any) => {
+        data.forEach((config: {
+          slotType: string
+          timeSlots: TimeSlot[]
+          isActive: boolean
+        }) => {
           slotsMap[config.slotType] = config.timeSlots || []
           activeMap[config.slotType] = config.isActive
         })

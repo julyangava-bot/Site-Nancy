@@ -1,11 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Shield, LogOut, Dog, Hotel, Car } from 'lucide-react'
 import './admin.css'
@@ -17,7 +18,7 @@ import { AdminFooter } from '@/components/admin/admin-footer'
 type ServiceType = 'daycare' | 'pethotel' | 'van'
 type TabType = 'dates' | 'hours'
 
-export default function AdminPage() {
+function AdminPageContent() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [token, setToken] = useState('')
   const [rememberMe, setRememberMe] = useState(false)
@@ -107,10 +108,12 @@ export default function AdminPage() {
         <Card className="w-full max-w-md shadow-xl border-0 bg-white/95 backdrop-blur-sm relative z-10">
           <CardHeader className="text-center space-y-6 pb-8 pt-12">
             <div className="flex flex-col items-center gap-4">
-              <img 
+              <Image 
                 src="/images/pinkdog_original_no_txt.png" 
                 alt="PinkDog Logo" 
-                className="h-20 w-auto drop-shadow-md"
+                width={80}
+                height={80}
+                className="drop-shadow-md"
               />
               <div className="space-y-2">
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-pink-600 bg-clip-text text-transparent">
@@ -171,10 +174,11 @@ export default function AdminPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <img 
+              <Image 
                 src="/images/pinkdog_original_no_txt.png" 
                 alt="PinkDog Logo" 
-                className="h-12 w-auto"
+                width={48}
+                height={48}
               />
               <div>
                 <h1 className="text-xl font-semibold text-gray-800">Admin Panel</h1>
@@ -249,5 +253,13 @@ export default function AdminPage() {
       {/* Admin Footer */}
       <AdminFooter />
     </div>
+  )
+}
+
+export default function AdminPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <AdminPageContent />
+    </Suspense>
   )
 }
