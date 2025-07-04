@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
 
-const ADMIN_TOKEN = process.env.ADMIN_API_TOKEN || 'your-secret-admin-token-here'
-
-export async function GET(request: NextRequest) {
-  const authHeader = request.headers.get('authorization')
+export async function GET() {
+  const session = await auth()
   
-  if (!authHeader || authHeader !== `Bearer ${ADMIN_TOKEN}`) {
+  if (!session || session.user?.role !== 'admin') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -23,9 +22,9 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const authHeader = request.headers.get('authorization')
+  const session = await auth()
   
-  if (!authHeader || authHeader !== `Bearer ${ADMIN_TOKEN}`) {
+  if (!session || session.user?.role !== 'admin') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -56,9 +55,9 @@ export async function POST(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-  const authHeader = request.headers.get('authorization')
+  const session = await auth()
   
-  if (!authHeader || authHeader !== `Bearer ${ADMIN_TOKEN}`) {
+  if (!session || session.user?.role !== 'admin') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

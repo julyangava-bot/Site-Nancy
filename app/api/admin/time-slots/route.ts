@@ -1,22 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@/lib/generated/prisma'
-
-const prisma = new PrismaClient()
-
-// Helper function to validate auth token
-function validateAuth(request: NextRequest): boolean {
-  const authHeader = request.headers.get('authorization')
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return false
-  }
-  
-  const token = authHeader.split(' ')[1]
-  return token === process.env.ADMIN_API_TOKEN
-}
+import { auth } from '@/auth'
+import { prisma } from '@/lib/prisma'
 
 // GET - Fetch time slot configurations
 export async function GET(request: NextRequest) {
-  if (!validateAuth(request)) {
+  const session = await auth()
+  
+  if (!session || session.user?.role !== 'admin') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -43,7 +33,9 @@ export async function GET(request: NextRequest) {
 
 // POST - Create or update time slot configuration
 export async function POST(request: NextRequest) {
-  if (!validateAuth(request)) {
+  const session = await auth()
+  
+  if (!session || session.user?.role !== 'admin') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -102,7 +94,9 @@ export async function POST(request: NextRequest) {
 
 // PUT - Update time slot configuration
 export async function PUT(request: NextRequest) {
-  if (!validateAuth(request)) {
+  const session = await auth()
+  
+  if (!session || session.user?.role !== 'admin') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -132,7 +126,9 @@ export async function PUT(request: NextRequest) {
 
 // DELETE - Delete time slot configuration
 export async function DELETE(request: NextRequest) {
-  if (!validateAuth(request)) {
+  const session = await auth()
+  
+  if (!session || session.user?.role !== 'admin') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

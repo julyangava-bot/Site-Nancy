@@ -28,7 +28,7 @@ interface TimeSlot {
 }
 
 interface ServiceManagerBaseProps {
-  token: string
+  token?: string // Make optional for now, will remove later
   service: string
   serviceLabel: string
   serviceIcon: React.ReactNode
@@ -63,21 +63,15 @@ export function ServiceManagerBase({
   const [savingSlots, setSavingSlots] = useState(false)
 
   useEffect(() => {
-    if (token) {
-      fetchBlockedDates()
-      fetchTimeSlots()
-    }
+    fetchBlockedDates()
+    fetchTimeSlots()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token, service])
+  }, [service])
 
   // Blocked Dates Functions
   const fetchBlockedDates = async () => {
     try {
-      const response = await fetch(`/api/admin/blocked-dates?service=${service}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
+      const response = await fetch(`/api/admin/blocked-dates?service=${service}`)
       
       if (response.ok) {
         const data = await response.json()
@@ -102,8 +96,7 @@ export function ServiceManagerBase({
       const response = await fetch('/api/admin/blocked-dates', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           date: dateString,
@@ -149,11 +142,7 @@ export function ServiceManagerBase({
   // Time Slots Functions
   const fetchTimeSlots = async () => {
     try {
-      const response = await fetch(`/api/admin/time-slots?service=${service}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
+      const response = await fetch(`/api/admin/time-slots?service=${service}`)
       
       if (response.ok) {
         const data = await response.json()
@@ -183,8 +172,7 @@ export function ServiceManagerBase({
       const response = await fetch('/api/admin/time-slots', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           service,
