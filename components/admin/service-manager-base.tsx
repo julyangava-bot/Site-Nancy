@@ -1,13 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { DayPicker } from 'react-day-picker'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
 import { Calendar, Clock, Trash2, Plus, AlertCircle, Loader2 } from 'lucide-react'
 import { format } from 'date-fns'
@@ -202,17 +200,29 @@ export function ServiceManagerBase({
   }
 
   const handleAddTimeSlot = (slotType: string) => {
-    const time = timeInputs[slotType]
-    if (!time) return
+    const inputValue = timeInputs[slotType]
+    if (!inputValue) return
     
     const currentSlots = timeSlots[slotType] || []
-    const [hours, minutes] = time.split(':')
-    const date = new Date()
-    date.setHours(parseInt(hours), parseInt(minutes))
     
-    const newSlot: TimeSlot = {
-      value: time,
-      label: format(date, 'h:mm a')
+    let newSlot: TimeSlot
+    
+    if (slotType === 'service_type') {
+      // For service types, use the input as is
+      newSlot = {
+        value: inputValue.toLowerCase().replace(/\s+/g, '_'),
+        label: inputValue
+      }
+    } else {
+      // For time slots, format as time
+      const [hours, minutes] = inputValue.split(':')
+      const date = new Date()
+      date.setHours(parseInt(hours), parseInt(minutes))
+      
+      newSlot = {
+        value: inputValue,
+        label: format(date, 'h:mm a')
+      }
     }
     
     const newSlots = [...currentSlots, newSlot].sort((a, b) => 
@@ -238,17 +248,17 @@ export function ServiceManagerBase({
 
   return (
     <Tabs value={activeTab} onValueChange={onTabChange}>
-      <TabsList className="grid w-full grid-cols-2 mb-6 bg-white shadow-sm border border-pink-100">
+      <TabsList className="grid w-full grid-cols-2 mb-4 bg-gray-100/50 rounded-lg p-1">
         <TabsTrigger 
           value="dates" 
-          className="data-[state=active]:bg-pink-500 data-[state=active]:text-white transition-all duration-200"
+          className="data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm rounded-md transition-all duration-200 font-medium"
         >
           <Calendar className="w-4 h-4 mr-2" />
           Blocked Dates
         </TabsTrigger>
         <TabsTrigger 
           value="hours" 
-          className="data-[state=active]:bg-pink-500 data-[state=active]:text-white transition-all duration-200"
+          className="data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm rounded-md transition-all duration-200 font-medium"
         >
           <Clock className="w-4 h-4 mr-2" />
           Service Hours
@@ -259,18 +269,18 @@ export function ServiceManagerBase({
       <TabsContent value="dates" className="space-y-6">
         <div className="grid md:grid-cols-2 gap-6">
           {/* Add Blocked Date */}
-          <Card className="shadow-md border border-pink-100 bg-white">
-            <CardHeader className="bg-gradient-to-r from-pink-400 to-pink-500 text-white">
-              <CardTitle className="flex items-center gap-2">
-                <Calendar className="w-5 h-5" />
+          <div className="bg-white rounded-xl p-6">
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <Calendar className="w-5 h-5 text-pink-500" />
                 Block Date for {serviceLabel}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6">
+              </h3>
+            </div>
+            <div>
               <form onSubmit={handleAddBlockedDate} className="space-y-4">
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-gray-700">Select Date</Label>
-                  <div className="border border-pink-100 rounded-lg p-3 bg-pink-50/30">
+                  <div className="bg-gray-50 rounded-lg p-3">
                     <DayPicker
                       mode="single"
                       selected={selectedDate}
@@ -298,14 +308,14 @@ export function ServiceManagerBase({
                     value={reason}
                     onChange={(e) => setReason(e.target.value)}
                     placeholder="e.g., Maintenance, Full capacity"
-                    className="border-pink-100 focus:border-pink-400 focus:ring-pink-400"
+                    className="border-gray-200 focus:border-pink-400 focus:ring-pink-400"
                   />
                 </div>
 
                 <Button 
                   type="submit" 
                   disabled={loading || !selectedDate} 
-                  className="w-full bg-pink-500 hover:bg-pink-600 text-white disabled:opacity-50 transition-all duration-200 shadow-sm hover:shadow-md"
+                  className="w-full bg-pink-500 hover:bg-pink-600 text-white disabled:opacity-50 transition-all duration-200 font-medium"
                 >
                   {loading ? (
                     <>
@@ -317,15 +327,13 @@ export function ServiceManagerBase({
                   )}
                 </Button>
               </form>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Blocked Dates List */}
-          <Card className="shadow-md border border-pink-100 bg-white">
-            <CardHeader className="bg-gradient-to-r from-pink-400 to-pink-500 text-white">
-              <CardTitle>Active Blocks</CardTitle>
-            </CardHeader>
-            <CardContent className="p-6">
+          <div className="bg-white rounded-xl p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Active Blocks</h3>
+            <div>
               <div className="space-y-2 max-h-[500px] overflow-y-auto">
                 {blockedDates.length === 0 ? (
                   <div className="text-center py-12">
@@ -336,13 +344,29 @@ export function ServiceManagerBase({
                   blockedDates.map((blocked) => (
                     <div
                       key={blocked.id}
-                      className="flex items-center justify-between p-4 bg-gradient-to-r from-pink-50/50 to-pink-100/50 rounded-lg hover:shadow-sm transition-all duration-200 border border-pink-100"
+                      className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all duration-200"
                     >
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
                           {serviceIcon}
                           <p className="font-semibold text-gray-800">
-                            {format(new Date(blocked.date + 'T00:00:00'), "MMMM dd, yyyy", { locale: enUS })}
+                            {(() => {
+                              try {
+                                // Handle date string properly
+                                const dateStr = blocked.date.includes('T') ? blocked.date : `${blocked.date}T00:00:00`
+                                const date = new Date(dateStr)
+                                
+                                // Check if date is valid
+                                if (isNaN(date.getTime())) {
+                                  return blocked.date // Fallback to raw date string
+                                }
+                                
+                                return format(date, "MMMM dd, yyyy", { locale: enUS })
+                              } catch (error) {
+                                console.error('Date format error:', error, blocked.date)
+                                return blocked.date // Fallback to raw date string
+                              }
+                            })()}
                           </p>
                         </div>
                         {blocked.reason && (
@@ -363,24 +387,22 @@ export function ServiceManagerBase({
                   ))
                 )}
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </TabsContent>
 
       {/* Service Hours Tab */}
       <TabsContent value="hours" className="space-y-6">
-        <Card className="shadow-md border border-pink-100 bg-white">
-          <CardHeader className="bg-gradient-to-r from-pink-400 to-pink-500 text-white">
-            <CardTitle className="flex items-center gap-2">
-              <Clock className="w-5 h-5" />
-              {serviceLabel} Hours Management
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-6">
+        <div className="bg-white rounded-xl p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-2">
+            <Clock className="w-5 h-5 text-pink-500" />
+            {serviceLabel} Hours Management
+          </h3>
+          <div>
             <div className="space-y-6">
               {timeSlotTypes.map((slotType) => (
-                <div key={slotType.type} className="space-y-4 p-4 bg-pink-50/30 rounded-lg border border-pink-100">
+                <div key={slotType.type} className="space-y-4 p-4 bg-gray-50 rounded-lg">
                   <div className="flex items-center justify-between">
                     <h3 className="text-lg font-semibold text-gray-800">{slotType.label}</h3>
                     <Switch
@@ -392,15 +414,16 @@ export function ServiceManagerBase({
                   
                   <div className="flex gap-2">
                     <Input
-                      type="time"
+                      type={slotType.type === 'service_type' ? 'text' : 'time'}
                       value={timeInputs[slotType.type] || ''}
                       onChange={(e) => setTimeInputs({ ...timeInputs, [slotType.type]: e.target.value })}
-                      className="flex-1 border-pink-100 focus:border-pink-400 focus:ring-pink-400"
+                      placeholder={slotType.type === 'service_type' ? 'e.g., Grooming' : undefined}
+                      className="flex-1 border-gray-200 focus:border-pink-400 focus:ring-pink-400"
                     />
                     <Button 
                       onClick={() => handleAddTimeSlot(slotType.type)} 
                       disabled={savingSlots}
-                      className="bg-pink-500 hover:bg-pink-600 text-white shadow-sm hover:shadow-md transition-all duration-200"
+                      className="bg-pink-500 hover:bg-pink-600 text-white"
                     >
                       <Plus className="w-4 h-4 mr-1" />
                       {slotType.addLabel}
@@ -409,7 +432,7 @@ export function ServiceManagerBase({
 
                   <div className="space-y-2">
                     {(timeSlots[slotType.type] || []).map((slot, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm border border-pink-100">
+                      <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
                         <span className="font-medium text-gray-700">{slot.label}</span>
                         <Button
                           size="icon"
@@ -429,10 +452,10 @@ export function ServiceManagerBase({
               ))}
             </div>
 
-            <div className="mt-6 p-4 bg-pink-50 border border-pink-200 rounded-lg">
+            <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
               <div className="flex items-start gap-2">
-                <AlertCircle className="w-5 h-5 text-pink-600 flex-shrink-0 mt-0.5" />
-                <div className="text-sm text-pink-800">
+                <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-amber-800">
                   <p className="font-medium mb-1">Important:</p>
                   <ul className="list-disc list-inside space-y-1">
                     <li>Changes take effect immediately</li>
@@ -442,8 +465,8 @@ export function ServiceManagerBase({
                 </div>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </TabsContent>
     </Tabs>
   )

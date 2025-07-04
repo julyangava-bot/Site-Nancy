@@ -33,8 +33,8 @@ model BlockedDate {
 model TimeSlotConfig {
   id        String   @id @default(cuid())
   service   String   // "daycare", "pethotel", "van"
-  slotType  String   // "drop_off", "pick_up", "check_in", "check_out", "time_window"
-  timeSlots Json     // Array of available time slots
+  slotType  String   // "drop_off", "pick_up", "check_in", "check_out", "time_window", "service_type"
+  timeSlots Json     // Array of available time slots or service types
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -11,6 +11,7 @@ interface TimeSlotData {
   check_in?: TimeSlot[]
   check_out?: TimeSlot[]
   time_window?: TimeSlot[]
+  service_type?: TimeSlot[]
 }
 
 export function useTimeSlots(service: string) {

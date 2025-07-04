@@ -49,7 +49,7 @@ const vanFormSchema = z.object({
   }),
   address: z.string().min(1, "Please enter pick-up/drop-off address"),
   desiredDate: z.string().min(1, "Please select desired date"),
-  timeWindow: z.string().min(1, "Please enter preferred time window"),
+  pickupTime: z.string().min(1, "Please select pickup time"),
   requestedService: z.enum(["grooming", "daycare", "boarding", "other"], {
     required_error: "Please select service type",
   }),
@@ -135,86 +135,6 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
   const { isDateBlocked } = useBlockedDates('van');
   const { timeSlots, loading: timeSlotsLoading } = useTimeSlots('van');
 
-  // Generate time options based on configured slots and 24-hour constraint
-  const generateTimeOptions = (date: string) => {
-    if (!date) return [];
-    
-    // Create date with explicit timezone handling to avoid timezone issues
-    const dateParts = date.split('-');
-    const selectedDate = new Date(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]));
-    const now = new Date();
-    const twentyFourHoursFromNow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-    
-    // Get configured time slots
-    const configuredSlots = timeSlots.time_window || [];
-    
-    // If no configured slots, fall back to default time windows
-    if (configuredSlots.length === 0) {
-      const dayOfWeek = selectedDate.getDay();
-      const options: SelectOption[] = [];
-      const timeWindows = [];
-      
-      // Sunday: Limited hours - 12:00 PM - 4:00 PM
-      if (dayOfWeek === 0) {
-        timeWindows.push(
-          { value: "12:00 PM - 2:00 PM", label: "12:00 PM - 2:00 PM", startHour: 12, startMinute: 0 },
-          { value: "2:00 PM - 4:00 PM", label: "2:00 PM - 4:00 PM", startHour: 14, startMinute: 0 }
-        );
-      } else {
-        // Monday-Saturday: Full hours
-        timeWindows.push(
-          { value: "8:00 AM - 10:00 AM", label: "8:00 AM - 10:00 AM (Morning Pickup)", startHour: 8, startMinute: 0 },
-          { value: "10:00 AM - 12:00 PM", label: "10:00 AM - 12:00 PM", startHour: 10, startMinute: 0 },
-          { value: "12:00 PM - 2:00 PM", label: "12:00 PM - 2:00 PM", startHour: 12, startMinute: 0 },
-          { value: "2:00 PM - 4:00 PM", label: "2:00 PM - 4:00 PM", startHour: 14, startMinute: 0 },
-          { value: "3:00 PM - 5:00 PM", label: "3:00 PM - 5:00 PM (Afternoon Drop-off)", startHour: 15, startMinute: 0 },
-          { value: "4:00 PM - 6:00 PM", label: "4:00 PM - 6:00 PM", startHour: 16, startMinute: 0 }
-        );
-      }
-      
-      // Filter time windows based on 24-hour constraint
-      timeWindows.forEach(window => {
-        const dateTime = new Date(selectedDate);
-        dateTime.setHours(window.startHour, window.startMinute, 0, 0);
-        
-        if (dateTime >= twentyFourHoursFromNow) {
-          options.push({ value: window.value, label: window.label });
-        }
-      });
-      
-      return options;
-    }
-    
-    // Use configured slots
-    const options: SelectOption[] = [];
-    
-    for (const slot of configuredSlots) {
-      // Extract start time from the window (e.g., "8:00 AM - 10:00 AM")
-      const timeMatch = slot.value.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/);
-      if (!timeMatch) continue;
-      
-      let hours = parseInt(timeMatch[1]);
-      const minutes = parseInt(timeMatch[2]);
-      const period = timeMatch[3];
-      
-      // Convert to 24-hour format
-      if (period === 'PM' && hours !== 12) {
-        hours += 12;
-      } else if (period === 'AM' && hours === 12) {
-        hours = 0;
-      }
-      
-      const dateTime = new Date(selectedDate);
-      dateTime.setHours(hours, minutes, 0, 0);
-      
-      if (dateTime >= twentyFourHoursFromNow) {
-        options.push(slot);
-      }
-    }
-    
-    return options;
-  };
-
   const form = useForm<VanFormValues>({
     resolver: zodResolver(vanFormSchema),
     defaultValues: {
@@ -230,7 +150,7 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
       serviceNeeded: undefined,
       address: "",
       desiredDate: "",
-      timeWindow: "",
+      pickupTime: "",
       requestedService: undefined,
       otherServiceType: "",
       specialInstructions: "",
@@ -261,9 +181,9 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
           breeds: values.breed,
           numberOfPets: values.numberOfPets,
           checkInDate: values.desiredDate,
-          checkInTime: values.timeWindow.split(' - ')[0],
+          checkInTime: values.pickupTime,
           checkOutDate: values.desiredDate,
-          checkOutTime: values.timeWindow.split(' - ')[1] || values.timeWindow.split(' - ')[0],
+          checkOutTime: values.pickupTime,
           serviceType: 'van', // Identify as van service
           // Send structured data as separate fields
           petSize: values.size,
@@ -651,13 +571,8 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
                                 }
                               }}
                               disabled={(date) => {
-                                // Check if the entire date is blocked
-                                if (isDateBlocked(date)) {
-                                  return true;
-                                }
-                                // Check if this date would have any available time slots
-                                const availableTimes = generateTimeOptions(format(date, 'yyyy-MM-dd'));
-                                return availableTimes.length === 0;
+                                // Only check if the date is blocked
+                                return isDateBlocked(date);
                               }}
                               placeholderText="Select service date"
                             />
@@ -669,16 +584,16 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
 
                     <FormField
                       control={form.control}
-                      name="timeWindow"
+                      name="pickupTime"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium text-sm">Time Window *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Pick-up Time *</FormLabel>
                           <FormControl>
                             <Select
-                              value={field.value ? generateTimeOptions(form.watch('desiredDate')).find(opt => opt.value === field.value) : null}
+                              value={field.value ? timeSlots.time_window?.find(opt => opt.value === field.value) : null}
                               onChange={(option) => field.onChange(option?.value)}
-                              options={generateTimeOptions(form.watch('desiredDate'))}
-                              placeholder="Select time window"
+                              options={timeSlots.time_window || []}
+                              placeholder="Select pick-up time"
                               styles={customSelectStyles}
                               className="react-select-container"
                               classNamePrefix="react-select"
@@ -703,10 +618,10 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
                             <Select
                               value={field.value ? { 
                                 value: field.value, 
-                                label: field.value.charAt(0).toUpperCase() + field.value.slice(1) 
+                                label: timeSlots.service_type?.find(opt => opt.value === field.value)?.label || field.value.charAt(0).toUpperCase() + field.value.slice(1) 
                               } : null}
                               onChange={(option) => field.onChange(option?.value)}
-                              options={[
+                              options={timeSlots.service_type || [
                                 { value: 'grooming', label: 'Grooming' },
                                 { value: 'daycare', label: 'Daycare' },
                                 { value: 'boarding', label: 'Boarding' },

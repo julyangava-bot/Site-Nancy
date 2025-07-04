@@ -21,8 +21,13 @@ export function VanManager({ token, activeTab, onTabChange }: VanManagerProps) {
       timeSlotTypes={[
         {
           type: 'time_window',
-          label: 'Time Windows',
-          addLabel: 'Add Window'
+          label: 'Pick-up Times',
+          addLabel: 'Add Time'
+        },
+        {
+          type: 'service_type',
+          label: 'Service Types',
+          addLabel: 'Add Type'
         }
       ]}
     />

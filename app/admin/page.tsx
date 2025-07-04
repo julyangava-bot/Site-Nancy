@@ -12,6 +12,7 @@ import './admin.css'
 import { DaycareManager } from '@/components/admin/daycare-manager'
 import { PetHotelManager } from '@/components/admin/pet-hotel-manager'
 import { VanManager } from '@/components/admin/van-manager'
+import { AdminFooter } from '@/components/admin/admin-footer'
 
 type ServiceType = 'daycare' | 'pethotel' | 'van'
 type TabType = 'dates' | 'hours'
@@ -95,25 +96,46 @@ export default function AdminPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#FFF0F7] via-[#FFF9FC] to-white">
-        <Card className="w-full max-w-md shadow-lg border border-pink-100 bg-white">
-          <CardHeader className="text-center space-y-4 pb-8">
-            <div className="mx-auto w-20 h-20 bg-gradient-to-br from-pink-400 to-pink-500 rounded-full flex items-center justify-center shadow-md">
-              <Shield className="w-10 h-10 text-white" />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#FFF0F7] via-[#FFF9FC] to-white relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
+          <div className="absolute top-40 left-40 w-80 h-80 bg-pink-100 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
+        </div>
+        
+        <Card className="w-full max-w-md shadow-xl border-0 bg-white/95 backdrop-blur-sm relative z-10">
+          <CardHeader className="text-center space-y-6 pb-8 pt-12">
+            <div className="flex flex-col items-center gap-4">
+              <img 
+                src="/images/pinkdog_original_no_txt.png" 
+                alt="PinkDog Logo" 
+                className="h-20 w-auto drop-shadow-md"
+              />
+              <div className="space-y-2">
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-pink-600 bg-clip-text text-transparent">
+                  PinkDog Pet Resort
+                </h1>
+                <p className="text-sm text-gray-600 font-medium tracking-wide uppercase">
+                  Admin Portal
+                </p>
+              </div>
             </div>
-            <CardTitle className="text-2xl font-bold text-gray-800">PinkDog Admin</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-8 pb-8">
             <form onSubmit={handleLogin} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="token" className="text-sm font-medium text-gray-700">Access Token</Label>
+                <Label htmlFor="token" className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-pink-500" />
+                  Access Token
+                </Label>
                 <Input
                   id="token"
                   type="password"
                   value={token}
                   onChange={(e) => setToken(e.target.value)}
                   placeholder="Enter admin token"
-                  className="h-12 text-base border-pink-100 focus:border-pink-400 focus:ring-pink-400"
+                  className="h-12 text-base border-pink-200 focus:border-pink-400 focus:ring-pink-400 bg-pink-50/30"
                   required
                 />
               </div>
@@ -131,7 +153,7 @@ export default function AdminPage() {
               </div>
               <Button 
                 type="submit" 
-                className="w-full h-12 bg-pink-500 hover:bg-pink-600 text-white font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
+                className="w-full h-12 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 Login
               </Button>
@@ -143,9 +165,9 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#FFF0F7] via-[#FFF9FC] to-white">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Header */}
-      <div className="bg-white shadow-md border-b border-pink-100">
+      <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
@@ -162,7 +184,7 @@ export default function AdminPage() {
             <Button 
               onClick={handleLogout} 
               variant="outline" 
-              className="border-pink-200 text-pink-600 hover:bg-pink-50 hover:border-pink-300 transition-all duration-200"
+              className="border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
             >
               <LogOut className="w-4 h-4 mr-2" />
               Logout
@@ -172,26 +194,26 @@ export default function AdminPage() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
         <Tabs value={activeService} onValueChange={handleServiceChange}>
-          <TabsList className="grid w-full grid-cols-3 mb-8 bg-white shadow-sm border border-pink-100">
+          <TabsList className="grid w-full grid-cols-3 mb-4 bg-gray-100/50 rounded-lg p-1">
             <TabsTrigger 
               value="daycare" 
-              className="data-[state=active]:bg-pink-500 data-[state=active]:text-white transition-all duration-200"
+              className="data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm rounded-md transition-all duration-200 font-medium"
             >
               <Dog className="w-4 h-4 mr-2" />
               Daycare
             </TabsTrigger>
             <TabsTrigger 
               value="pethotel" 
-              className="data-[state=active]:bg-pink-500 data-[state=active]:text-white transition-all duration-200"
+              className="data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm rounded-md transition-all duration-200 font-medium"
             >
               <Hotel className="w-4 h-4 mr-2" />
               Pet Hotel
             </TabsTrigger>
             <TabsTrigger 
               value="van" 
-              className="data-[state=active]:bg-pink-500 data-[state=active]:text-white transition-all duration-200"
+              className="data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm rounded-md transition-all duration-200 font-medium"
             >
               <Car className="w-4 h-4 mr-2" />
               Van Service
@@ -223,6 +245,9 @@ export default function AdminPage() {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Admin Footer */}
+      <AdminFooter />
     </div>
   )
 }
