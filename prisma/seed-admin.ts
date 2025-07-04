@@ -9,39 +9,52 @@ dotenv.config({ path: path.resolve(process.cwd(), '.env.local') })
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log('🌱 Creating admin user...')
+  console.log('🌱 Creating admin users...')
   
-  const email = 'admin@pinkdog.com'
   const password = 'pinkdog-admin-2025' // You should change this!
-  
-  // Check if admin already exists
-  const existingAdmin = await prisma.user.findUnique({
-    where: { email }
-  })
-  
-  if (existingAdmin) {
-    console.log('✅ Admin user already exists')
-    return
-  }
-  
-  // Hash password
   const hashedPassword = await bcrypt.hash(password, 10)
   
-  // Create admin user
-  const admin = await prisma.user.create({
-    data: {
-      email,
-      name: 'PinkDog Admin',
-      password: hashedPassword,
-      role: 'admin',
-      emailVerified: new Date()
+  // Admin users to create
+  const adminUsers = [
+    {
+      email: 'pinkdogpetresort@gmail.com',
+      name: 'PinkDog Admin'
+    },
+    {
+      email: 'hello@flowquantic.ai',
+      name: 'FlowQuantic Admin'
     }
-  })
+  ]
   
-  console.log('✅ Admin user created:')
-  console.log(`   Email: ${admin.email}`)
-  console.log(`   Password: ${password}`)
-  console.log('   ⚠️  Please change the password after first login!')
+  for (const userData of adminUsers) {
+    // Check if admin already exists
+    const existingAdmin = await prisma.user.findUnique({
+      where: { email: userData.email }
+    })
+    
+    if (existingAdmin) {
+      console.log(`✅ Admin user ${userData.email} already exists`)
+      continue
+    }
+    
+    // Create admin user
+    const admin = await prisma.user.create({
+      data: {
+        email: userData.email,
+        name: userData.name,
+        password: hashedPassword,
+        role: 'admin',
+        emailVerified: new Date()
+      }
+    })
+    
+    console.log(`✅ Admin user created:`)
+    console.log(`   Email: ${admin.email}`)
+    console.log(`   Name: ${admin.name}`)
+    console.log(`   Password: ${password}`)
+  }
+  
+  console.log('\n⚠️  Please change the passwords after first login!')
 }
 
 main()
