@@ -6,7 +6,8 @@ import { signOut } from 'next-auth/react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { LogOut, Dog, Hotel, Car } from 'lucide-react'
+import { LogOut, Dog, Hotel, Car, Key } from 'lucide-react'
+import Link from 'next/link'
 import { DaycareManager } from '@/components/admin/daycare-manager'
 import { PetHotelManager } from '@/components/admin/pet-hotel-manager'
 import { VanManager } from '@/components/admin/van-manager'
@@ -72,14 +73,27 @@ export function AdminContent({ userEmail }: AdminContentProps) {
                 <p className="text-xs text-gray-600">Welcome, {userEmail}</p>
               </div>
             </div>
-            <Button 
-              onClick={handleLogout} 
-              variant="outline" 
-              className="border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
-            >
-              <LogOut className="w-4 h-4 mr-2" />
-              Logout
-            </Button>
+            <div className="flex items-center gap-2">
+              <Link href="/admin/change-password">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
+                >
+                  <Key className="w-4 h-4 mr-2" />
+                  Change Password
+                </Button>
+              </Link>
+              <Button 
+                onClick={handleLogout} 
+                variant="outline" 
+                size="sm"
+                className="border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Logout
+              </Button>
+            </div>
           </div>
         </div>
       </div>
