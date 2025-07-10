@@ -88,9 +88,13 @@ export function ServiceManagerBase({
 
     setLoading(true)
     try {
-      const year = selectedDate.getFullYear()
-      const month = String(selectedDate.getMonth() + 1).padStart(2, '0')
-      const day = String(selectedDate.getDate()).padStart(2, '0')
+      // Ensure we're working with the date at noon to avoid timezone issues
+      const dateAtNoon = new Date(selectedDate)
+      dateAtNoon.setHours(12, 0, 0, 0)
+      
+      const year = dateAtNoon.getFullYear()
+      const month = String(dateAtNoon.getMonth() + 1).padStart(2, '0')
+      const day = String(dateAtNoon.getDate()).padStart(2, '0')
       const dateString = `${year}-${month}-${day}`
       
       const response = await fetch('/api/admin/blocked-dates', {
@@ -277,9 +281,45 @@ export function ServiceManagerBase({
                     <DayPicker
                       mode="single"
                       selected={selectedDate}
-                      onSelect={setSelectedDate}
+                      onSelect={(date) => {
+                        if (date) {
+                          // Set the time to noon to avoid timezone issues
+                          const dateAtNoon = new Date(date)
+                          dateAtNoon.setHours(12, 0, 0, 0)
+                          setSelectedDate(dateAtNoon)
+                        } else {
+                          setSelectedDate(undefined)
+                        }
+                      }}
                       locale={enUS}
-                      disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                      disabled={(date) => {
+                        // Disable past dates
+                        const today = new Date()
+                        today.setHours(0, 0, 0, 0)
+                        if (date < today) return true
+                        
+                        // Check if date is already blocked
+                        const dateStr = format(date, 'yyyy-MM-dd')
+                        return blockedDates.some(blocked => {
+                          let blockedDateStr = blocked.date
+                          if (blocked.date.includes('T')) {
+                            blockedDateStr = blocked.date.split('T')[0]
+                          }
+                          return blockedDateStr === dateStr && blocked.isFullDay
+                        })
+                      }}
+                      modifiers={{
+                        blocked: (date) => {
+                          const dateStr = format(date, 'yyyy-MM-dd')
+                          return blockedDates.some(blocked => {
+                            let blockedDateStr = blocked.date
+                            if (blocked.date.includes('T')) {
+                              blockedDateStr = blocked.date.split('T')[0]
+                            }
+                            return blockedDateStr === dateStr && blocked.isFullDay
+                          })
+                        }
+                      }}
                       modifiersStyles={{
                         selected: { 
                           backgroundColor: '#ec4899',
@@ -288,6 +328,12 @@ export function ServiceManagerBase({
                         today: {
                           fontWeight: 'bold',
                           color: '#ec4899'
+                        },
+                        blocked: {
+                          backgroundColor: '#fca5a5',
+                          color: '#991b1b',
+                          fontWeight: 'bold',
+                          textDecoration: 'line-through'
                         }
                       }}
                     />
@@ -328,13 +374,41 @@ export function ServiceManagerBase({
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Active Blocks</h3>
             <div>
               <div className="space-y-2 max-h-[500px] overflow-y-auto">
-                {blockedDates.length === 0 ? (
-                  <div className="text-center py-12">
-                    <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                    <p className="text-gray-500">No blocked dates</p>
-                  </div>
-                ) : (
-                  blockedDates.map((blocked) => (
+                {(() => {
+                  const futureBlockedDates = blockedDates.filter((blocked) => {
+                    try {
+                      // Extract just the date part (YYYY-MM-DD) from the stored date
+                      let dateOnly = blocked.date
+                      if (blocked.date.includes('T')) {
+                        dateOnly = blocked.date.split('T')[0]
+                      }
+                      
+                      // Parse as local date by adding time at noon to avoid timezone issues
+                      const [year, month, day] = dateOnly.split('-').map(Number)
+                      const blockedDate = new Date(year, month - 1, day, 12, 0, 0)
+                      
+                      // Get today's date at start of day
+                      const today = new Date()
+                      today.setHours(0, 0, 0, 0)
+                      
+                      // Keep dates that are today or in the future
+                      return blockedDate >= today
+                    } catch (error) {
+                      console.error('Date filter error:', error, blocked.date)
+                      return true // Keep date if we can't parse it
+                    }
+                  })
+
+                  if (futureBlockedDates.length === 0) {
+                    return (
+                      <div className="text-center py-12">
+                        <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                        <p className="text-gray-500">No blocked dates</p>
+                      </div>
+                    )
+                  }
+
+                  return futureBlockedDates.map((blocked) => (
                     <div
                       key={blocked.id}
                       className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all duration-200"
@@ -345,9 +419,15 @@ export function ServiceManagerBase({
                           <p className="font-semibold text-gray-800">
                             {(() => {
                               try {
-                                // Handle date string properly
-                                const dateStr = blocked.date.includes('T') ? blocked.date : `${blocked.date}T00:00:00`
-                                const date = new Date(dateStr)
+                                // Extract just the date part (YYYY-MM-DD) from the stored date
+                                let dateOnly = blocked.date
+                                if (blocked.date.includes('T')) {
+                                  dateOnly = blocked.date.split('T')[0]
+                                }
+                                
+                                // Parse as local date
+                                const [year, month, day] = dateOnly.split('-').map(Number)
+                                const date = new Date(year, month - 1, day)
                                 
                                 // Check if date is valid
                                 if (isNaN(date.getTime())) {
@@ -378,7 +458,7 @@ export function ServiceManagerBase({
                       </Button>
                     </div>
                   ))
-                )}
+                })()}
               </div>
             </div>
           </div>

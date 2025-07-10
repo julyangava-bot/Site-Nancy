@@ -7,27 +7,11 @@ export default {
     error: '/admin/login',
   },
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user
-      const isOnAdmin = nextUrl.pathname.startsWith('/admin')
-      const isOnAdminLogin = nextUrl.pathname === '/admin/login'
-      const isOnPasswordReset = nextUrl.pathname.startsWith('/admin/reset-password')
-      const isOnApi = nextUrl.pathname.startsWith('/api/admin')
-      
-      // Allow access to login and password reset pages
-      if (isOnAdminLogin || isOnPasswordReset) return true
-      
-      // Protect admin routes
-      if (isOnAdmin || isOnApi) {
-        if (isLoggedIn) return true
-        return false // Redirect unauthenticated users to login page
-      }
-      
-      return true
-    },
     async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id
+        token.email = user.email
+        token.name = user.name
         token.role = user.role
       }
       

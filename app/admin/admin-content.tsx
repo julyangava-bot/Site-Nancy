@@ -25,7 +25,7 @@ export function AdminContent({ userEmail }: AdminContentProps) {
   const searchParams = useSearchParams()
   
   // Get initial values from URL params
-  const initialService = (searchParams.get('service') as ServiceType) || 'daycare'
+  const initialService = (searchParams.get('service') as ServiceType) || 'pethotel'
   const initialTab = (searchParams.get('tab') as TabType) || 'dates'
   
   const [activeService, setActiveService] = useState<ServiceType>(initialService)
@@ -106,14 +106,14 @@ export function AdminContent({ userEmail }: AdminContentProps) {
       {/* Main Content */}
       <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
         <Tabs value={activeService} onValueChange={handleServiceChange}>
-          <TabsList className="grid w-full grid-cols-3 mb-4 bg-gray-100/50 rounded-lg p-1">
-            <TabsTrigger 
+          <TabsList className="grid w-full grid-cols-1 mb-4 bg-gray-100/50 rounded-lg p-1">
+            {/* <TabsTrigger 
               value="daycare" 
               className="data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm rounded-md transition-all duration-200 font-medium"
             >
               <Dog className="w-4 h-4 mr-2" />
               Daycare
-            </TabsTrigger>
+            </TabsTrigger> */}
             <TabsTrigger 
               value="pethotel" 
               className="data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm rounded-md transition-all duration-200 font-medium"
@@ -121,22 +121,22 @@ export function AdminContent({ userEmail }: AdminContentProps) {
               <Hotel className="w-4 h-4 mr-2" />
               Pet Hotel
             </TabsTrigger>
-            <TabsTrigger 
+            {/* <TabsTrigger 
               value="van" 
               className="data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm rounded-md transition-all duration-200 font-medium"
             >
               <Car className="w-4 h-4 mr-2" />
               Van Service
-            </TabsTrigger>
+            </TabsTrigger> */}
           </TabsList>
 
-          <TabsContent value="daycare" className="space-y-6">
+          {/* <TabsContent value="daycare" className="space-y-6">
             <DaycareManager 
               token="" // Token no longer needed with NextAuth
               activeTab={activeTab} 
               onTabChange={handleTabChange}
             />
-          </TabsContent>
+          </TabsContent> */}
 
           <TabsContent value="pethotel" className="space-y-6">
             <PetHotelManager 
@@ -146,13 +146,13 @@ export function AdminContent({ userEmail }: AdminContentProps) {
             />
           </TabsContent>
 
-          <TabsContent value="van" className="space-y-6">
+          {/* <TabsContent value="van" className="space-y-6">
             <VanManager 
               token="" // Token no longer needed with NextAuth
               activeTab={activeTab} 
               onTabChange={handleTabChange}
             />
-          </TabsContent>
+          </TabsContent> */}
         </Tabs>
       </div>
 

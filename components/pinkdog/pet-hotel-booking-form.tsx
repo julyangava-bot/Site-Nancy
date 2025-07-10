@@ -559,13 +559,19 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
                                   }
                                 }}
                                 disabled={(date) => {
-                                  // Check if the entire date is blocked
+                                  // Only check if the date is explicitly blocked
+                                  // The 24-hour rule will be applied when selecting times
                                   if (isDateBlocked(date)) {
                                     return true;
                                   }
-                                  // Check if this date would have any available time slots
-                                  const availableTimes = generateTimeOptions(format(date, 'yyyy-MM-dd'), true);
-                                  return availableTimes.length === 0;
+                                  
+                                  // Disable past dates
+                                  const today = new Date();
+                                  today.setHours(0, 0, 0, 0);
+                                  const dateToCheck = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                                  dateToCheck.setHours(0, 0, 0, 0);
+                                  
+                                  return dateToCheck < today;
                                 }}
                                 placeholderText="Select check-in date"
                               />

@@ -40,10 +40,12 @@ export function useBlockedDates(service?: string) {
     const dateStr = format(date, 'yyyy-MM-dd')
     
     return blockedDates.some(blocked => {
-      // Parse the date properly handling UTC
-      const blockedDate = new Date(blocked.date)
-      const utcDate = new Date(blockedDate.getUTCFullYear(), blockedDate.getUTCMonth(), blockedDate.getUTCDate())
-      const blockedDateStr = format(utcDate, 'yyyy-MM-dd')
+      // Extract just the date part if it includes time
+      let blockedDateStr = blocked.date
+      if (blocked.date.includes('T')) {
+        blockedDateStr = blocked.date.split('T')[0]
+      }
+      
       return blockedDateStr === dateStr && blocked.isFullDay
     })
   }
@@ -52,10 +54,12 @@ export function useBlockedDates(service?: string) {
     const dateStr = format(date, 'yyyy-MM-dd')
     
     return blockedDates.some(blocked => {
-      // Parse the date properly handling UTC
-      const blockedDate = new Date(blocked.date)
-      const utcDate = new Date(blockedDate.getUTCFullYear(), blockedDate.getUTCMonth(), blockedDate.getUTCDate())
-      const blockedDateStr = format(utcDate, 'yyyy-MM-dd')
+      // Extract just the date part if it includes time
+      let blockedDateStr = blocked.date
+      if (blocked.date.includes('T')) {
+        blockedDateStr = blocked.date.split('T')[0]
+      }
+      
       if (blockedDateStr !== dateStr) return false
       
       if (blocked.isFullDay) return true
@@ -82,10 +86,12 @@ export function useBlockedDates(service?: string) {
     const blockedTimes: string[] = []
     
     blockedDates.forEach(blocked => {
-      // Parse the date properly handling UTC
-      const blockedDate = new Date(blocked.date)
-      const utcDate = new Date(blockedDate.getUTCFullYear(), blockedDate.getUTCMonth(), blockedDate.getUTCDate())
-      const blockedDateStr = format(utcDate, 'yyyy-MM-dd')
+      // Extract just the date part if it includes time
+      let blockedDateStr = blocked.date
+      if (blocked.date.includes('T')) {
+        blockedDateStr = blocked.date.split('T')[0]
+      }
+      
       if (blockedDateStr !== dateStr) return
       
       if (blocked.isFullDay) {
