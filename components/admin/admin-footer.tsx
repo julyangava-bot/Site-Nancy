@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 export function AdminFooter() {
   return (
-    <footer className="mt-auto border-t border-gray-200 bg-white py-10 sm:py-0">
+    <footer className="mt-auto border-t border-gray-200 bg-white pt-6 pb-14 sm:pt-0 sm:pb-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           {/* Left Side - Logo and Copyright */}
@@ -18,7 +18,7 @@ export function AdminFooter() {
               className="opacity-75"
             />
             <div className="text-sm text-gray-500">
-              © {new Date().getFullYear()} PinkDog Pet Resort Admin. All rights reserved.
+              © {new Date().getFullYear()} PinkDog Pet Resort. All rights reserved.
             </div>
           </div>
           
