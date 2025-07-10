@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Mail, Loader2, AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
+import { AdminFooter } from '@/components/admin/admin-footer'
 
 export default function ResetPasswordPage() {
   const [email, setEmail] = useState('')
@@ -52,7 +53,7 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#FFF0F7] via-[#FFF9FC] to-white relative overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#FFF0F7] via-[#FFF9FC] to-white relative overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
@@ -60,7 +61,9 @@ export default function ResetPasswordPage() {
         <div className="absolute top-40 left-40 w-80 h-80 bg-pink-100 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
       </div>
       
-      <Card className="w-full max-w-md shadow-xl border-0 bg-white/95 backdrop-blur-sm relative z-10">
+      {/* Main content */}
+      <div className="flex-1 flex items-center justify-center relative z-10">
+        <Card className="w-full max-w-md shadow-xl border-0 bg-white/95 backdrop-blur-sm">
         <CardHeader className="text-center space-y-6 pb-8 pt-12">
           <div className="flex flex-col items-center gap-4">
             <Image 
@@ -145,7 +148,11 @@ export default function ResetPasswordPage() {
             </form>
           )}
         </CardContent>
-      </Card>
+        </Card>
+      </div>
+      
+      {/* Footer */}
+      <AdminFooter />
     </div>
   )
 }
