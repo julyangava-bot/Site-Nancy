@@ -6,7 +6,7 @@ import { signOut } from 'next-auth/react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { LogOut, Hotel, Key } from 'lucide-react'
+import { LogOut, Hotel, Key, Home } from 'lucide-react'
 import Link from 'next/link'
 import { PetHotelManager } from '@/components/admin/pet-hotel-manager'
 import { AdminFooter } from '@/components/admin/admin-footer'
@@ -77,6 +77,16 @@ export function AdminContent({ userEmail }: AdminContentProps) {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <Link href="/">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
+                >
+                  <Home className="w-4 h-4 mr-2" />
+                  Home
+                </Button>
+              </Link>
               <Link href="/admin/change-password">
                 <Button 
                   variant="outline" 
