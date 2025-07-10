@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { DayPicker } from 'react-day-picker'
-import { Switch } from '@/components/ui/switch'
-import { Calendar, Clock, Trash2, Plus, AlertCircle, Loader2 } from 'lucide-react'
+// import { Switch } from '@/components/ui/switch'
+import { Calendar, Clock, Trash2, Plus, AlertCircle, Loader2, Eye, EyeOff } from 'lucide-react'
 import { format } from 'date-fns'
 import { enUS } from 'date-fns/locale'
 import 'react-day-picker/dist/style.css'
@@ -25,6 +25,7 @@ interface BlockedDate {
 interface TimeSlot {
   value: string
   label: string
+  visible?: boolean
 }
 
 interface ServiceManagerBaseProps {
@@ -208,7 +209,8 @@ export function ServiceManagerBase({
       // For service types, use the input as is
       newSlot = {
         value: inputValue.toLowerCase().replace(/\s+/g, '_'),
-        label: inputValue
+        label: inputValue,
+        visible: true
       }
     } else {
       // For time slots, format as time
@@ -218,7 +220,8 @@ export function ServiceManagerBase({
       
       newSlot = {
         value: inputValue,
-        label: format(date, 'h:mm a')
+        label: format(date, 'h:mm a'),
+        visible: true
       }
     }
     
@@ -237,11 +240,21 @@ export function ServiceManagerBase({
     saveTimeSlots(slotType, newSlots, activeSlots[slotType] ?? true)
   }
 
-  const handleToggleActive = (slotType: string) => {
+  const handleToggleTimeSlotVisibility = (slotType: string, index: number) => {
     const currentSlots = timeSlots[slotType] || []
-    const newActive = !(activeSlots[slotType] ?? true)
-    saveTimeSlots(slotType, currentSlots, newActive)
+    const newSlots = [...currentSlots]
+    newSlots[index] = {
+      ...newSlots[index],
+      visible: !(newSlots[index].visible ?? true)
+    }
+    saveTimeSlots(slotType, newSlots, activeSlots[slotType] ?? true)
   }
+
+  // const handleToggleActive = (slotType: string) => {
+  //   const currentSlots = timeSlots[slotType] || []
+  //   const newActive = !(activeSlots[slotType] ?? true)
+  //   saveTimeSlots(slotType, currentSlots, newActive)
+  // }
 
   return (
     <Tabs value={activeTab} onValueChange={onTabChange}>
@@ -478,11 +491,11 @@ export function ServiceManagerBase({
                 <div key={slotType.type} className="space-y-4 p-4 bg-gray-50 rounded-lg">
                   <div className="flex items-center justify-between">
                     <h3 className="text-lg font-semibold text-gray-800">{slotType.label}</h3>
-                    <Switch
+                    {/* <Switch
                       checked={activeSlots[slotType.type] ?? true}
                       onCheckedChange={() => handleToggleActive(slotType.type)}
                       className="data-[state=checked]:bg-pink-500"
-                    />
+                    /> */}
                   </div>
                   
                   <div className="flex gap-2">
@@ -505,16 +518,41 @@ export function ServiceManagerBase({
 
                   <div className="space-y-2">
                     {(timeSlots[slotType.type] || []).map((slot, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
-                        <span className="font-medium text-gray-700">{slot.label}</span>
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          onClick={() => handleRemoveTimeSlot(slotType.type, index)}
-                          className="hover:bg-red-50 hover:text-red-600"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
+                      <div 
+                        key={index} 
+                        className={`flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200 ${
+                          slot.visible === false ? 'opacity-50' : ''
+                        }`}
+                      >
+                        <span className={`font-medium text-gray-700 ${
+                          slot.visible === false ? 'line-through' : ''
+                        }`}>
+                          {slot.label}
+                        </span>
+                        <div className="flex items-center gap-1">
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            onClick={() => handleToggleTimeSlotVisibility(slotType.type, index)}
+                            className="hover:bg-blue-50 hover:text-blue-600"
+                            title={slot.visible === false ? 'Show time slot' : 'Hide time slot'}
+                          >
+                            {slot.visible === false ? (
+                              <EyeOff className="w-4 h-4" />
+                            ) : (
+                              <Eye className="w-4 h-4" />
+                            )}
+                          </Button>
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            onClick={() => handleRemoveTimeSlot(slotType.type, index)}
+                            className="hover:bg-red-50 hover:text-red-600"
+                            title="Remove time slot"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
                       </div>
                     ))}
                     {(timeSlots[slotType.type] || []).length === 0 && (
@@ -533,6 +571,7 @@ export function ServiceManagerBase({
                   <ul className="list-disc list-inside space-y-1">
                     <li>Changes take effect immediately</li>
                     <li>Disabled time slots won&apos;t appear in booking forms</li>
+                    <li>Hidden time slots (eye icon) won&apos;t appear to customers</li>
                     <li>Times are displayed in 12-hour format</li>
                   </ul>
                 </div>

@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
@@ -17,7 +16,6 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
-  const router = useRouter()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -39,8 +37,11 @@ export default function AdminLoginPage() {
         setIsLoading(false)
       } else if (result?.ok) {
         // Successful login
-        router.push('/admin')
-        router.refresh()
+        // Wait a moment for session to propagate
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        
+        // Use window.location for a full page refresh to ensure session is loaded
+        window.location.href = '/admin'
       }
     } catch (error) {
       console.error('Login error:', error)

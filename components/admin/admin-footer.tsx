@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 export function AdminFooter() {
   return (
-    <footer className="mt-auto border-t border-gray-200 bg-white">
+    <footer className="mt-auto border-t border-gray-200 bg-white py-10 sm:py-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           {/* Left Side - Logo and Copyright */}
@@ -23,8 +23,8 @@ export function AdminFooter() {
           </div>
           
           {/* Right Side - Made with love and Powered by */}
-          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-8 text-center">
-            <p className="text-sm text-gray-600 whitespace-nowrap">
+          <div className="flex flex-col sm:flex-row items-center gap-0 sm:gap-8 text-center">
+            <p className="text-sm text-gray-400 whitespace-nowrap">
               Made with <span className="text-red-500">❤️</span> for pet businesses
             </p>
             <Link

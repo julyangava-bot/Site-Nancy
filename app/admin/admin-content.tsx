@@ -6,7 +6,7 @@ import { signOut } from 'next-auth/react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { LogOut, Hotel, Key, Home } from 'lucide-react'
+import { LogOut, Hotel, Key, Home, Menu, X } from 'lucide-react'
 import Link from 'next/link'
 import { PetHotelManager } from '@/components/admin/pet-hotel-manager'
 import { AdminFooter } from '@/components/admin/admin-footer'
@@ -28,6 +28,7 @@ export function AdminContent({ userEmail }: AdminContentProps) {
   
   const [activeService, setActiveService] = useState<ServiceType>(initialService)
   const [activeTab, setActiveTab] = useState<TabType>(initialTab)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   // Update URL when tabs change
   const updateURL = (service: ServiceType, tab: TabType) => {
@@ -70,13 +71,16 @@ export function AdminContent({ userEmail }: AdminContentProps) {
                 alt="PinkDog Logo" 
                 width={48}
                 height={48}
+                className="w-10 h-10 sm:w-12 sm:h-12"
               />
               <div>
-                <h1 className="text-xl font-semibold text-gray-800">Admin Panel</h1>
-                <p className="text-xs text-gray-600">Welcome, {userEmail}</p>
+                <h1 className="text-lg sm:text-xl font-semibold text-gray-800">Admin Panel</h1>
+                <p className="text-xs text-gray-600 hidden sm:block">Welcome, {userEmail}</p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            
+            {/* Desktop Menu */}
+            <div className="hidden md:flex items-center gap-2">
               <Link href="/">
                 <Button 
                   variant="outline" 
@@ -107,7 +111,59 @@ export function AdminContent({ userEmail }: AdminContentProps) {
                 Logout
               </Button>
             </div>
+            
+            {/* Mobile Menu Button */}
+            <Button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              variant="outline"
+              size="sm"
+              className="md:hidden border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-5 h-5" />
+              ) : (
+                <Menu className="w-5 h-5" />
+              )}
+            </Button>
           </div>
+          
+          {/* Mobile Menu */}
+          {isMobileMenuOpen && (
+            <div className="md:hidden mt-4 pb-3 border-t border-gray-200 pt-3">
+              <p className="text-sm text-gray-600 mb-3">Welcome, {userEmail}</p>
+              <div className="flex flex-col gap-2">
+                <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="w-full justify-start border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
+                  >
+                    <Home className="w-4 h-4 mr-2" />
+                    Home
+                  </Button>
+                </Link>
+                <Link href="/admin/change-password" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="w-full justify-start border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
+                  >
+                    <Key className="w-4 h-4 mr-2" />
+                    Change Password
+                  </Button>
+                </Link>
+                <Button 
+                  onClick={handleLogout} 
+                  variant="outline" 
+                  size="sm"
+                  className="w-full justify-start border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Logout
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

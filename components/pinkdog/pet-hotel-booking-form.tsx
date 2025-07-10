@@ -204,6 +204,11 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
     const blockedTimes = getBlockedTimesForDate(selectedDate);
     
     for (const slot of configuredSlots) {
+      // Skip hidden slots
+      if (slot.visible === false) {
+        continue;
+      }
+      
       const [hours, minutes] = slot.value.split(':').map(Number);
       
       // Check if this time slot is blocked
