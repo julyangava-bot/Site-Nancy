@@ -11,7 +11,11 @@ const prisma = new PrismaClient()
 async function main() {
   console.log('🌱 Creating admin users...')
   
-  const password = 'pinkdog-admin-2025' // You should change this!
+  // Get password from environment variable or generate a random one
+  const password = process.env.ADMIN_SEED_PASSWORD || 
+    Math.random().toString(36).slice(-8) + 
+    Math.random().toString(36).slice(-8).toUpperCase() + 
+    '!@#'
   const hashedPassword = await bcrypt.hash(password, 10)
   
   // Admin users to create
