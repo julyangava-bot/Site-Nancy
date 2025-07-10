@@ -14,6 +14,7 @@ interface WebhookData {
   checkOut: string;
   services: string[];
   observations: string;
+  storeSlug: string; // Added store identifier
   // Optional fields for different services
   previousDaycare?: string;
   socialBehavior?: string;
@@ -127,6 +128,7 @@ export async function POST(request: NextRequest) {
         previousDaycare: previousDaycare || 'Not specified',
         socialBehavior: socialBehavior || 'Not specified',
         observations: specialNotes || '', // Only the actual special notes from user
+        storeSlug: 'petquantic-demo-harvard', // Store identifier
       };
     } else if (serviceType === 'van') {
       // For van service requests
@@ -147,6 +149,7 @@ export async function POST(request: NextRequest) {
         serviceNeeded: serviceNeeded || 'Not specified',
         address: address || 'Not specified',
         observations: specialNotes || '', // Only the actual special notes from user
+        storeSlug: 'petquantic-demo-harvard', // Store identifier
       };
     } else {
       // For pet hotel requests
@@ -164,6 +167,7 @@ export async function POST(request: NextRequest) {
         checkOut: `${checkOutDate} ${checkOutTime || '17:00'}`,
         services: ['Pet Hotel'], // Default service
         observations: specialNotes || '', // Only the actual special notes from user
+        storeSlug: 'petquantic-demo-harvard', // Store identifier
       };
     }
 

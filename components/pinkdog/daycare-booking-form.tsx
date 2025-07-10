@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Select, { StylesConfig } from "react-select";
-import { format } from "date-fns";
+// import { format } from "date-fns"; // Temporarily commented
 
 import {
   Form,
@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Heart, Mail, Loader2, CheckCircle, XCircle } from "lucide-react";
 import { useModal } from "@/context/providers";
-import { DatePicker } from "./date-picker";
+// import { DatePicker } from "./date-picker"; // Temporarily commented
 import {
   Dialog,
   DialogContent,
@@ -29,9 +29,12 @@ import {
   DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useBlockedDates } from "@/hooks/useBlockedDates";
+// import { useBlockedDates } from "@/hooks/useBlockedDates"; // Temporarily commented
+// import { useTimeSlots } from "@/hooks/useTimeSlots"; // Temporarily commented
+import { ClientTypeSelection } from "./client-type-selection";
 
-const daycareFormSchema = z.object({
+// Dynamic schema based on client type
+const createDaycareFormSchema = (isNewClient: boolean) => z.object({
   ownerName: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
   phone: z.string().min(10, "Please enter a valid phone number"),
@@ -45,13 +48,14 @@ const daycareFormSchema = z.object({
     required_error: "Please select if your pet has attended daycare before",
   }),
   socialBehavior: z.string().min(1, "Please describe how your pet is around other pets"),
-  daycareDate: z.string().min(1, "Please select daycare date"),
-  dropOffTime: z.string().min(1, "Please select drop-off time"),
-  pickUpTime: z.string().min(1, "Please select pick-up time"),
+  // IMPORTANT: DO NOT DELETE - These fields are optional for new clients but required for existing clients
+  daycareDate: isNewClient ? z.string().optional() : z.string().min(1, "Please select daycare date"),
+  dropOffTime: isNewClient ? z.string().optional() : z.string().min(1, "Please select drop-off time"),
+  pickUpTime: isNewClient ? z.string().optional() : z.string().min(1, "Please select pick-up time"),
   specialNotes: z.string().optional(),
 });
 
-type DaycareFormValues = z.infer<typeof daycareFormSchema>;
+type DaycareFormValues = z.infer<ReturnType<typeof createDaycareFormSchema>>;
 
 interface DaycareBookingFormProps {
   children: React.ReactNode;
@@ -125,73 +129,137 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
   const [isLoading, setIsLoading] = React.useState(false);
   const [submitStatus, setSubmitStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = React.useState('');
+  const [showClientTypeSelection, setShowClientTypeSelection] = React.useState(true);
+  const [isNewClient, setIsNewClient] = React.useState(false);
   const { setIsAnyModalOpen } = useModal();
-  const { isDateBlocked, getBlockedTimesForDate } = useBlockedDates('daycare');
+  // Temporarily commented - used for date/time fields
+  // const { isDateBlocked, getBlockedTimesForDate } = useBlockedDates('daycare');
+  // const { timeSlots, loading: timeSlotsLoading } = useTimeSlots('daycare');
 
-  // Generate time options based on business hours and 24-hour constraint
+  // Temporarily commented - used for date/time fields
+  /*
+  // Generate time options based on configured slots and 24-hour constraint
   const generateTimeOptions = (date: string, isDropOff: boolean = true) => {
     if (!date) return [];
     
     const selectedDate = new Date(date);
-    const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, etc.
     const now = new Date();
     const twentyFourHoursFromNow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
     
-    let startHour = 8;
-    let startMinute = 30;
-    let endHour = 16;
-    let endMinute = 30;
+    // Get configured time slots
+    const configuredSlots = isDropOff ? 
+      (timeSlots.drop_off || []) : 
+      (timeSlots.pick_up || []);
     
-    // Sunday: 12:00 PM - 4:00 PM
-    if (dayOfWeek === 0) {
-      startHour = 12;
-      startMinute = 0;
-      endHour = 16;
-      endMinute = 0;
-    }
-    
-    const options = [];
-    let currentHour = startHour;
-    let currentMinute = startMinute;
-    
-    while (currentHour < endHour || (currentHour === endHour && currentMinute <= endMinute)) {
-      const timeString = `${currentHour.toString().padStart(2, '0')}:${currentMinute.toString().padStart(2, '0')}`;
-      const displayTime = new Date(2000, 0, 1, currentHour, currentMinute).toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      });
+    // If no configured slots, fall back to default business hours
+    if (configuredSlots.length === 0) {
+      const dayOfWeek = selectedDate.getDay();
+      let startHour = 8;
+      let startMinute = 30;
+      let endHour = 16;
+      let endMinute = 30;
       
-      // Check if this time slot is blocked
-      const blockedTimes = getBlockedTimesForDate(selectedDate);
-      const isBlocked = blockedTimes.includes(timeString);
+      // Sunday: 12:00 PM - 4:00 PM
+      if (dayOfWeek === 0) {
+        startHour = 12;
+        startMinute = 0;
+        endHour = 16;
+        endMinute = 0;
+      }
       
-      // For drop-off times, ensure they are at least 24 hours from now and not blocked
-      if (isDropOff) {
-        const dateTime = new Date(selectedDate);
-        dateTime.setHours(currentHour, currentMinute, 0, 0);
+      const options = [];
+      let currentHour = startHour;
+      let currentMinute = startMinute;
+      
+      while (currentHour < endHour || (currentHour === endHour && currentMinute <= endMinute)) {
+        const timeString = `${currentHour.toString().padStart(2, '0')}:${currentMinute.toString().padStart(2, '0')}`;
+        const displayTime = new Date(2000, 0, 1, currentHour, currentMinute).toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true
+        });
         
-        if (dateTime >= twentyFourHoursFromNow && !isBlocked) {
-          options.push({ value: timeString, label: displayTime });
+        // Check if this time slot is blocked
+        const blockedTimes = getBlockedTimesForDate(selectedDate);
+        const isBlocked = blockedTimes.includes(timeString);
+        
+        // For drop-off times, ensure they are at least 24 hours from now and not blocked
+        if (isDropOff) {
+          const dateTime = new Date(selectedDate);
+          dateTime.setHours(currentHour, currentMinute, 0, 0);
+          
+          if (dateTime >= twentyFourHoursFromNow && !isBlocked) {
+            options.push({ value: timeString, label: displayTime });
+          }
+        } else {
+          // For pick-up times, no 24-hour restriction but check if blocked
+          if (!isBlocked) {
+            options.push({ value: timeString, label: displayTime });
+          }
         }
-      } else {
-        // For pick-up times, no 24-hour restriction but check if blocked
-        if (!isBlocked) {
-          options.push({ value: timeString, label: displayTime });
+        
+        // Increment by 30 minutes
+        currentMinute += 30;
+        if (currentMinute >= 60) {
+          currentMinute = 0;
+          currentHour += 1;
         }
       }
       
-      // Increment by 30 minutes
-      currentMinute += 30;
-      if (currentMinute >= 60) {
-        currentMinute = 0;
-        currentHour += 1;
+      return options;
+    }
+    
+    // Use configured slots
+    const options = [];
+    const blockedTimes = getBlockedTimesForDate(selectedDate);
+    
+    for (const slot of configuredSlots) {
+      const [hours, minutes] = slot.value.split(':').map(Number);
+      
+      // Check if this time slot is blocked
+      if (blockedTimes.includes(slot.value)) {
+        continue;
+      }
+      
+      // For drop-off times, ensure they are at least 24 hours from now
+      if (isDropOff) {
+        const dateTime = new Date(selectedDate);
+        dateTime.setHours(hours, minutes, 0, 0);
+        
+        if (dateTime >= twentyFourHoursFromNow) {
+          options.push(slot);
+        }
+      } else {
+        // For pick-up times, no 24-hour restriction
+        options.push(slot);
       }
     }
     
     return options;
   };
+  */
   
+  const form = useForm<DaycareFormValues>({
+    resolver: zodResolver(createDaycareFormSchema(isNewClient)),
+    defaultValues: {
+      ownerName: "",
+      email: "",
+      phone: "",
+      petType: undefined,
+      petName: "",
+      breed: "",
+      age: "",
+      previousDaycare: undefined,
+      socialBehavior: "",
+      daycareDate: "",
+      dropOffTime: "",
+      pickUpTime: "",
+      specialNotes: "",
+    },
+  });
+
+  // Temporarily commented - used for date/time fields
+  /*
   // Generate pick-up time options that are after drop-off time
   const generatePickUpTimeOptions = (daycareDate: string) => {
     const baseOptions = generateTimeOptions(daycareDate, false);
@@ -212,25 +280,7 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
       return optionMinutes > dropOffMinutes;
     });
   };
-
-  const form = useForm<DaycareFormValues>({
-    resolver: zodResolver(daycareFormSchema),
-    defaultValues: {
-      ownerName: "",
-      email: "",
-      phone: "",
-      petType: undefined,
-      petName: "",
-      breed: "",
-      age: "",
-      previousDaycare: undefined,
-      socialBehavior: "",
-      daycareDate: "",
-      dropOffTime: "",
-      pickUpTime: "",
-      specialNotes: "",
-    },
-  });
+  */
 
   const onSubmit = async (values: DaycareFormValues) => {
     setIsLoading(true);
@@ -253,10 +303,11 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
           petAge: values.age,
           breeds: values.breed,
           numberOfPets: '1',
-          checkInDate: values.daycareDate,
-          checkInTime: values.dropOffTime,
-          checkOutDate: values.daycareDate, // Same day for daycare
-          checkOutTime: values.pickUpTime,
+          // Temporarily commenting out date/time fields
+          // checkInDate: values.daycareDate,
+          // checkInTime: values.dropOffTime,
+          // checkOutDate: values.daycareDate, // Same day for daycare
+          // checkOutTime: values.pickUpTime,
           // Send structured data as separate fields
           previousDaycare: values.previousDaycare,
           socialBehavior: values.socialBehavior,
@@ -309,6 +360,8 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
       setSubmitStatus('idle');
       setErrorMessage('');
       setIsLoading(false);
+      setShowClientTypeSelection(true);
+      setIsNewClient(false);
     }
 
     return () => {
@@ -340,7 +393,7 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
                 <DialogTitle>Daycare Request</DialogTitle>
               </div>
               <DialogDescription className="px-4">
-                We&apos;re excited to welcome your pup! Fill out the info below for their temperament test.
+                We&apos;re excited to welcome your pup! Please choose the right option to continue.
               </DialogDescription>
             </div>
           </div>
@@ -348,6 +401,18 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
 
         {/* Scrollable content */}
         <div className="flex-1 overflow-y-auto overscroll-contain">
+          {showClientTypeSelection ? (
+            <ClientTypeSelection
+              serviceType="daycare"
+              onNewClient={() => {
+                setIsNewClient(true);
+                setShowClientTypeSelection(false);
+              }}
+              onExistingClient={() => {
+                setIsOpen(false);
+              }}
+            />
+          ) : (
           <div className="p-6">
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
@@ -556,6 +621,11 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
                         </p>
                       </div>
                     </div>
+                    
+                    {/* IMPORTANT: DO NOT DELETE - These fields are hidden for new clients but needed for existing clients */}
+                    {/* Temporarily commenting out date/time fields
+                    {!isNewClient && (
+                    <>
                     <FormField
                       control={form.control}
                       name="daycareDate"
@@ -564,7 +634,7 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
                           <FormLabel className="text-gray-700 font-medium text-sm">Daycare Date *</FormLabel>
                           <FormControl>
                             <DatePicker
-                              selected={field.value}
+                              selected={field.value || ''}
                               onSelect={(date) => {
                                 if (date) {
                                   // Ensure we're working with local date to avoid timezone issues
@@ -599,16 +669,16 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
                             <FormLabel className="text-gray-700 font-medium text-sm">Drop-off Time *</FormLabel>
                             <FormControl>
                               <Select
-                                value={field.value ? generateTimeOptions(form.watch('daycareDate'), true).find(opt => opt.value === field.value) : null}
+                                value={field.value ? generateTimeOptions(form.watch('daycareDate') || '', true).find(opt => opt.value === field.value) : null}
                                 onChange={(option) => field.onChange(option?.value)}
-                                options={generateTimeOptions(form.watch('daycareDate'), true)}
+                                options={generateTimeOptions(form.watch('daycareDate') || '', true)}
                                 placeholder="Select time"
                                 styles={customSelectStyles}
                                 className="react-select-container"
                                 classNamePrefix="react-select"
                                 isClearable={false}
                                 isSearchable={false}
-                                isDisabled={!form.watch('daycareDate')}
+                                isDisabled={!form.watch('daycareDate') || timeSlotsLoading}
                               />
                             </FormControl>
                             <FormMessage className="text-xs" />
@@ -624,16 +694,16 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
                             <FormLabel className="text-gray-700 font-medium text-sm">Pick-up Time *</FormLabel>
                             <FormControl>
                               <Select
-                                value={field.value ? generatePickUpTimeOptions(form.watch('daycareDate')).find(opt => opt.value === field.value) : null}
+                                value={field.value ? generatePickUpTimeOptions(form.watch('daycareDate') || '').find(opt => opt.value === field.value) : null}
                                 onChange={(option) => field.onChange(option?.value)}
-                                options={generatePickUpTimeOptions(form.watch('daycareDate'))}
+                                options={generatePickUpTimeOptions(form.watch('daycareDate') || '')}
                                 placeholder="Select time"
                                 styles={customSelectStyles}
                                 className="react-select-container"
                                 classNamePrefix="react-select"
                                 isClearable={false}
                                 isSearchable={false}
-                                isDisabled={!form.watch('daycareDate')}
+                                isDisabled={!form.watch('daycareDate') || timeSlotsLoading}
                               />
                             </FormControl>
                             <FormMessage className="text-xs" />
@@ -642,6 +712,9 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
                         )}
                       />
                     </div>
+                    </>
+                    )}
+                    */}
 
                     <FormField
                       control={form.control}
@@ -683,29 +756,32 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
               </form>
             </Form>
           </div>
+          )}
         </div>
 
-        {/* Fixed button area - Always visible */}
-        <DialogFooter>
-          <Button
-            type="submit"
-            onClick={form.handleSubmit(handleSubmit)}
-            disabled={isLoading}
-            className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 text-lg rounded-full transition-all duration-300 hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin" />
-                Sending...
-              </>
-            ) : (
-              <>
-                <Mail className="w-5 h-5" />
-                Send Daycare Request
-              </>
-            )}
-          </Button>
-        </DialogFooter>
+        {/* Fixed button area - Only visible when form is shown */}
+        {!showClientTypeSelection && (
+          <DialogFooter>
+            <Button
+              type="submit"
+              onClick={form.handleSubmit(handleSubmit)}
+              disabled={isLoading}
+              className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 text-lg rounded-full transition-all duration-300 hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Sending...
+                </>
+              ) : (
+                <>
+                  <Mail className="w-5 h-5" />
+                  Send Request
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        )}
       </DialogContent>
     </Dialog>
   );

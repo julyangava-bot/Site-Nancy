@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Select, { StylesConfig } from "react-select";
-import { format } from "date-fns";
+// import { format } from "date-fns"; // Temporarily commented
 
 import {
   Form,
@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Car, Mail, Loader2, CheckCircle, XCircle } from "lucide-react";
 import { useModal } from "@/context/providers";
-import { DatePicker } from "./date-picker";
+// import { DatePicker } from "./date-picker"; // Temporarily commented
 import {
   Dialog,
   DialogContent,
@@ -29,9 +29,12 @@ import {
   DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useBlockedDates } from "@/hooks/useBlockedDates";
+// import { useBlockedDates } from "@/hooks/useBlockedDates"; // Temporarily commented
+// import { useTimeSlots } from "@/hooks/useTimeSlots"; // Temporarily commented
+import { ClientTypeSelection } from "./client-type-selection";
 
-const vanFormSchema = z.object({
+// Dynamic schema based on client type
+const createVanFormSchema = (isNewClient: boolean) => z.object({
   ownerName: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
   phone: z.string().min(10, "Please enter a valid phone number"),
@@ -47,8 +50,9 @@ const vanFormSchema = z.object({
     required_error: "Please select service type needed",
   }),
   address: z.string().min(1, "Please enter pick-up/drop-off address"),
-  desiredDate: z.string().min(1, "Please select desired date"),
-  timeWindow: z.string().min(1, "Please enter preferred time window"),
+  // IMPORTANT: DO NOT DELETE - These fields are optional for new clients but required for existing clients
+  desiredDate: isNewClient ? z.string().optional() : z.string().min(1, "Please select desired date"),
+  pickupTime: isNewClient ? z.string().optional() : z.string().min(1, "Please select pickup time"),
   requestedService: z.enum(["grooming", "daycare", "boarding", "other"], {
     required_error: "Please select service type",
   }),
@@ -56,7 +60,7 @@ const vanFormSchema = z.object({
   specialInstructions: z.string().optional(),
 });
 
-type VanFormValues = z.infer<typeof vanFormSchema>;
+type VanFormValues = z.infer<ReturnType<typeof createVanFormSchema>>;
 
 interface VanBookingFormProps {
   children: React.ReactNode;
@@ -130,56 +134,15 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
   const [isLoading, setIsLoading] = React.useState(false);
   const [submitStatus, setSubmitStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = React.useState('');
+  const [showClientTypeSelection, setShowClientTypeSelection] = React.useState(true);
+  const [isNewClient, setIsNewClient] = React.useState(false);
   const { setIsAnyModalOpen } = useModal();
-  const { isDateBlocked } = useBlockedDates('van');
-
-  // Generate time options based on selected date and business hours with 24-hour constraint
-  const generateTimeOptions = (date: string) => {
-    if (!date) return [];
-    
-    // Create date with explicit timezone handling to avoid timezone issues
-    const dateParts = date.split('-');
-    const selectedDate = new Date(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]));
-    const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, etc.
-    const now = new Date();
-    const twentyFourHoursFromNow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-    
-    const options: SelectOption[] = [];
-    const timeWindows = [];
-    
-    // Sunday: Limited hours - 12:00 PM - 4:00 PM
-    if (dayOfWeek === 0) {
-      timeWindows.push(
-        { value: "12:00 PM - 2:00 PM", label: "12:00 PM - 2:00 PM", startHour: 12, startMinute: 0 },
-        { value: "2:00 PM - 4:00 PM", label: "2:00 PM - 4:00 PM", startHour: 14, startMinute: 0 }
-      );
-    } else {
-      // Monday-Saturday: Full hours
-      timeWindows.push(
-        { value: "8:00 AM - 10:00 AM", label: "8:00 AM - 10:00 AM (Morning Pickup)", startHour: 8, startMinute: 0 },
-        { value: "10:00 AM - 12:00 PM", label: "10:00 AM - 12:00 PM", startHour: 10, startMinute: 0 },
-        { value: "12:00 PM - 2:00 PM", label: "12:00 PM - 2:00 PM", startHour: 12, startMinute: 0 },
-        { value: "2:00 PM - 4:00 PM", label: "2:00 PM - 4:00 PM", startHour: 14, startMinute: 0 },
-        { value: "3:00 PM - 5:00 PM", label: "3:00 PM - 5:00 PM (Afternoon Drop-off)", startHour: 15, startMinute: 0 },
-        { value: "4:00 PM - 6:00 PM", label: "4:00 PM - 6:00 PM", startHour: 16, startMinute: 0 }
-      );
-    }
-    
-    // Filter time windows based on 24-hour constraint
-    timeWindows.forEach(window => {
-      const dateTime = new Date(selectedDate);
-      dateTime.setHours(window.startHour, window.startMinute, 0, 0);
-      
-      if (dateTime >= twentyFourHoursFromNow) {
-        options.push({ value: window.value, label: window.label });
-      }
-    });
-    
-    return options;
-  };
+  // Temporarily commented - used for date/time fields
+  // const { isDateBlocked } = useBlockedDates('van');
+  // const { timeSlots, loading: timeSlotsLoading } = useTimeSlots('van');
 
   const form = useForm<VanFormValues>({
-    resolver: zodResolver(vanFormSchema),
+    resolver: zodResolver(createVanFormSchema(isNewClient)),
     defaultValues: {
       ownerName: "",
       email: "",
@@ -193,7 +156,7 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
       serviceNeeded: undefined,
       address: "",
       desiredDate: "",
-      timeWindow: "",
+      pickupTime: "",
       requestedService: undefined,
       otherServiceType: "",
       specialInstructions: "",
@@ -223,10 +186,11 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
           petAge: values.age,
           breeds: values.breed,
           numberOfPets: values.numberOfPets,
-          checkInDate: values.desiredDate,
-          checkInTime: values.timeWindow.split(' - ')[0],
-          checkOutDate: values.desiredDate,
-          checkOutTime: values.timeWindow.split(' - ')[1] || values.timeWindow.split(' - ')[0],
+          // Temporarily commenting out date/time fields
+          // checkInDate: values.desiredDate,
+          // checkInTime: values.pickupTime,
+          // checkOutDate: values.desiredDate,
+          // checkOutTime: values.pickupTime,
           serviceType: 'van', // Identify as van service
           // Send structured data as separate fields
           petSize: values.size,
@@ -281,6 +245,8 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
       setSubmitStatus('idle');
       setErrorMessage('');
       setIsLoading(false);
+      setShowClientTypeSelection(true);
+      setIsNewClient(false);
     }
 
     return () => {
@@ -320,6 +286,18 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
 
         {/* Scrollable content */}
         <div className="flex-1 overflow-y-auto overscroll-contain">
+          {showClientTypeSelection ? (
+            <ClientTypeSelection
+              serviceType="van"
+              onNewClient={() => {
+                setIsNewClient(true);
+                setShowClientTypeSelection(false);
+              }}
+              onExistingClient={() => {
+                setIsOpen(false);
+              }}
+            />
+          ) : (
           <div className="p-6">
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
@@ -597,6 +575,10 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
                       </div>
                     </div>
 
+                    {/* IMPORTANT: DO NOT DELETE - These fields are commented for new clients but needed for existing clients */}
+                    {/* Temporarily commenting out date/time fields
+                    {!isNewClient && (
+                    <>
                     <FormField
                       control={form.control}
                       name="desiredDate"
@@ -605,7 +587,7 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
                           <FormLabel className="text-gray-700 font-medium text-sm">Desired Date *</FormLabel>
                           <FormControl>
                             <DatePicker
-                              selected={field.value}
+                              selected={field.value || ''}
                               onSelect={(date) => {
                                 if (date) {
                                   // Ensure we're working with local date to avoid timezone issues
@@ -614,13 +596,8 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
                                 }
                               }}
                               disabled={(date) => {
-                                // Check if the entire date is blocked
-                                if (isDateBlocked(date)) {
-                                  return true;
-                                }
-                                // Check if this date would have any available time slots
-                                const availableTimes = generateTimeOptions(format(date, 'yyyy-MM-dd'));
-                                return availableTimes.length === 0;
+                                // Only check if the date is blocked
+                                return isDateBlocked(date);
                               }}
                               placeholderText="Select service date"
                             />
@@ -632,22 +609,22 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
 
                     <FormField
                       control={form.control}
-                      name="timeWindow"
+                      name="pickupTime"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium text-sm">Time Window *</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Pick-up Time *</FormLabel>
                           <FormControl>
                             <Select
-                              value={field.value ? generateTimeOptions(form.watch('desiredDate')).find(opt => opt.value === field.value) : null}
+                              value={field.value ? timeSlots.time_window?.find(opt => opt.value === field.value) : null}
                               onChange={(option) => field.onChange(option?.value)}
-                              options={generateTimeOptions(form.watch('desiredDate'))}
-                              placeholder="Select time window"
+                              options={timeSlots.time_window || []}
+                              placeholder="Select pick-up time"
                               styles={customSelectStyles}
                               className="react-select-container"
                               classNamePrefix="react-select"
                               isClearable={false}
                               isSearchable={false}
-                              isDisabled={!form.watch('desiredDate')}
+                              isDisabled={!form.watch('desiredDate') || timeSlotsLoading}
                             />
                           </FormControl>
                           <FormMessage className="text-xs" />
@@ -655,6 +632,9 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
                         </FormItem>
                       )}
                     />
+                    </>
+                    )}
+                    */}
 
                     <FormField
                       control={form.control}
@@ -749,29 +729,32 @@ export function VanBookingForm({ children, variant = 'default', initialOpen = fa
               </form>
             </Form>
           </div>
+          )}
         </div>
 
-        {/* Fixed button area - Always visible */}
-        <DialogFooter>
-          <Button
-            type="submit"
-            onClick={form.handleSubmit(handleSubmit)}
-            disabled={isLoading}
-            className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 text-lg rounded-full transition-all duration-300 hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin" />
-                Sending...
-              </>
-            ) : (
-              <>
-                <Mail className="w-5 h-5" />
-                Send PinkVan Request
-              </>
-            )}
-          </Button>
-        </DialogFooter>
+        {/* Fixed button area - Only visible when form is shown */}
+        {!showClientTypeSelection && (
+          <DialogFooter>
+            <Button
+              type="submit"
+              onClick={form.handleSubmit(handleSubmit)}
+              disabled={isLoading}
+              className="w-full bg-[#E73992] hover:bg-[#d3337f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-4 text-lg rounded-full transition-all duration-300 hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Sending...
+                </>
+              ) : (
+                <>
+                  <Mail className="w-5 h-5" />
+                  Send Request
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        )}
       </DialogContent>
     </Dialog>
   );
