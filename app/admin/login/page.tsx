@@ -38,6 +38,9 @@ export default function AdminLoginPage() {
         setError('Invalid email or password')
         setIsLoading(false)
       } else if (result?.ok) {
+        // Successful login - refresh router to update session state
+        router.refresh()
+        // Then redirect to admin dashboard
         // Successful login - redirect using Next.js router
         // The signIn with redirect: false already established the session
         router.push('/admin')
