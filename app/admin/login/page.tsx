@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
@@ -16,6 +17,7 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const router = useRouter()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -36,12 +38,9 @@ export default function AdminLoginPage() {
         setError('Invalid email or password')
         setIsLoading(false)
       } else if (result?.ok) {
-        // Successful login
-        // Wait a moment for session to propagate
-        await new Promise(resolve => setTimeout(resolve, 1000))
-        
-        // Use window.location for a full page refresh to ensure session is loaded
-        window.location.href = '/admin'
+        // Successful login - redirect using Next.js router
+        // The signIn with redirect: false already established the session
+        router.push('/admin')
       }
     } catch (error) {
       console.error('Login error:', error)

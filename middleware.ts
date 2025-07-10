@@ -26,14 +26,6 @@ export async function middleware(request: NextRequest) {
   
   // Protect admin routes
   if ((isOnAdmin || isOnApi) && !session) {
-    // Check if this is a redirect after login by checking referrer
-    const referer = request.headers.get('referer')
-    if (referer && referer.includes('/admin/login')) {
-      // Give the session a moment to propagate
-      console.log('Detected redirect from login, allowing access')
-      return NextResponse.next()
-    }
-    
     return NextResponse.redirect(new URL('/admin/login', request.url))
   }
   

@@ -205,9 +205,10 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
     
     for (const slot of configuredSlots) {
       // Skip hidden slots
-      if (slot.visible === false) {
-        continue;
-      }
+      // TODO: Uncomment when TimeSlot interface is updated in the API response
+      // if (slot.visible === false) {
+      //   continue;
+      // }
       
       const [hours, minutes] = slot.value.split(':').map(Number);
       
