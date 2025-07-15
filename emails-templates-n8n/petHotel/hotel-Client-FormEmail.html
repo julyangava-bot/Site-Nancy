@@ -41,6 +41,7 @@
         {{ $('Booking - PinkDogResort-Web').item.json.body.petSize ? '<p style="margin: 5px 0; color: #333333;"><strong>Size:</strong> ' + ($('Booking - PinkDogResort-Web').item.json.body.petSize === 'pequeno' ? 'Small' : $('Booking - PinkDogResort-Web').item.json.body.petSize === 'medio' ? 'Medium' : $('Booking - PinkDogResort-Web').item.json.body.petSize === 'grande' ? 'Large' : $('Booking - PinkDogResort-Web').item.json.body.petSize) + '</p>' : '' }}
         {{ $('Booking - PinkDogResort-Web').item.json.body.petAge && $('Booking - PinkDogResort-Web').item.json.body.petAge !== 'Not specified' ? '<p style="margin: 5px 0; color: #333333;"><strong>Age:</strong> ' + $('Booking - PinkDogResort-Web').item.json.body.petAge + '</p>' : '' }}
         
+        <!-- Temporarily commented out - date/time fields
         <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #FFE4E1;">
           <p style="margin: 5px 0; color: #333333;">
             <strong>Check-in:</strong> 
@@ -51,8 +52,9 @@
             <span style="background-color: #f8f9fa; padding: 3px 8px; border-radius: 4px; font-family: monospace; color: #333333;">{{ $('Booking - PinkDogResort-Web').item.json.body.checkOut.split(' ')[0].split('-')[1] + '-' + $('Booking - PinkDogResort-Web').item.json.body.checkOut.split(' ')[0].split('-')[2] + '-' + $('Booking - PinkDogResort-Web').item.json.body.checkOut.split(' ')[0].split('-')[0] + ' at ' + (function() { var time = $('Booking - PinkDogResort-Web').item.json.body.checkOut.split(' ').slice(1).join(' '); var [hours, minutes] = time.split(':'); var h = parseInt(hours); var ampm = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return h + ':' + minutes + ' ' + ampm; })() }}</span>
           </p>
         </div>
+        -->
         
-        {{ $('Booking - PinkDogResort-Web').item.json.body.observations ? '<div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #FFE4E1;"><p style="margin: 5px 0; color: #333333;"><strong>Special Instructions:</strong> ' + $('Booking - PinkDogResort-Web').item.json.body.observations + '</p></div>' : '' }}
+        {{ $('Booking - PinkDogResort-Web').item.json.body.observations ? '<div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #FFE4E1;"><p style="margin: 5px 0; color: #333333;"><strong>Suggested Dates & Special Notes:</strong> ' + $('Booking - PinkDogResort-Web').item.json.body.observations + '</p></div>' : '' }}
       </div>
       
       <div style="background-color: #FFF9F9; padding: 40px 30px; border-left: 4px solid #D1477A;">

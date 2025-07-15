@@ -43,10 +43,11 @@ const petHotelFormSchema = z.object({
   petAge: z.string().min(1, "Please enter pet age"),
   numberOfPets: z.string().min(1, "Please enter number of pets"),
   breeds: z.string().min(1, "Please enter breed(s)"),
-  checkInDate: z.string().min(1, "Please select check-in date"),
-  checkInTime: z.string().min(1, "Please select check-in time"),
-  checkOutDate: z.string().min(1, "Please select check-out date"),
-  checkOutTime: z.string().min(1, "Please select check-out time"),
+  // Temporarily commented out - date/time fields are optional
+  // checkInDate: z.string().min(1, "Please select check-in date"),
+  // checkInTime: z.string().min(1, "Please select check-in time"),
+  // checkOutDate: z.string().min(1, "Please select check-out date"),
+  // checkOutTime: z.string().min(1, "Please select check-out time"),
   specialNotes: z.string().optional(),
 });
 
@@ -250,10 +251,11 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
       petAge: "",
       numberOfPets: "",
       breeds: "",
-      checkInDate: "",
-      checkInTime: "",
-      checkOutDate: "",
-      checkOutTime: "",
+      // Temporarily commented out - date/time fields
+      // checkInDate: "",
+      // checkInTime: "",
+      // checkOutDate: "",
+      // checkOutTime: "",
       specialNotes: "",
     },
   });
@@ -348,7 +350,7 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
             <div className="text-center">
               <div className="flex items-center justify-center mb-3">
                 <Hotel className="w-8 h-8 text-[#E73992] mr-2" />
-                <DialogTitle>Pet Hotel Booking</DialogTitle>
+                <DialogTitle>Pet Hotel Booking Request</DialogTitle>
               </div>
               <DialogDescription className="px-4">
                 Reserve your pet&apos;s stay at our comfortable and caring hotel.
@@ -538,8 +540,9 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
                       )}
                     />
 
+                    {/* Temporarily commented out - date/time fields */}
                     {/* Business Hours Info */}
-                    <div className="bg-gray-50 rounded-xl p-4 mb-5">
+                    {/* <div className="bg-gray-50 rounded-xl p-4 mb-5">
                       <p className="text-sm font-medium text-gray-700 mb-2">Business Hours</p>
                       <div className="space-y-1 text-xs text-gray-600">
                         <p>• Monday - Saturday: 8:30 AM - 5:00 PM</p>
@@ -694,17 +697,17 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
                           </FormItem>
                         )}
                       />
-                    </div>
+                    </div> */}
 
                     <FormField
                       control={form.control}
                       name="specialNotes"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium text-sm">Special Instructions (optional)</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Suggested Dates & Special Notes (optional)</FormLabel>
                           <FormControl>
                             <textarea 
-                              placeholder="Medications, feeding instructions, or special care needs..."
+                              placeholder="Please share your preferred dates for the stay and any special instructions (medications, feeding needs, etc.)..."
                               {...field} 
                               className="flex min-h-[100px] w-full rounded-xl border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-2 text-base shadow-sm transition-colors placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 resize-none"
                               style={{ fontSize: '16px' }}
@@ -712,6 +715,10 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
                             />
                           </FormControl>
                           <FormMessage className="text-xs" />
+                          <p className="text-xs text-amber-600 mt-2 flex items-start gap-1">
+                            <span className="text-amber-500">ℹ️</span>
+                            <span>This is a booking request only. We will contact you to confirm availability and finalize your reservation.</span>
+                          </p>
                         </FormItem>
                       )}
                     />
