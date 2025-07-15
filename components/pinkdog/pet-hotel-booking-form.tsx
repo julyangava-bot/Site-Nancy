@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Select, { StylesConfig } from "react-select";
-import { format } from "date-fns";
 
 import {
   Form,
@@ -19,7 +18,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Hotel, Mail, Loader2, CheckCircle, XCircle } from "lucide-react";
 import { useModal } from "@/context/providers";
-import { DatePicker } from "./date-picker";
 import {
   Dialog,
   DialogContent,
@@ -29,8 +27,6 @@ import {
   DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useBlockedDates } from "@/hooks/useBlockedDates";
-import { useTimeSlots } from "@/hooks/useTimeSlots";
 
 const petHotelFormSchema = z.object({
   ownerName: z.string().min(2, "Name must be at least 2 characters"),
@@ -126,9 +122,9 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
   const [submitStatus, setSubmitStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = React.useState('');
   const { setIsAnyModalOpen } = useModal();
-  const { isDateBlocked, getBlockedTimesForDate } = useBlockedDates('pethotel');
-  const { timeSlots, loading: timeSlotsLoading } = useTimeSlots('pethotel');
 
+  // Temporarily commented out - date/time functions
+  /*
   // Generate time options based on configured slots and 24-hour constraint
   const generateTimeOptions = (date: string, isCheckIn: boolean = true) => {
     if (!date) return [];
@@ -239,6 +235,7 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
   const generateCheckOutTimeOptions = (checkOutDate: string) => {
     return generateTimeOptions(checkOutDate, false);
   };
+  */
 
   const form = useForm<PetHotelFormValues>({
     resolver: zodResolver(petHotelFormSchema),
