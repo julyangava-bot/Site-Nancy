@@ -614,7 +614,8 @@ export function DaycareBookingForm({ children, variant = 'default', initialOpen 
                       <p className="text-sm font-medium text-gray-700 mb-2">Daycare Hours</p>
                       <div className="space-y-1 text-xs text-gray-600">
                         <p>• Monday - Saturday: 8:30 AM - 5:00 PM</p>
-                        <p>• Sunday: 12:00 PM - 4:00 PM</p>
+                        <p>• Sunday: 8:30 PM - 5:00 PM</p>
+                          <span className="text-xs text-gray-500">(Closed for lunch: 1:00 PM - 1:30 PM)</span>
                         <p className="text-amber-600 mt-2 flex items-start gap-1">
                           <span className="text-amber-500">⚠️</span>
                           <span>Daycare bookings require 24 hours advance notice</span>

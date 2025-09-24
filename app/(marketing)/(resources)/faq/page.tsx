@@ -131,7 +131,7 @@ const faqSections: FAQSection[] = [
                   <div className="flex justify-between items-center bg-[#FFF9FC] rounded-lg p-3">
                     <span className="font-medium text-gray-700">Sunday</span>
                     <div className="text-right">
-                      <span className="text-[#E73992] font-semibold">12:00 PM – 4:00 PM</span>
+                      <span className="text-[#E73992] font-semibold">8:30 PM – 5:00 PM</span>
                       <p className="text-xs text-gray-600">(pick-up only)</p>
                     </div>
                   </div>

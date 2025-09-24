@@ -264,7 +264,7 @@ export function Footer() {
                     <IconClock size={16} className="text-[#E73992] flex-shrink-0 mt-0.5" />
                     <div className="text-xs text-gray-600">
                       <p>{location.hours.weekdays}</p>
-                      <p className="text-gray-500">{location.hours.sunday}</p>
+                      <p className="text-gray-600">{location.hours.sunday}</p>
                       {location.subtitle && (
                         <p className="text-[#E73992] text-xs mt-1">{location.subtitle}</p>
                       )}
