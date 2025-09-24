@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 // Hours data
 const hours = [
   { day: "Monday - Saturday", hours: "08:30 AM - 05:00 PM" },
-  { day: "Sunday", hours: "12:00 PM - 04:00 PM" },
+  { day: "Sunday", hours: "8:30 PM - 05:00 PM" },
 ];
 
 // Contact info
