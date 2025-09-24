@@ -121,6 +121,17 @@ function DaycareContent() {
       ]
     },
     {
+      title: "Trial Day",
+      price: "$30",
+      period: "per dog",
+      features: [
+        "First-time visitors special",
+        "Full day experience",
+        "Temperament evaluation included",
+        "Perfect way to try our daycare"
+      ]
+    },
+    {
       title: "5-Day Pass",
       price: "$135",
       period: "Half Day",
