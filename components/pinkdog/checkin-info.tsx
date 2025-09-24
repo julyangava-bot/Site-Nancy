@@ -127,9 +127,12 @@ export function CheckInInfo() {
                       </span>
                     </div>
                   ))}
+                  <div className="text-center">
+                    <span className="text-xs text-gray-500 italic">Closed for lunch: 1:00 PM - 1:30 PM</span>
+                  </div>
                 </div>
 
-                <div className="mt-8 bg-white rounded-xl p-4 shadow-sm">
+                <div className="mt-4 bg-white rounded-xl p-4 shadow-sm">
                   <p className="text-gray-600 text-sm">
                     <span className="font-semibold text-[#E73992]">Note:</span>{" "}
                     We recommend arriving 15 minutes before your scheduled
