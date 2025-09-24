@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Select, { StylesConfig } from "react-select";
-import { format } from "date-fns";
 
 import {
   Form,
@@ -19,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Hotel, Mail, Loader2, CheckCircle, XCircle } from "lucide-react";
 import { useModal } from "@/context/providers";
-import { DatePicker } from "./date-picker";
+import { ClientTypeSelection } from "./client-type-selection";
 import {
   Dialog,
   DialogContent,
@@ -29,10 +28,10 @@ import {
   DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useBlockedDates } from "@/hooks/useBlockedDates";
-import { useTimeSlots } from "@/hooks/useTimeSlots";
 
-const petHotelFormSchema = z.object({
+// Dynamic schema based on client type
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const createPetHotelFormSchema = (isNewClient: boolean) => z.object({
   ownerName: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
   phone: z.string().min(10, "Please enter a valid phone number"),
@@ -43,14 +42,15 @@ const petHotelFormSchema = z.object({
   petAge: z.string().min(1, "Please enter pet age"),
   numberOfPets: z.string().min(1, "Please enter number of pets"),
   breeds: z.string().min(1, "Please enter breed(s)"),
-  checkInDate: z.string().min(1, "Please select check-in date"),
-  checkInTime: z.string().min(1, "Please select check-in time"),
-  checkOutDate: z.string().min(1, "Please select check-out date"),
-  checkOutTime: z.string().min(1, "Please select check-out time"),
+  // IMPORTANT: DO NOT DELETE - These fields are optional for new clients but required for existing clients
+  // checkInDate: isNewClient ? z.string().optional() : z.string().min(1, "Please select check-in date"),
+  // checkInTime: isNewClient ? z.string().optional() : z.string().min(1, "Please select check-in time"),
+  // checkOutDate: isNewClient ? z.string().optional() : z.string().min(1, "Please select check-out date"),
+  // checkOutTime: isNewClient ? z.string().optional() : z.string().min(1, "Please select check-out time"),
   specialNotes: z.string().optional(),
 });
 
-type PetHotelFormValues = z.infer<typeof petHotelFormSchema>;
+type PetHotelFormValues = z.infer<ReturnType<typeof createPetHotelFormSchema>>;
 
 interface PetHotelBookingFormProps {
   children: React.ReactNode;
@@ -124,10 +124,12 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
   const [isLoading, setIsLoading] = React.useState(false);
   const [submitStatus, setSubmitStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = React.useState('');
+  const [showClientTypeSelection, setShowClientTypeSelection] = React.useState(true);
+  const [isNewClient, setIsNewClient] = React.useState(false);
   const { setIsAnyModalOpen } = useModal();
-  const { isDateBlocked, getBlockedTimesForDate } = useBlockedDates('pethotel');
-  const { timeSlots, loading: timeSlotsLoading } = useTimeSlots('pethotel');
 
+  // Temporarily commented out - date/time functions
+  /*
   // Generate time options based on configured slots and 24-hour constraint
   const generateTimeOptions = (date: string, isCheckIn: boolean = true) => {
     if (!date) return [];
@@ -238,9 +240,10 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
   const generateCheckOutTimeOptions = (checkOutDate: string) => {
     return generateTimeOptions(checkOutDate, false);
   };
+  */
 
   const form = useForm<PetHotelFormValues>({
-    resolver: zodResolver(petHotelFormSchema),
+    resolver: zodResolver(createPetHotelFormSchema(isNewClient)),
     defaultValues: {
       ownerName: "",
       email: "",
@@ -250,10 +253,11 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
       petAge: "",
       numberOfPets: "",
       breeds: "",
-      checkInDate: "",
-      checkInTime: "",
-      checkOutDate: "",
-      checkOutTime: "",
+      // Temporarily commented out - date/time fields
+      // checkInDate: "",
+      // checkInTime: "",
+      // checkOutDate: "",
+      // checkOutTime: "",
       specialNotes: "",
     },
   });
@@ -314,12 +318,14 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
   // Control modal open state for context
   React.useEffect(() => {
     setIsAnyModalOpen(isOpen);
-    
+
     // Reset states when modal closes
     if (!isOpen) {
       setSubmitStatus('idle');
       setErrorMessage('');
       setIsLoading(false);
+      setShowClientTypeSelection(true);
+      setIsNewClient(false);
     }
 
     return () => {
@@ -348,10 +354,10 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
             <div className="text-center">
               <div className="flex items-center justify-center mb-3">
                 <Hotel className="w-8 h-8 text-[#E73992] mr-2" />
-                <DialogTitle>Pet Hotel Booking</DialogTitle>
+                <DialogTitle>Pet Hotel Booking Request</DialogTitle>
               </div>
               <DialogDescription className="px-4">
-                Reserve your pet&apos;s stay at our comfortable and caring hotel.
+                We&apos;re excited to welcome your pet! Please choose the right option to continue.
               </DialogDescription>
             </div>
           </div>
@@ -359,6 +365,18 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
 
         {/* Scrollable content */}
         <div className="flex-1 overflow-y-auto overscroll-contain">
+          {showClientTypeSelection ? (
+            <ClientTypeSelection
+              serviceType="pethotel"
+              onNewClient={() => {
+                setIsNewClient(true);
+                setShowClientTypeSelection(false);
+              }}
+              onExistingClient={() => {
+                setIsOpen(false);
+              }}
+            />
+          ) : (
           <div className="p-6">
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
@@ -538,8 +556,9 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
                       )}
                     />
 
+                    {/* Temporarily commented out - date/time fields */}
                     {/* Business Hours Info */}
-                    <div className="bg-gray-50 rounded-xl p-4 mb-5">
+                    {/* <div className="bg-gray-50 rounded-xl p-4 mb-5">
                       <p className="text-sm font-medium text-gray-700 mb-2">Business Hours</p>
                       <div className="space-y-1 text-xs text-gray-600">
                         <p>• Monday - Saturday: 8:30 AM - 5:00 PM</p>
@@ -694,17 +713,17 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
                           </FormItem>
                         )}
                       />
-                    </div>
+                    </div> */}
 
                     <FormField
                       control={form.control}
                       name="specialNotes"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium text-sm">Special Instructions (optional)</FormLabel>
+                          <FormLabel className="text-gray-700 font-medium text-sm">Suggested Dates & Special Notes (optional)</FormLabel>
                           <FormControl>
                             <textarea 
-                              placeholder="Medications, feeding instructions, or special care needs..."
+                              placeholder="Please share your preferred dates for the stay and any special instructions (medications, feeding needs, etc.)..."
                               {...field} 
                               className="flex min-h-[100px] w-full rounded-xl border-[0.5px] border-[#E5E5E5] bg-[#F2F2F2] px-3 py-2 text-base shadow-sm transition-colors placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E73992] disabled:cursor-not-allowed disabled:opacity-50 resize-none"
                               style={{ fontSize: '16px' }}
@@ -712,6 +731,10 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
                             />
                           </FormControl>
                           <FormMessage className="text-xs" />
+                          <p className="text-xs text-amber-600 mt-2 flex items-start gap-1">
+                            <span className="text-amber-500">ℹ️</span>
+                            <span>This is a booking request only. We will contact you to confirm availability and finalize your reservation.</span>
+                          </p>
                         </FormItem>
                       )}
                     />
@@ -736,9 +759,11 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
               </form>
             </Form>
           </div>
+          )}
         </div>
 
         {/* Fixed button area - Always visible */}
+        {!showClientTypeSelection && (
         <DialogFooter>
           <Button
             type="submit"
@@ -759,6 +784,7 @@ export function PetHotelBookingForm({ children, variant = 'default', initialOpen
             )}
           </Button>
         </DialogFooter>
+        )}
       </DialogContent>
     </Dialog>
   );

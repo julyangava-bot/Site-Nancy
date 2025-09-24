@@ -7,7 +7,7 @@ import { ExternalLink, UserPlus, Users } from "lucide-react";
 interface ClientTypeSelectionProps {
   onNewClient: () => void;
   onExistingClient: () => void;
-  serviceType: 'daycare' | 'van';
+  serviceType: 'daycare' | 'van' | 'pethotel';
 }
 
 export function ClientTypeSelection({ onNewClient, onExistingClient, serviceType }: ClientTypeSelectionProps) {
@@ -25,9 +25,11 @@ export function ClientTypeSelection({ onNewClient, onExistingClient, serviceType
           Are you a new or returning client?
         </h3>
         <p className="text-sm text-gray-600">
-          {serviceType === 'daycare' 
+          {serviceType === 'daycare'
             ? "New clients will complete a quick evaluation before booking daycare."
-            : "Please select below to continue with your PinkVan request"}
+            : serviceType === 'van'
+            ? "Please select below to continue with your PinkVan request"
+            : "New clients will complete a quick evaluation before booking your pet's stay."}
         </p>
       </div>
 
@@ -55,7 +57,7 @@ export function ClientTypeSelection({ onNewClient, onExistingClient, serviceType
 
       <div className="mt-6 p-4 bg-gray-50 rounded-xl">
         <p className="text-xs text-gray-600">
-          <span className="font-medium">Returning clients:</span> You&apos;ll be redirected to the client login portal to manage your {serviceType} request.
+          <span className="font-medium">Returning clients:</span> You&apos;ll be redirected to the client login portal to manage your {serviceType === 'pethotel' ? 'pet hotel' : serviceType} request.
         </p>
       </div>
     </div>

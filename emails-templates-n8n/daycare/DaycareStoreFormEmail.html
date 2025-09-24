@@ -3,81 +3,68 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daycare Booking - Store</title>
+  <title>Daycare Booking Request - Store</title>
 </head>
-<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; line-height: 1.6; color: #333333; background-color: #f5f5f5;">
-  <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff;">
-    <div style="background: linear-gradient(135deg, #FFE4E1 0%, #FFF0F5 100%); padding: 30px; text-align: center;">
-      <img src="https://pinkdog-website.vercel.app/images/navbar-logo.png" alt="PinkDog Pet Resort" style="max-width: 200px; height: auto; margin-bottom: 20px;">
-      <div style="display: inline-block; padding: 5px 15px; background-color: #D1477A; color: white; border-radius: 20px; font-size: 12px; margin-bottom: 15px; text-transform: uppercase;">{{ $('Booking - PinkDogResort-Web').item.json.body.services.includes('Daycare') ? 'DAYCARE' : 'PET HOTEL' }} BOOKING</div>
-      <h1 style="color: #333333; margin: 0;">New Booking Request!</h1>
+<body style="margin: 0; padding: 20px; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.5; color: #333333; background-color: #f5f5f5;">
+  <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    <!-- Header -->
+    <div style="border-bottom: 2px solid #D1477A; padding-bottom: 10px; margin-bottom: 20px;">
+      <h1 style="margin: 0; font-size: 18px; font-weight: normal;">NEW DAYCARE BOOKING REQUEST</h1>
+      <p style="margin: 5px 0 0 0; color: #666666;">Received: {{ new Date().toLocaleString('en-US') }}</p>
     </div>
     
-    <div>
-      <div style="margin-bottom: 25px; padding: 20px 30px; background-color: #f9f9f9;">
-        <h2 style="color: #D1477A; border-bottom: 2px solid #FFE4E1; padding-bottom: 10px;">📋 Customer Details</h2>
-        <p><span style="font-weight: bold; color: #666666; display: inline-block; width: 140px;">Name:</span><span style="color: #333333;">{{ $('Booking - PinkDogResort-Web').item.json.body.clientName }}</span></p>
-        <p><span style="font-weight: bold; color: #666666; display: inline-block; width: 140px;">Email:</span><span style="color: #333333;"><a href="mailto:{{ $('Booking - PinkDogResort-Web').item.json.body.clientEmail }}" style="color: #D1477A; text-decoration: none;">{{ $('Booking - PinkDogResort-Web').item.json.body.clientEmail }}</a></span></p>
-        <p><span style="font-weight: bold; color: #666666; display: inline-block; width: 140px;">Phone:</span><span style="color: #333333;"><a href="tel:{{ $('Booking - PinkDogResort-Web').item.json.body.clientPhone }}" style="color: #D1477A; text-decoration: none;">{{ $('Booking - PinkDogResort-Web').item.json.body.clientPhone }}</a></span></p>
-      </div>
-      
-      <div style="margin-bottom: 25px; padding: 20px 30px; background-color: #f9f9f9;">
-        <h2 style="color: #D1477A; border-bottom: 2px solid #FFE4E1; padding-bottom: 10px;">🐾 Pet Information</h2>
-        <p><span style="font-weight: bold; color: #666666; display: inline-block; width: 140px;">Pet Name:</span><span style="color: #333333;">{{ $('Booking - PinkDogResort-Web').item.json.body.petName }}</span></p>
-        {{ $('Booking - PinkDogResort-Web').item.json.body.numberOfPets ? '<p><span style="font-weight: bold; color: #666666; display: inline-block; width: 140px;">Number of Pets:</span><span style="color: #333333;">' + $('Booking - PinkDogResort-Web').item.json.body.numberOfPets + '</span></p>' : '' }}
-        {{ $('Booking - PinkDogResort-Web').item.json.body.petType ? '<p><span style="font-weight: bold; color: #666666; display: inline-block; width: 140px;">Pet Type:</span><span style="color: #333333;">' + ($('Booking - PinkDogResort-Web').item.json.body.petType === 'dog' ? 'Dog' : $('Booking - PinkDogResort-Web').item.json.body.petType === 'cat' ? 'Cat' : $('Booking - PinkDogResort-Web').item.json.body.petType) + '</span></p>' : '' }}
-        <p><span style="font-weight: bold; color: #666666; display: inline-block; width: 140px;">Breed:</span><span style="color: #333333;">{{ $('Booking - PinkDogResort-Web').item.json.body.petBreed }}</span></p>
-        <p><span style="font-weight: bold; color: #666666; display: inline-block; width: 140px;">Size:</span><span style="color: #333333;">{{ $('Booking - PinkDogResort-Web').item.json.body.petSize === 'pequeno' ? 'Small' : $('Booking - PinkDogResort-Web').item.json.body.petSize === 'medio' ? 'Medium' : 'Large' }}</span></p>
-        {{ $('Booking - PinkDogResort-Web').item.json.body.petAge && $('Booking - PinkDogResort-Web').item.json.body.petAge !== 'Not specified' ? '<p><span style="font-weight: bold; color: #666666; display: inline-block; width: 140px;">Age:</span><span style="color: #333333;">' + $('Booking - PinkDogResort-Web').item.json.body.petAge + '</span></p>' : '' }}
-      </div>
-      
-      <div style="margin-bottom: 25px; padding: 20px 30px; background-color: #f9f9f9;">
-        <h2 style="color: #D1477A; border-bottom: 2px solid #FFE4E1; padding-bottom: 10px;">📅 Visit Date</h2>
-        <p>
-          <span style="font-weight: bold; color: #666666; display: inline-block; width: 140px;">Date:</span>
-          <span style="color: #333333;">
-            <span style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-family: monospace; color: #333333;">{{ $('Booking - PinkDogResort-Web').item.json.body.checkIn.split(' ')[0] }}</span>
-          </span>
-        </p>
-        <p>
-          <span style="font-weight: bold; color: #666666; display: inline-block; width: 140px;">Drop-off Time:</span>
-          <span style="color: #333333;">
-            <span style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-family: monospace; color: #333333;">{{ (function() { var time = $('Booking - PinkDogResort-Web').item.json.body.checkIn.split(' ').slice(1).join(' '); var [hours, minutes] = time.split(':'); var h = parseInt(hours); var ampm = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return h + ':' + minutes + ' ' + ampm; })() }}</span>
-          </span>
-        </p>
-        <p>
-          <span style="font-weight: bold; color: #666666; display: inline-block; width: 140px;">Pick-up Time:</span>
-          <span style="color: #333333;">
-            <span style="background-color: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-family: monospace; color: #333333;">{{ (function() { var time = $('Booking - PinkDogResort-Web').item.json.body.checkOut.split(' ').slice(1).join(' '); var [hours, minutes] = time.split(':'); var h = parseInt(hours); var ampm = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return h + ':' + minutes + ' ' + ampm; })() }}</span>
-          </span>
-        </p>
-      </div>
-      
-      {{ $('Booking - PinkDogResort-Web').item.json.body.previousDaycare && $('Booking - PinkDogResort-Web').item.json.body.previousDaycare !== 'Not specified' ? '<div style="margin-bottom: 25px; padding: 20px; background-color: #f9f9f9; border-radius: 8px;"><h2 style="color: #D1477A; border-bottom: 2px solid #FFE4E1; padding-bottom: 10px;">🐶 Experience & Behavior</h2><p><span style="font-weight: bold; color: #666666; display: inline-block; width: 180px;">Previous Daycare Experience:</span><span style="color: #333333;">' + ($('Booking - PinkDogResort-Web').item.json.body.previousDaycare === 'yes' ? 'Yes' : 'No') + '</span></p>' + ($('Booking - PinkDogResort-Web').item.json.body.socialBehavior && $('Booking - PinkDogResort-Web').item.json.body.socialBehavior !== 'Not specified' ? '<p><span style="font-weight: bold; color: #666666;">Social Behavior:</span><br><span style="color: #333333;">' + $('Booking - PinkDogResort-Web').item.json.body.socialBehavior + '</span></p>' : '') + '</div>' : '' }}
-      
-      <div style="margin-bottom: 25px; padding: 20px 30px; background-color: #f9f9f9;">
-        <h2 style="color: #D1477A; border-bottom: 2px solid #FFE4E1; padding-bottom: 10px;">🎯 Services Selected</h2>
-        <div style="background-color: #FFE4E1; padding: 15px; border-radius: 5px; margin-top: 10px; color: #333333;">
-          {{ $('Booking - PinkDogResort-Web').item.json.body.services.join(' • ') }}
-        </div>
-      </div>
-      
-      {{ $('Booking - PinkDogResort-Web').item.json.body.observations ? '<div style="margin-bottom: 25px; padding: 20px; background-color: #f9f9f9; border-radius: 8px;"><h2 style="color: #D1477A; border-bottom: 2px solid #FFE4E1; padding-bottom: 10px;">📝 Additional Notes</h2><p style="color: #333333;">' + $('Booking - PinkDogResort-Web').item.json.body.observations + '</p></div>' : '' }}
-      
-      <div style="text-align: center; margin-top: 30px; padding: 20px 30px; background-color: #FFF0F5;">
-        <p style="margin: 0 0 15px 0; color: #666666;">Please contact the customer to confirm this daycare booking</p>
-        <a href="mailto:{{ $('Booking - PinkDogResort-Web').item.json.body.clientEmail }}?subject=Re: Daycare Booking - {{ $('Booking - PinkDogResort-Web').item.json.body.clientName }}" style="display: inline-block; padding: 12px 30px; background-color: #D1477A; color: white; text-decoration: none; border-radius: 25px;">Reply to Customer →</a>
-      </div>
+    <!-- Customer Details -->
+    <div style="margin-bottom: 20px;">
+      <h2 style="margin: 0 0 10px 0; font-size: 16px; font-weight: bold;">CUSTOMER INFORMATION</h2>
+      <p style="margin: 3px 0;"><strong>Name:</strong> {{ $('Booking - PinkDogResort-Web').item.json.body.clientName }}</p>
+      <p style="margin: 3px 0;"><strong>Email:</strong> <a href="mailto:{{ $('Booking - PinkDogResort-Web').item.json.body.clientEmail }}" style="color: #D1477A;">{{ $('Booking - PinkDogResort-Web').item.json.body.clientEmail }}</a></p>
+      <p style="margin: 3px 0;"><strong>Phone:</strong> <a href="tel:{{ $('Booking - PinkDogResort-Web').item.json.body.clientPhone }}" style="color: #D1477A;">{{ $('Booking - PinkDogResort-Web').item.json.body.clientPhone }}</a></p>
     </div>
     
-    <div style="background-color: #f5f5f5; padding: 20px; text-align: center; color: #999999; font-size: 12px;">
-      <p>Email sent automatically by online booking system<br>
-      PinkDog Pet Resort - Harvard • {{ new Date().toLocaleString('en-US') }}</p>
-      
-      <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e0e0e0;">
-        Made with ❤️ for pet businesses<br>
-        <strong>Powered by <a href="https://petquantic.com/" style="color: #D1477A; text-decoration: none;">PetQuantic</a></strong>
-      </div>
+    <!-- Pet Information -->
+    <div style="margin-bottom: 20px;">
+      <h2 style="margin: 0 0 10px 0; font-size: 16px; font-weight: bold;">PET DETAILS</h2>
+      <p style="margin: 3px 0;"><strong>Pet Name:</strong> {{ $('Booking - PinkDogResort-Web').item.json.body.petName }}</p>
+      {{ $('Booking - PinkDogResort-Web').item.json.body.numberOfPets ? '<p style="margin: 3px 0;"><strong>Number of Pets:</strong> ' + $('Booking - PinkDogResort-Web').item.json.body.numberOfPets + '</p>' : '' }}
+      {{ $('Booking - PinkDogResort-Web').item.json.body.petType ? '<p style="margin: 3px 0;"><strong>Pet Type:</strong> ' + ($('Booking - PinkDogResort-Web').item.json.body.petType === 'dog' ? 'Dog' : $('Booking - PinkDogResort-Web').item.json.body.petType === 'cat' ? 'Cat' : $('Booking - PinkDogResort-Web').item.json.body.petType) + '</p>' : '' }}
+      <p style="margin: 3px 0;"><strong>Breed:</strong> {{ $('Booking - PinkDogResort-Web').item.json.body.petBreed }}</p>
+      <p style="margin: 3px 0;"><strong>Size:</strong> {{ $('Booking - PinkDogResort-Web').item.json.body.petSize === 'pequeno' ? 'Small' : $('Booking - PinkDogResort-Web').item.json.body.petSize === 'medio' ? 'Medium' : 'Large' }}</p>
+      {{ $('Booking - PinkDogResort-Web').item.json.body.petAge && $('Booking - PinkDogResort-Web').item.json.body.petAge !== 'Not specified' ? '<p style="margin: 3px 0;"><strong>Age:</strong> ' + $('Booking - PinkDogResort-Web').item.json.body.petAge + '</p>' : '' }}
+    </div>
+    
+    <!-- Visit Date - Temporarily commented out -->
+    <!-- <div style="margin-bottom: 20px;">
+      <h2 style="margin: 0 0 10px 0; font-size: 16px; font-weight: bold;">VISIT SCHEDULE</h2>
+      <p style="margin: 3px 0;"><strong>Date:</strong> {{ $('Booking - PinkDogResort-Web').item.json.body.checkIn.split(' ')[0] }}</p>
+      <p style="margin: 3px 0;"><strong>Drop-off Time:</strong> {{ (function() { var time = $('Booking - PinkDogResort-Web').item.json.body.checkIn.split(' ').slice(1).join(' '); var [hours, minutes] = time.split(':'); var h = parseInt(hours); var ampm = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return h + ':' + minutes + ' ' + ampm; })() }}</p>
+      <p style="margin: 3px 0;"><strong>Pick-up Time:</strong> {{ (function() { var time = $('Booking - PinkDogResort-Web').item.json.body.checkOut.split(' ').slice(1).join(' '); var [hours, minutes] = time.split(':'); var h = parseInt(hours); var ampm = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return h + ':' + minutes + ' ' + ampm; })() }}</p>
+    </div> -->
+    
+    <!-- Experience & Behavior -->
+    {{ $('Booking - PinkDogResort-Web').item.json.body.previousDaycare && $('Booking - PinkDogResort-Web').item.json.body.previousDaycare !== 'Not specified' ? '<div style="margin-bottom: 20px;"><h2 style="margin: 0 0 10px 0; font-size: 16px; font-weight: bold;">EXPERIENCE & BEHAVIOR</h2><p style="margin: 3px 0;"><strong>Previous Daycare Experience:</strong> ' + ($('Booking - PinkDogResort-Web').item.json.body.previousDaycare === 'yes' ? 'Yes' : 'No') + '</p>' + ($('Booking - PinkDogResort-Web').item.json.body.socialBehavior && $('Booking - PinkDogResort-Web').item.json.body.socialBehavior !== 'Not specified' ? '<p style="margin: 10px 0 3px 0;"><strong>Social Behavior:</strong></p><p style="margin: 3px 0; padding-left: 20px;">' + $('Booking - PinkDogResort-Web').item.json.body.socialBehavior + '</p>' : '') + '</div>' : '' }}
+    
+    <!-- Services -->
+    <div style="margin-bottom: 20px;">
+      <h2 style="margin: 0 0 10px 0; font-size: 16px; font-weight: bold;">SERVICE REQUESTED</h2>
+      <p style="margin: 3px 0;">{{ $('Booking - PinkDogResort-Web').item.json.body.services.join(' • ') }}</p>
+    </div>
+    
+    <!-- Additional Notes -->
+    {{ $('Booking - PinkDogResort-Web').item.json.body.observations ? '<div style="margin-bottom: 20px;"><h2 style="margin: 0 0 10px 0; font-size: 16px; font-weight: bold;">ADDITIONAL NOTES</h2><p style="margin: 3px 0; white-space: pre-wrap;">' + $('Booking - PinkDogResort-Web').item.json.body.observations + '</p></div>' : '' }}
+    
+    <!-- Action Required -->
+    <div style="border-top: 2px solid #D1477A; padding-top: 20px; margin-top: 30px;">
+      <h2 style="margin: 0 0 10px 0; font-size: 16px; font-weight: bold; color: #D1477A;">ACTION REQUIRED</h2>
+      <p style="margin: 5px 0;">Please contact the customer within 24 hours to confirm availability and finalize the booking.</p>
+      <p style="margin: 15px 0;">
+        <a href="mailto:{{ $('Booking - PinkDogResort-Web').item.json.body.clientEmail }}?subject=Re: Daycare Booking - {{ $('Booking - PinkDogResort-Web').item.json.body.clientName }}" style="display: inline-block; padding: 10px 20px; background-color: #D1477A; color: white; text-decoration: none; font-weight: bold;">REPLY TO CUSTOMER</a>
+      </p>
+    </div>
+    
+    <!-- Footer -->
+    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #cccccc; font-size: 12px; color: #666666;">
+      <p style="margin: 3px 0;">PinkDog Pet Resort - Harvard</p>
+      <p style="margin: 3px 0;">Automated booking notification</p>
     </div>
   </div>
 </body>

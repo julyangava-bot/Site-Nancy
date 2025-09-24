@@ -52,8 +52,9 @@ export function Footer() {
       address: "259 Ayer Rd, Harvard, MA 01451",
       hours: {
         weekdays: "Mon-Sat: 8:30 AM - 5:00 PM",
-        sunday: "Sunday: 12:00 PM - 4:00 PM"
+        sunday: "Sunday: 8:30 AM - 5:00 PM"
       },
+      subtitle: "Closed for lunch: 1:00 PM - 1:30 PM",
       phone: "978-772-4242",
       features: ["24/7 Pet Resort", "Pet Hotel", "Daycare", "Grooming"],
       isPrimary: true,
@@ -264,6 +265,9 @@ export function Footer() {
                     <div className="text-xs text-gray-600">
                       <p>{location.hours.weekdays}</p>
                       <p className="text-gray-500">{location.hours.sunday}</p>
+                      {location.subtitle && (
+                        <p className="text-[#E73992] text-xs mt-1">{location.subtitle}</p>
+                      )}
                     </div>
                   </div>
 
