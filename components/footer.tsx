@@ -283,7 +283,7 @@ export function Footer() {
                       </a>
                       {location.name === "Coconut Creek, FL" && (
                         <>
-                          <span className="text-gray-400 text-xs">|</span>
+                          {/* <span className="text-gray-400 text-xs">|</span>
                           <IconBrandWhatsapp size={16} className="text-green-600" />
                           <a 
                             href="https://wa.me/+19549140128"
@@ -292,7 +292,7 @@ export function Footer() {
                             className="text-gray-600 hover:text-green-600 transition-colors text-xs"
                           >
                             954-914-0128
-                          </a>
+                          </a> */}
                         </>
                       )}
                     </div>
