@@ -18,6 +18,9 @@ let videosCache: {
 // Cache validity duration (10 minutes in milliseconds)
 const CACHE_DURATION = 10 * 60 * 1000;
 
+// Force dynamic rendering to prevent static generation during build
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     // Check if we have a valid cache
@@ -92,7 +95,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-}
-
-// Set the revalidation period to match our cache duration (10 minutes = 600 seconds)
-export const revalidate = 600; 
+} 

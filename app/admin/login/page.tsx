@@ -67,14 +67,14 @@ export default function AdminLoginPage() {
                 height={80}
                 className="drop-shadow-md"
               />
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-pink-600 bg-clip-text text-transparent">
                   PinkDog Pet Resort
                 </h1>
                 <p className="text-sm text-gray-600 font-medium tracking-wide uppercase">
                   Admin Portal
                 </p>
-              </div>
+              </div> */}
             </div>
           </CardHeader>
           <CardContent className="px-8 pb-8">

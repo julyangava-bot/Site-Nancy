@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Logo } from "./logo";
-import { IconBrandInstagram, IconBrandFacebook, IconMapPin, IconClock, IconPhone, IconBrandWhatsapp } from "@tabler/icons-react";
+import { IconBrandInstagram, IconBrandFacebook, IconMapPin, IconClock, IconPhone } from "@tabler/icons-react";
 import { motion } from "motion/react";
 import { useRouter, usePathname } from "next/navigation";
 import { handleSectionNavigation, isSectionLink } from "@/lib/navigation";
@@ -36,9 +36,9 @@ export function Footer() {
 
   const supportLinks = [
     { name: "FAQ", href: "/faq" },
-    { name: "Contact Us", href: "#checkin-info" },
-    { name: "Admin Portal", href: "/admin" },
+    { name: "Contact Us", href: "#checkin-info" }
   ];
+  // { name: "Admin Portal", href: "/admin" },
 
   const legalLinks = [
     { name: "Privacy Policy", href: "/privacy-policy" },
