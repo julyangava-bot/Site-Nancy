@@ -113,24 +113,53 @@ export function Footer() {
             </p>
             
             {/* Social Media */}
-            <div className="flex items-center gap-4 justify-center md:justify-start">
+            <div className="flex items-center gap-6 justify-center md:justify-start">
               <Link
-                href="https://instagram.com/pinkdogspa"
+                href="https://instagram.com/pinkdogpetresort"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white rounded-full p-2 text-gray-600 hover:text-white hover:bg-[#E73992] transition-all duration-300 shadow-md hover:shadow-lg"
-                aria-label="Instagram"
+                className="flex flex-col items-center gap-2 group"
+                aria-label="Instagram Pet Resort"
               >
-                <IconBrandInstagram size={20} />
+                <div className="bg-white rounded-full p-2 text-gray-600 group-hover:text-white group-hover:bg-[#E73992] transition-all duration-300 shadow-md group-hover:shadow-lg">
+                  <IconBrandInstagram size={20} />
+                </div>
+                <div className="flex flex-col items-center -mt-1">
+                  <span className="text-[10px] font-semibold text-[#E73992]">Resort</span>
+                  <span className="text-[9px] text-gray-500">@pinkdogpetresort</span>
+                </div>
               </Link>
+
               <Link
                 href="https://facebook.com/pinkdogspa"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white rounded-full p-2 text-gray-600 hover:text-white hover:bg-[#3b5998] transition-all duration-300 shadow-md hover:shadow-lg"
+                className="flex flex-col items-center gap-2 group"
                 aria-label="Facebook"
               >
-                <IconBrandFacebook size={20} />
+                <div className="bg-white rounded-full p-2 text-gray-600 group-hover:text-white group-hover:bg-[#E73992] transition-all duration-300 shadow-md group-hover:shadow-lg">
+                  <IconBrandFacebook size={20} />
+                </div>
+                <div className="flex flex-col items-center -mt-1">
+                  <span className="text-[10px] font-semibold text-[#E73992]">Facebook</span>
+                  <span className="text-[9px] text-gray-500">@pinkdogspa</span>
+                </div>
+              </Link>
+
+              <Link
+                href="https://instagram.com/pinkdogspa"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center gap-2 group"
+                aria-label="Instagram Spa"
+              >
+                <div className="bg-white rounded-full p-2 text-gray-600 group-hover:text-white group-hover:bg-[#E73992] transition-all duration-300 shadow-md group-hover:shadow-lg">
+                  <IconBrandInstagram size={20} />
+                </div>
+                <div className="flex flex-col items-center -mt-1">
+                  <span className="text-[10px] font-semibold text-[#E73992]">Spa</span>
+                  <span className="text-[9px] text-gray-500">@pinkdogspa</span>
+                </div>
               </Link>
             </div>
           </div>

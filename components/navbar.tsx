@@ -634,30 +634,54 @@ const DesktopNav = ({
                       </motion.div>
                     ))}
 
-                    {/* Social Media Icons - Modern 2 column layout */}
+                    {/* Social Media Icons - Modern 3 column layout */}
                     <div className="mt-8 pt-6 border-t border-gray-100 w-full">
                       <div className="flex justify-center gap-6 px-4">
-                        <Link 
-                          href="https://instagram.com/pinkdogspa" 
-                          target="_blank" 
+                        <Link
+                          href="https://instagram.com/pinkdogpetresort"
+                          target="_blank"
                           rel="noopener noreferrer"
-                          className="group relative"
+                          className="group relative flex flex-col items-center gap-2"
                         >
                           <div className="absolute inset-0 bg-gradient-to-r from-[#E73992] to-[#FF6B9D] rounded-2xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
                           <div className="relative bg-white hover:bg-[#FFF0F7] p-4 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 border border-pink-100">
                             <IconBrandInstagram size={28} className="text-[#E73992]" />
                           </div>
+                          <div className="flex flex-col items-center -mt-1">
+                            <span className="text-[10px] font-semibold text-[#E73992]">Resort</span>
+                            <span className="text-[9px] text-gray-500">@pinkdogpetresort</span>
+                          </div>
                         </Link>
-                        
-                        <Link 
-                          href="https://facebook.com/pinkdogspa" 
-                          target="_blank" 
+
+                        <Link
+                          href="https://facebook.com/pinkdogspa"
+                          target="_blank"
                           rel="noopener noreferrer"
-                          className="group relative"
+                          className="group relative flex flex-col items-center gap-2"
                         >
                           <div className="absolute inset-0 bg-gradient-to-r from-[#E73992] to-[#FF6B9D] rounded-2xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
                           <div className="relative bg-white hover:bg-[#FFF0F7] p-4 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 border border-pink-100">
                             <IconBrandFacebook size={28} className="text-[#E73992]" />
+                          </div>
+                          <div className="flex flex-col items-center -mt-1">
+                            <span className="text-[10px] font-semibold text-[#E73992]">Facebook</span>
+                            <span className="text-[9px] text-gray-500">@pinkdogspa</span>
+                          </div>
+                        </Link>
+
+                        <Link
+                          href="https://instagram.com/pinkdogspa"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group relative flex flex-col items-center gap-2"
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-r from-[#E73992] to-[#FF6B9D] rounded-2xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
+                          <div className="relative bg-white hover:bg-[#FFF0F7] p-4 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 border border-pink-100">
+                            <IconBrandInstagram size={28} className="text-[#E73992]" />
+                          </div>
+                          <div className="flex flex-col items-center -mt-1">
+                            <span className="text-[10px] font-semibold text-[#E73992]">Spa</span>
+                            <span className="text-[9px] text-gray-500">@pinkdogspa</span>
                           </div>
                         </Link>
                       </div>
@@ -976,27 +1000,51 @@ const MobileNav = ({
                   {/* Social Media Links */}
                   <div className="mt-8 pt-6 border-t border-gray-100 w-full">
                     <div className="flex justify-center gap-6 px-4">
-                      <Link 
-                        href="https://instagram.com/pinkdogspa" 
-                        target="_blank" 
+                      <Link
+                        href="https://instagram.com/pinkdogpetresort"
+                        target="_blank"
                         rel="noopener noreferrer"
-                        className="group relative"
+                        className="group relative flex flex-col items-center gap-2"
                       >
                         <div className="absolute inset-0 bg-gradient-to-r from-[#E73992] to-[#FF6B9D] rounded-2xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
                         <div className="relative bg-white hover:bg-[#FFF0F7] p-4 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 border border-pink-100">
                           <IconBrandInstagram size={28} className="text-[#E73992]" />
                         </div>
+                        <div className="flex flex-col items-center -mt-1">
+                          <span className="text-[10px] font-semibold text-[#E73992]">Resort</span>
+                          <span className="text-[9px] text-gray-500">@pinkdogpetresort</span>
+                        </div>
                       </Link>
-                      
-                      <Link 
-                        href="https://facebook.com/pinkdogspa" 
-                        target="_blank" 
+
+                      <Link
+                        href="https://facebook.com/pinkdogspa"
+                        target="_blank"
                         rel="noopener noreferrer"
-                        className="group relative"
+                        className="group relative flex flex-col items-center gap-2"
                       >
                         <div className="absolute inset-0 bg-gradient-to-r from-[#E73992] to-[#FF6B9D] rounded-2xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
                         <div className="relative bg-white hover:bg-[#FFF0F7] p-4 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 border border-pink-100">
                           <IconBrandFacebook size={28} className="text-[#E73992]" />
+                        </div>
+                        <div className="flex flex-col items-center -mt-1">
+                          <span className="text-[10px] font-semibold text-[#E73992]">Facebook</span>
+                          <span className="text-[9px] text-gray-500">@pinkdogspa</span>
+                        </div>
+                      </Link>
+
+                      <Link
+                        href="https://instagram.com/pinkdogspa"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group relative flex flex-col items-center gap-2"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#E73992] to-[#FF6B9D] rounded-2xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
+                        <div className="relative bg-white hover:bg-[#FFF0F7] p-4 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 border border-pink-100">
+                          <IconBrandInstagram size={28} className="text-[#E73992]" />
+                        </div>
+                        <div className="flex flex-col items-center -mt-1">
+                          <span className="text-[10px] font-semibold text-[#E73992]">Spa</span>
+                          <span className="text-[9px] text-gray-500">@pinkdogspa</span>
                         </div>
                       </Link>
                     </div>

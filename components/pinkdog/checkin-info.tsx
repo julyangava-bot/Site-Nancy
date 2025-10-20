@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { IconBrandInstagram, IconBrandFacebook } from "@tabler/icons-react";
 
 
 // Hours data
@@ -14,7 +15,10 @@ const contactInfo = {
   phone: "+1 978-772-4242",
   email: "pinkdogpetresort@gmail.com",
   address: "259 Ayer Rd, Harvard, MA 01451, US",
-  instagram: "pinkdogspa",
+  instagram: {
+    spa: "pinkdogspa",
+    resort: "pinkdogpetresort"
+  },
 };
 
 export function CheckInInfo() {
@@ -117,12 +121,12 @@ export function CheckInInfo() {
                   {hours.map((item, idx) => (
                     <div
                       key={idx}
-                      className="flex justify-between items-center border-b border-pink-200 pb-3"
+                      className="flex justify-between items-center border-b border-pink-200 pb-3 gap-2"
                     >
                       <span className="font-medium text-gray-800">
                         {item.day}
                       </span>
-                      <span className="text-[#E73992] font-semibold">
+                      <span className="text-[#E73992] font-semibold whitespace-nowrap">
                         {item.hours}
                       </span>
                     </div>
@@ -225,7 +229,7 @@ export function CheckInInfo() {
                   <div className="flex items-start">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 text-[#E73992] mt-0.5 mr-3"
+                      className="h-6 w-6 text-[#E73992] mt-0.5 mr-3 flex-shrink-0"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
@@ -233,27 +237,41 @@ export function CheckInInfo() {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     >
-                      <rect
-                        x="2"
-                        y="2"
-                        width="20"
-                        height="20"
-                        rx="5"
-                        ry="5"
-                      ></rect>
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                       <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
                       <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                     </svg>
-                    <div>
-                      <h4 className="font-medium text-gray-700">Instagram</h4>
-                      <a
-                        href={`https://instagram.com/${contactInfo.instagram}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[#E73992] font-semibold hover:underline"
-                      >
-                        @{contactInfo.instagram}
-                      </a>
+                    <div className="flex-1">
+                      <h4 className="font-medium text-gray-700 mb-2">Social Media</h4>
+                      <div className="flex flex-wrap gap-2 items-center">
+                        <a
+                          href={`https://instagram.com/${contactInfo.instagram.resort}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-full border border-pink-200 hover:border-[#E73992] hover:bg-[#FFF9FC] transition-all duration-200 flex-shrink-0"
+                        >
+                          <IconBrandInstagram size={16} className="text-[#E73992] flex-shrink-0" />
+                          <span className="text-xs text-gray-700 whitespace-nowrap">@{contactInfo.instagram.resort}</span>
+                        </a>
+                        <a
+                          href="https://facebook.com/pinkdogspa"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-full border border-pink-200 hover:border-[#E73992] hover:bg-[#FFF9FC] transition-all duration-200 flex-shrink-0"
+                        >
+                          <IconBrandFacebook size={16} className="text-[#E73992] flex-shrink-0" />
+                          <span className="text-xs text-gray-700 whitespace-nowrap">@pinkdogspa</span>
+                        </a>
+                        <a
+                          href={`https://instagram.com/${contactInfo.instagram.spa}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-full border border-pink-200 hover:border-[#E73992] hover:bg-[#FFF9FC] transition-all duration-200 flex-shrink-0"
+                        >
+                          <IconBrandInstagram size={16} className="text-[#E73992] flex-shrink-0" />
+                          <span className="text-xs text-gray-700 whitespace-nowrap">@{contactInfo.instagram.spa}</span>
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>

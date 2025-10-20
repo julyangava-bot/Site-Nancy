@@ -37,6 +37,7 @@ export function SchemaMarkup() {
       }
     ],
     "sameAs": [
+      "https://instagram.com/pinkdogpetresort",
       "https://instagram.com/pinkdogspa",
       "https://facebook.com/pinkdogspa",
       "https://pinkdogspa.com"
