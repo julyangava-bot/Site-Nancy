@@ -298,7 +298,7 @@ export default function AboutPage() {
                     <div className="relative bg-white p-2 rounded-3xl shadow-xl transform transition-transform hover:-rotate-1">
                       <div className="relative h-[480px] rounded-2xl overflow-hidden bg-gradient-to-br from-[#FFF9FC] to-white">
                         <Image
-                          src="/images/gallery/facility/image-41.jpg"
+                          src="/images/gallery/all/image-41.jpg"
                           alt="PinkDog Pet Resort Facility"
                           fill
                           className="object-contain p-4"

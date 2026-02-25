@@ -1,164 +1,37 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { useKeenSlider } from "keen-slider/react";
-import "keen-slider/keen-slider.min.css";
 import { useServiceDialog } from "@/context/service-dialog-context";
 
-// Centralized image configuration object
-const imageConfig = {
-  // Carousel images
-  carousel: [
-    {
-      src: "/images/pinkdog_original_no_txt.png",
-      alt: "PinkDog Pet Resort Mascots",
-      width: 300,
-      height: 400,
-      className: "p-8 sm:p-12"
-    },
-    {
-      src: "/images/carrosel-1.png", 
-      alt: "PinkDog Carousel Image",
-      width: 500,
-      height: 500,
-      className: "p-6 sm:p-8"
-    },
-    {
-      src: "/images/carrosel-3.png", 
-      alt: "PinkDog Friends",
-      width: 500,
-      height: 700,
-      className: ""
-    },
-    {
-      src: "/images/sleeping-pinkdog.png", 
-      alt: "PinkDog Friends",
-      width: 500,
-      height: 700,
-      className: ""
-    }
-  ],
-  // Decorative elements
-  decorative: [
-    {
-      src: "/images/paw-print.png",
-      alt: "Decorative element bottom left",
-      width: 40,
-      height: 40,
-      position: "absolute -bottom-3 -left-3 w-8 h-8 opacity-50 hidden md:block"
-    },
-    {
-      src: "/images/paw-print.png",
-      alt: "Decorative element top right",
-      width: 30,
-      height: 30,
-      position: "absolute -top-2 -right-3 w-6 h-6 opacity-40 hidden md:block"
-    }
-  ]
-};
-
 export function Hero() {
-  const [currentSlide, setCurrentSlide] = useState(0);
   const { openServiceDialog } = useServiceDialog();
 
-  // Modified scroll control - no longer locks scrolling
-  useEffect(() => {
-    // We're removing the scroll locking mechanism that was causing issues
-    // This allows the page to scroll normally from the beginning
-    return () => {
-      // Ensure scroll is enabled when component unmounts
-      if (typeof window !== 'undefined') {
-        document.body.style.overflow = '';
-      }
-    };
-  }, []);
-
-  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>(
-    {
-      loop: true,
-      slides: {
-        perView: 1,
-        spacing: 0,
-      },
-      slideChanged(slider) {
-        setCurrentSlide(slider.track.details.rel);
-      },
-      // Disable drag on mobile to prevent scroll interference
-      rubberband: false,
-      drag: true,
-      // Add initial slide to prevent layout shift
-      initial: 0,
-    },
-    [
-      // Autoplay plugin with optimizations
-      (slider) => {
-        let timeout: ReturnType<typeof setTimeout>;
-        let mouseOver = false;
-        
-        function clearNextTimeout() {
-          clearTimeout(timeout);
-        }
-        
-        function nextTimeout() {
-          clearTimeout(timeout);
-          if (mouseOver) return;
-          timeout = setTimeout(() => {
-            slider.next();
-          }, 4000); // Change slide every 4 seconds
-        }
-        
-        slider.on("created", () => {
-          // Only start autoplay after component is properly rendered
-          setTimeout(() => {
-            slider.container.addEventListener("mouseover", () => {
-              mouseOver = true;
-              clearNextTimeout();
-            });
-            slider.container.addEventListener("mouseout", () => {
-              mouseOver = false;
-              nextTimeout();
-            });
-            nextTimeout();
-          }, 500);
-        });
-        
-        slider.on("dragStarted", clearNextTimeout);
-        slider.on("animationEnded", nextTimeout);
-        slider.on("updated", nextTimeout);
-      },
-    ]
-  );
-
-  // Simplified variants that won't affect scroll performance
   const fadeInVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1 }
   };
-  
-  // Scale variant with optimized animations
+
   const scaleInVariants = {
     hidden: { opacity: 0, scale: 0.98 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       scale: 1,
       transition: { duration: 0.4 }
     }
   };
 
-  // Render content
-  const renderContent = () => {
-    return (
+  return (
+    <div className="bg-gradient-to-b from-white to-[#FFF7FB] overflow-hidden">
       <div className="relative z-10 w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Hero content with optimized layout - reduced min-height to bring elements closer */}
           <div className="relative pt-65 sm:pt-70 md:pt-70 lg:pt-30 pb-16 sm:pb-20 md:pb-24 min-h-[600px] sm:min-h-[600px] md:min-h-[650px] lg:min-h-[calc(100vh-6rem)] max-h-[750px] xl:max-h-[750px] flex flex-col lg:flex-row items-center justify-center">
             <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-4 md:gap-6 lg:gap-8 xl:gap-12">
               {/* Text content */}
               <div className="max-w-xl w-full text-center lg:text-left z-10">
-                <motion.h1 
+                <motion.h1
                   initial="hidden"
                   animate="visible"
                   variants={fadeInVariants}
@@ -166,11 +39,11 @@ export function Hero() {
                   className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 font-display"
                   style={{ willChange: "opacity" }}
                 >
-                  Welcome to <br/>
+                  Welcome to <br />
                   <span className="text-[#E73992]">PinkDog Pet Resort</span>
                   <span className="block mt-1">Your Pet&apos;s Favorite Place!</span>
                 </motion.h1>
-                
+
                 <motion.p
                   initial="hidden"
                   animate="visible"
@@ -181,8 +54,8 @@ export function Hero() {
                 >
                   Pet Hotel • Daycare • Grooming – All with ❤️
                 </motion.p>
-                
-                <motion.div 
+
+                <motion.div
                   initial="hidden"
                   animate="visible"
                   variants={fadeInVariants}
@@ -204,8 +77,8 @@ export function Hero() {
                   </Button>
                 </motion.div>
               </div>
-              
-              {/* Image Carousel - directly over Aurora background without any containers/boxes */}
+
+              {/* Hero Image */}
               <motion.div
                 initial="hidden"
                 animate="visible"
@@ -213,77 +86,49 @@ export function Hero() {
                 className="relative z-10 w-full max-w-[380px] sm:max-w-[420px] md:max-w-[480px] lg:max-w-lg xl:max-w-xl mt-4 sm:mt-4 md:mt-0"
                 style={{ willChange: "transform, opacity" }}
               >
-                {/* Keen Slider carousel - preset height to prevent layout shift */}
-                <div 
-                  ref={sliderRef} 
-                  className="keen-slider h-[360px] sm:h-[340px] md:h-[420px] lg:h-[480px] xl:h-[520px]"
-                >
-                  {imageConfig.carousel.map((image, idx) => (
-                    <div 
-                      key={idx} 
-                      className={`keen-slider__slide ${image.className} flex items-center justify-center bg-transparent`}
-                    >
-                      <div className="w-full h-full relative">
-                        <Image
-                          src={image.src}
-                          alt={image.alt}
-                          fill
-                          priority={idx === 0}
-                          sizes="(max-width: 640px) 380px, (max-width: 768px) 420px, (max-width: 1024px) 480px, 600px"
-                          className="object-contain"
-                        />
-                      </div>
-                    </div>
-                  ))}
+                <div className="h-[280px] sm:h-[280px] md:h-[350px] lg:h-[400px] xl:h-[440px] relative">
+                  <Image
+                    src="/images/pinkdog_original_no_txt.png"
+                    alt="PinkDog Pet Resort Mascots"
+                    fill
+                    priority
+                    sizes="(max-width: 640px) 380px, (max-width: 768px) 420px, (max-width: 1024px) 480px, 600px"
+                    className="object-contain"
+                  />
                 </div>
-                
-                {/* Navigation dots */}
-                <div className="flex justify-center gap-1.5 sm:gap-2 mt-2 sm:mt-3">
-                  {[...Array(imageConfig.carousel.length)].map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => {
-                        instanceRef.current?.moveToIdx(idx);
-                      }}
-                      className={`w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full transition-colors ${
-                        currentSlide === idx ? 'bg-[#E73992]' : 'bg-[#FCD1E6]'
-                      }`}
-                      aria-label={`Go to slide ${idx + 1}`}
-                    />
-                  ))}
-                </div>
-                
+
                 {/* Decorative elements */}
-                {imageConfig.decorative.map((decoration, idx) => (
-                  <div key={idx} className={decoration.position}>
-                    <div className="relative w-full h-full">
-                      <Image
-                        src={decoration.src}
-                        alt={decoration.alt}
-                        fill
-                        sizes="40px"
-                        className="object-contain"
-                      />
-                    </div>
+                <div className="absolute -bottom-3 -left-3 w-8 h-8 opacity-50 hidden md:block">
+                  <div className="relative w-full h-full">
+                    <Image
+                      src="/images/paw-print.png"
+                      alt="Decorative paw print"
+                      fill
+                      sizes="40px"
+                      className="object-contain"
+                    />
                   </div>
-                ))}
+                </div>
+                <div className="absolute -top-2 -right-3 w-6 h-6 opacity-40 hidden md:block">
+                  <div className="relative w-full h-full">
+                    <Image
+                      src="/images/paw-print.png"
+                      alt="Decorative paw print"
+                      fill
+                      sizes="40px"
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
               </motion.div>
             </div>
           </div>
         </div>
-        
-        {/* Simplified background decoration elements - hidden on mobile */}
+
+        {/* Background decoration elements */}
         <div className="absolute -top-16 -right-16 w-32 h-32 md:w-48 md:h-48 rounded-full bg-[#FCD1E6] opacity-20 hidden sm:block"></div>
         <div className="absolute -bottom-24 -left-24 w-48 h-48 md:w-72 md:h-72 rounded-full bg-[#FCD1E6] opacity-20 hidden sm:block"></div>
       </div>
-    );
-  };
-
-  return (
-    <>
-      <div className="bg-gradient-to-b from-white to-[#FFF7FB] overflow-hidden">
-        {renderContent()}
-      </div>
-    </>
+    </div>
   );
 }

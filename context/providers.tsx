@@ -5,7 +5,6 @@ import {
   ThemeProvider as NextThemesProvider,
   ThemeProviderProps,
 } from "next-themes";
-import { SessionProvider } from "next-auth/react";
 import { ServiceDialogProvider } from "./service-dialog-context";
 
 // Context for managing modal/form states
@@ -36,20 +35,18 @@ function ModalProvider({ children }: { children: ReactNode }) {
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <SessionProvider>
-      <ModalProvider>
-        <NextThemesProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <ServiceDialogProvider>
-            {children}
-          </ServiceDialogProvider>
-        </NextThemesProvider>
-      </ModalProvider>
-    </SessionProvider>
+    <ModalProvider>
+      <NextThemesProvider
+        attribute="class"
+        defaultTheme="light"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <ServiceDialogProvider>
+          {children}
+        </ServiceDialogProvider>
+      </NextThemesProvider>
+    </ModalProvider>
   );
 }
 
