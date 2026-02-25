@@ -161,11 +161,7 @@ export function ServiceSelectionDialog({ isOpen, onClose }: ServiceSelectionDial
                   <div className="bg-gradient-to-r from-[#FFF0F7] via-[#FFE9F3] to-[#FFF5FA] rounded-xl p-4 sm:p-5 border border-[#FFD6E8]/30">
                     <div className="flex items-center gap-3 sm:gap-4">
                       {/* Mascot image */}
-                      <motion.div
-                        initial={{ scale: 0, rotate: -180 }}
-                        animate={{ scale: 1, rotate: 0 }}
-                        transition={{ type: "spring", duration: 0.6, delay: 0.2 }}
-                        className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0"
+                      <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0"
                       >
                         <Image
                           src="/images/pinkdog-logo-3d.png"
@@ -173,8 +169,8 @@ export function ServiceSelectionDialog({ isOpen, onClose }: ServiceSelectionDial
                           fill
                           className="object-contain drop-shadow-lg"
                         />
-                      </motion.div>
-                      
+                      </div>
+
                       {/* Text content */}
                       <div className="flex-1 text-left">
                         <h2 className="text-xl sm:text-2xl font-bold mb-0.5">

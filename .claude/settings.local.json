@@ -18,7 +18,14 @@
       "Bash(ls:*)",
       "Bash(npm run:*)",
       "Bash(npx next build:*)",
-      "Bash(npm info:*)"
+      "Bash(npm info:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(vercel build:*)",
+      "Bash(vercel project ls:*)",
+      "Bash(vercel env ls:*)",
+      "Bash(vercel project update:*)",
+      "mcp__7896d8bd-4709-4594-8ad3-09b1a74560ec__get_project",
+      "Bash(vercel project inspect:*)"
     ],
     "deny": []
   }
