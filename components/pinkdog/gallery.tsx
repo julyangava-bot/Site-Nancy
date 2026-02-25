@@ -918,26 +918,12 @@ const galleryImages = [
 // Limit images for mobile to prevent memory issues
 const limitedGalleryImages = galleryImages.slice(0, 50);
 
-// YouTube story videos
-const storyVideos = [
-  { id: "story01", youtubeId: "b7LtoyqQ0aE", name: "Story 1" },
-  { id: "story02", youtubeId: "QbPVFsb5CN0", name: "Story 2" },
-  { id: "story03", youtubeId: "81Nkq_yWIr8", name: "Story 3" },
-  { id: "story04", youtubeId: "OF7InBTZ7ZY", name: "Story 4" },
-  { id: "story05", youtubeId: "LA4NwLOhRzU", name: "Story 5" },
-  { id: "story06", youtubeId: "dhXjIlTwmtg", name: "Story 6" },
-  { id: "story07", youtubeId: "f2dVmgs5w7Q", name: "Story 7" },
-  { id: "story08", youtubeId: "YC8NZ7QPn0w", name: "Story 8" },
-  { id: "story09", youtubeId: "woqsN0ZDLY0", name: "Story 9" }
-];
-
 // Filter categories
 const categories = [
   { id: "all", name: "All Photos" },
   { id: "facility", name: "Our Facility" },
   { id: "pets", name: "Happy Pets" },
   { id: "services", name: "Services" },
-  { id: "videos", name: "Videos" }
 ];
 
 // Type definitions
@@ -949,11 +935,6 @@ interface ImageItem {
   category: string;
 }
 
-interface VideoItem {
-  id: string;
-  youtubeId: string;
-  name: string;
-}
 
 // Modal component - Fixed for iOS
 const Modal = ({ isOpen, onClose, children }: { isOpen: boolean; onClose: () => void; children: React.ReactNode }) => {
@@ -1004,17 +985,14 @@ export function Gallery() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [randomAllPhotos, setRandomAllPhotos] = useState<typeof galleryImages>([]);
   const [isMounted, setIsMounted] = useState(false);
-  const [videoStartIndex, setVideoStartIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [photoCount, setPhotoCount] = useState(6);
   const [isLoadingImages, setIsLoadingImages] = useState(true);
   const [selectedImage, setSelectedImage] = useState<ImageItem | null>(null);
-  const [selectedVideo, setSelectedVideo] = useState<VideoItem | null>(null);
   const [isIOS, setIsIOS] = useState(false);
   
   // Refs for interval cleanup
   const photoIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const videoIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Detect iOS
   useEffect(() => {
@@ -1111,40 +1089,7 @@ export function Gallery() {
     };
   }, [isMounted, photoCount, isMobile, isIOS, getImageSet]);
 
-  // Rotate videos - optimized
-  useEffect(() => {
-    if (!isMobile || selectedCategory !== "videos") {
-      if (videoIntervalRef.current) {
-        clearInterval(videoIntervalRef.current);
-      }
-      return;
-    }
-    
-    videoIntervalRef.current = setInterval(() => {
-      setVideoStartIndex((prev) => (prev + 6) % storyVideos.length);
-    }, 20000); // Increased to 20s
-    
-    return () => {
-      if (videoIntervalRef.current) {
-        clearInterval(videoIntervalRef.current);
-      }
-    };
-  }, [isMobile, selectedCategory]);
 
-  // Get videos to display based on mobile/desktop
-  const getDisplayedVideos = () => {
-    if (!isMobile) {
-      return storyVideos;
-    }
-    
-    // On mobile, show 6 videos starting from videoStartIndex
-    const videos = [];
-    for (let i = 0; i < 6; i++) {
-      const index = (videoStartIndex + i) % storyVideos.length;
-      videos.push(storyVideos[index]);
-    }
-    return videos;
-  };
 
   // Ensure we ALWAYS have exactly the right amount of images for All Photos
   const getAllPhotosImages = useCallback(() => {
@@ -1180,8 +1125,6 @@ export function Gallery() {
     ? filteredImages 
     : filteredImages.slice(0, photoCount); // Limit to photoCount (8 desktop, 6 mobile)
   
-  const isVideoTab = selectedCategory === "videos";
-
   // Function to determine if the last row should be centered
   const shouldCenterLastRow = (itemCount: number, itemsPerRow: number) => {
     return itemCount % itemsPerRow !== 0;
@@ -1189,107 +1132,7 @@ export function Gallery() {
 
   // Function to get grid layout based on screen size
   const getGridLayout = () => {
-    if (isVideoTab) {
-      return "grid-cols-2 lg:grid-cols-6";
-    }
-    
-    // For photos: always 2 columns on smaller screens, 4 on large screens
-    if (selectedCategory === "all") {
-      return "grid-cols-2 lg:grid-cols-4";
-    }
-    
     return "grid-cols-2 lg:grid-cols-4";
-  };
-
-  // Function to render video items - optimized for iOS
-  const renderVideoItems = (videos: VideoItem[]) => {
-    const itemsPerRow = isMobile ? 2 : 6;
-    const shouldCenter = shouldCenterLastRow(videos.length, itemsPerRow);
-    const lastRowItemCount = videos.length % itemsPerRow;
-    const lastRowStartIndex = videos.length - lastRowItemCount;
-
-    return (
-      <>
-        {/* Regular grid for complete rows */}
-        <div className={`grid gap-4 ${getGridLayout()}`}>
-          {videos.slice(0, shouldCenter ? lastRowStartIndex : videos.length).map((video) => (
-            <div
-              key={video.id}
-              className="relative aspect-[9/16] overflow-hidden rounded-xl shadow-md cursor-pointer group"
-              onClick={() => setSelectedVideo(video)}
-            >
-              <div className="absolute inset-0 w-full h-full">
-                <Image
-                  src={`https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`}
-                  alt={video.name}
-                  fill
-                  sizes="(max-width: 768px) 50vw, 200px"
-                  className="object-cover"
-                  loading="lazy"
-                  onError={(e) => {
-                    e.currentTarget.src = `https://img.youtube.com/vi/${video.youtubeId}/0.jpg`;
-                  }}
-                />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="absolute bottom-0 left-0 right-0 p-3">
-                  <p className="text-white text-sm font-medium">{video.name}</p>
-                </div>
-              </div>
-              {/* Play icon overlay */}
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">
-                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M6.3 2.841A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Centered last row if needed */}
-        {shouldCenter && lastRowItemCount > 0 && (
-          <div className="flex justify-center gap-4 mt-4 flex-wrap">
-            {videos.slice(lastRowStartIndex).map((video) => (
-              <div
-                key={video.id}
-                className="relative aspect-[9/16] overflow-hidden rounded-xl shadow-md cursor-pointer group"
-                style={{ width: isMobile ? 'calc(50% - 0.5rem)' : 'calc(16.666% - 0.75rem)', maxWidth: '300px' }}
-                onClick={() => setSelectedVideo(video)}
-              >
-                <div className="absolute inset-0 w-full h-full">
-                  <Image
-                    src={`https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`}
-                    alt={video.name}
-                    fill
-                    sizes="(max-width: 768px) 50vw, 200px"
-                    className="object-cover"
-                    loading="lazy"
-                    onError={(e) => {
-                      e.currentTarget.src = `https://img.youtube.com/vi/${video.youtubeId}/0.jpg`;
-                    }}
-                  />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <p className="text-white text-sm font-medium">{video.name}</p>
-                  </div>
-                </div>
-                {/* Play icon overlay */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">
-                    <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M6.3 2.841A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </>
-    );
   };
 
   // Skeleton loading component
@@ -1438,13 +1281,7 @@ export function Gallery() {
 
         {/* Gallery content */}
         <div className="relative">
-          {selectedCategory === "all" ? (
-            renderImageItems(displayedImages as ImageItem[])
-          ) : isVideoTab ? (
-            renderVideoItems(getDisplayedVideos())
-          ) : (
-            renderImageItems(displayedImages as ImageItem[])
-          )}
+          {renderImageItems(displayedImages as ImageItem[])}
         </div>
         
         <motion.div
@@ -1584,24 +1421,6 @@ export function Gallery() {
         )}
       </Modal>
 
-      {/* Video Modal - Simple modal without carousel */}
-      <Modal isOpen={!!selectedVideo} onClose={() => setSelectedVideo(null)}>
-        {selectedVideo && (
-          <div className="flex items-center justify-center h-full">
-            <div className="relative w-full max-w-[506px]" style={{ aspectRatio: '9/16' }}>
-              {/* Embedded YouTube video */}
-              <iframe
-                src={`https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1&mute=0&loop=1&playlist=${selectedVideo.youtubeId}&controls=1&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
-                className="absolute inset-0 w-full h-full rounded-lg"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                allowFullScreen
-                title={selectedVideo.name}
-                style={{ border: 0 }}
-              />
-            </div>
-          </div>
-        )}
-      </Modal>
     </section>
   );
 }

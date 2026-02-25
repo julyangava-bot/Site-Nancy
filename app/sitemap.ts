@@ -27,8 +27,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Legal pages
   const legalPages = [
     { route: '/privacy-policy', priority: 0.3, frequency: 'yearly' as const },
-    { route: '/terms', priority: 0.3, frequency: 'yearly' as const },
-    { route: '/data-deletion', priority: 0.2, frequency: 'yearly' as const },
   ];
 
   // Add contact section with hash

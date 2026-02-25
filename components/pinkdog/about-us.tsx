@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { IconBrandInstagram, IconBrandFacebook } from "@tabler/icons-react";
@@ -126,27 +127,21 @@ export function AboutUs() {
             </div>
           </motion.div>
 
-          {/* Facility Video */}
+          {/* Facility Image */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
-            className="relative rounded-2xl overflow-hidden shadow-xl"
+            className="hidden lg:flex relative items-center justify-center"
           >
-            <video
-              src="/images/pingdog-animate.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="object-contain w-full h-full"
+            <Image
+              src="/images/pinkdog_original_no_txt.png"
+              alt="PinkDog Pet Resort"
+              width={400}
+              height={400}
+              className="object-contain w-3/4 h-auto mx-auto"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-6 pointer-events-none">
-              <p className="text-white text-lg font-medium">
-                Your trusted local pet care family in Harvard, MA
-              </p>
-            </div>
           </motion.div>
         </div>
 

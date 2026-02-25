@@ -104,7 +104,6 @@ function VanServiceContent() {
         customCTAButton={<VanBookingForm variant="cta" initialOpen={showBookingForm}>Book PinkVan</VanBookingForm>}
         showSecondButton={true}
         secondButtonText="Have Questions?"
-        videoUrl="https://youtube.com/shorts/cDyqllECsoc"
         ctaText="Request PinkVan Service"
         ctaLink="/"
     />

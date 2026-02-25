@@ -1,36 +1,14 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
 export function InstitutionalVideo() {
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const [showFallback, setShowFallback] = useState(false);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const videoId = "5hPThvAmHMg";
-
-  // Monitor iframe load state
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      // If video doesn't load within 3 seconds, show fallback
-      if (!videoLoaded) {
-        setShowFallback(true);
-      }
-    }, 3000);
-
-    return () => clearTimeout(timeoutId);
-  }, [videoLoaded]);
-
-  // Handle iframe load event
-  const handleIframeLoad = () => {
-    setVideoLoaded(true);
-  };
-
   return (
     <section id="philosophy" className="relative py-24 bg-[#E73992]">
-      {/* Top modern gradient transition - adjusted to keep consistent color at title level */}
+      {/* Top modern gradient transition */}
       <div className="absolute top-0 left-0 right-0 h-32 overflow-hidden">
         <div
           className="absolute top-0 left-0 w-full h-32"
@@ -40,7 +18,6 @@ export function InstitutionalVideo() {
           }}
         />
 
-        {/* Subtle waves overlay for texture */}
         <svg
           className="absolute top-0 left-0 w-full opacity-40"
           viewBox="0 0 1440 320"
@@ -69,7 +46,6 @@ export function InstitutionalVideo() {
       </div>
 
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative pb-10">
-        {/* Header section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -78,7 +54,6 @@ export function InstitutionalVideo() {
           className="text-center mb-12"
         >
           <div className="flex items-center justify-center gap-4 mb-6">
-            {/* Best Grooming medal moved to left of title */}
             <div className="flex-shrink-0 w-20 h-20">
               <div className="relative w-full h-full">
                 <Image
@@ -106,7 +81,6 @@ export function InstitutionalVideo() {
                 attention in a calm and loving environment.
               </p>
 
-              {/* Learn more link */}
               <Link
                 href="/philosophy"
                 className="inline-flex items-center text-white hover:text-pink-100 transition-colors mt-6 text-lg font-light"
@@ -128,65 +102,6 @@ export function InstitutionalVideo() {
             </div>
           </div>
         </motion.div>
-
-        {/* Centered video container */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          viewport={{ once: true }}
-          className="relative rounded-2xl overflow-hidden shadow-xl mx-auto max-w-4xl bg-black mb-8"
-        >
-          <div className="relative aspect-video w-full">
-            {/* YouTube iframe with autoplay and loop */}
-            <iframe
-              ref={iframeRef}
-              onLoad={handleIframeLoad}
-              src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&color=white`}
-              title="PinkDog Institutional Video"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              className={`w-full h-full absolute inset-0 ${
-                showFallback ? "opacity-0" : "opacity-100"
-              }`}
-              frameBorder="0"
-            ></iframe>
-
-            {/* Fallback thumbnail (shown if iframe doesn't load properly) */}
-            {showFallback && (
-              <Link
-                href={`https://youtu.be/${videoId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <div className="absolute inset-0 w-full h-full">
-                  <Image
-                    src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
-                    alt="PinkDog Institutional Video"
-                    fill
-                    className="object-cover"
-                    onError={(e) => {
-                      e.currentTarget.src = `https://img.youtube.com/vi/${videoId}/0.jpg`;
-                    }}
-                  />
-
-                  {/* Play button overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 transition-all duration-300 hover:bg-black/40">
-                    <div className="bg-white/90 rounded-full p-5 shadow-lg transform transition-transform duration-300 hover:scale-110">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-14 w-14 text-[#E73992]"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            )}
-          </div>
-        </motion.div>
       </div>
 
       {/* Bottom modern gradient transition */}
@@ -202,7 +117,6 @@ export function InstitutionalVideo() {
           }}
         />
 
-        {/* Subtle waves overlay for texture */}
         <svg
           className="absolute bottom-0 left-0 w-full opacity-40"
           viewBox="0 0 1440 320"

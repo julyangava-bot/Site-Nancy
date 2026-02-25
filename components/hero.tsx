@@ -13,11 +13,11 @@ const imageConfig = {
   // Carousel images
   carousel: [
     {
-      src: "/images/pinkdog-mascots.png", 
-      alt: "PinkDog Friends",
-      width: 500,
-      height: 700,
-      className: ""
+      src: "/images/pinkdog_original_no_txt.png",
+      alt: "PinkDog Pet Resort Mascots",
+      width: 300,
+      height: 400,
+      className: "p-8 sm:p-12"
     },
     {
       src: "/images/carrosel-1.png", 
