@@ -27,7 +27,7 @@ export function Hero() {
     <div className="bg-gradient-to-b from-white to-[#FFF7FB] overflow-hidden">
       <div className="relative z-10 w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative pt-65 sm:pt-70 md:pt-70 lg:pt-30 pb-16 sm:pb-20 md:pb-24 min-h-[600px] sm:min-h-[600px] md:min-h-[650px] lg:min-h-[calc(100vh-6rem)] max-h-[750px] xl:max-h-[750px] flex flex-col lg:flex-row items-center justify-center">
+          <div className="relative pt-[120px] sm:pt-[140px] lg:pt-30 pb-16 sm:pb-20 md:pb-24 min-h-[600px] sm:min-h-[600px] md:min-h-[650px] lg:min-h-[calc(100vh-6rem)] max-h-[750px] xl:max-h-[750px] flex flex-col lg:flex-row items-center justify-center">
             <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-4 md:gap-6 lg:gap-8 xl:gap-12">
               {/* Text content */}
               <div className="max-w-xl w-full text-center lg:text-left z-10">
@@ -86,7 +86,7 @@ export function Hero() {
                 className="relative z-10 w-full max-w-[380px] sm:max-w-[420px] md:max-w-[480px] lg:max-w-lg xl:max-w-xl mt-4 sm:mt-4 md:mt-0"
                 style={{ willChange: "transform, opacity" }}
               >
-                <div className="h-[280px] sm:h-[280px] md:h-[350px] lg:h-[400px] xl:h-[440px] relative">
+                <div className="h-[280px] sm:h-[280px] md:h-[280px] lg:h-[400px] xl:h-[440px] relative">
                   <Image
                     src="/images/pinkdog_original_no_txt.png"
                     alt="PinkDog Pet Resort Mascots"
