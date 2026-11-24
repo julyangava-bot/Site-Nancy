@@ -1,4 +1,5 @@
 "use client";
+
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
@@ -61,7 +62,12 @@ export const LogoIcon = ({ className }: { className?: string }) => (
         />
         <feOffset dy="2" />
         <feGaussianBlur stdDeviation="2" />
-        <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+        <feComposite
+          in2="hardAlpha"
+          operator="arithmetic"
+          k2="-1"
+          k3="1"
+        />
         <feColorMatrix
           type="matrix"
           values="0 0 0 0 1 0 0 0 0 0.664321 0 0 0 0 0.520459 0 0 0 1 0"
@@ -81,16 +87,16 @@ export const Logo = ({ className }: { className?: string }) => {
     <Link
       href="/"
       className={cn(
-        "font-normal flex gap-2 justify-center items-center text-sm text-black px-2 py-1 shrink-0",
+        "font-normal inline-flex max-w-full items-center justify-center gap-2 px-2 py-1 text-sm text-black shrink-0",
         className
       )}
     >
-      <Image 
+      <Image
         src="/images/navbar-logo.png"
         alt="PinkDog Pet Resort Logo"
         width={180}
-        height={48}
-        className="h-auto w-auto"
+        height={55}
+        className="block h-auto w-[140px] max-w-full object-contain sm:w-[180px]"
         priority
       />
     </Link>
