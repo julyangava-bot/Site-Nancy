@@ -1,7 +1,9 @@
-import { MetadataRoute } from 'next';
+import type { MetadataRoute } from 'next';
+
+export const dynamic = 'force-static';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://pinkdogpetresort.com';
+  const baseUrl = 'https://pinkdogresort.com';
   const currentDate = new Date();
 
   // Main pages with high priority
@@ -29,12 +31,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { route: '/privacy-policy', priority: 0.3, frequency: 'yearly' as const },
   ];
 
-  // Add contact section with hash
-  const contactSection = [
-    { route: '/#checkin-info', priority: 0.9, frequency: 'monthly' as const },
+  const allPages = [
+    ...mainPages,
+    ...aboutPages,
+    ...resourcePages,
+    ...legalPages,
   ];
-
-  const allPages = [...mainPages, ...aboutPages, ...resourcePages, ...legalPages, ...contactSection];
 
   return allPages.map(({ route, priority, frequency }) => ({
     url: `${baseUrl}${route}`,
@@ -42,4 +44,4 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: frequency,
     priority: priority,
   }));
-} 
+}
